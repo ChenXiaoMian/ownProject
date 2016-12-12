@@ -1,0 +1,47 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>获奖日志</h2>
+	</div>
+	<div>
+
+	</div>
+	<!-- 数据列表 -->
+	<div class="data-table table-striped" style="width:1200px;">
+		<table>
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>获奖序号</th>
+					<th>获奖等级</th>
+					<th>获奖礼品</th>
+					<th>剩余库存</th>
+					<th>获奖时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<notempty name="_list">
+				<volist name="_list" id="vo">
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.prizeId}</td>
+					<td>{$vo.prizeGrade}</td>
+					<td>{$vo.prizeName}</td>
+					<td>{$vo.prizeSku}</td>
+					<td>{$vo.getTime|date='Y-m-d H:i:s',###}</td>
+				</tr>
+				</volist>
+				<else/>
+				<td colspan="6" class="text-center"> aOh! 暂时还没有内容! </td>
+				</notempty>
+			</tbody>
+		</table>
+	</div>
+	<div class="page">{$_page}</div>
+</block>
+
+<block name="script">
+
+</block>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>{:C('WEB_SITE_TITLE')}</title>
+    <link href="__STATIC__/lottery/css/main.css" rel="stylesheet">
+    <script type="text/javascript" src="__STATIC__/lottery/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/lottery/js/jQueryRotate.2.2.js"></script>
+    <script type="text/javascript" src="__STATIC__/lottery/js/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/lottery/layer/layer.js"></script>
+    <style>
+    .layui-layer-dialog .layui-layer-content{font-size: 40px;line-height: 50px;color: #CF261F;}
+    </style>
+    <script>
+    $(function(){
+        $("#startbtn").click(function(){
+            lottery();
+        });
+    });
+    function lottery(){
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Index/doLottery')}",
+            dataType: 'json',
+            cache: false,
+            error: function(){
+                alert('出错了！');
+                return false;
+            },
+            success:function(json){
+                $("#startbtn").unbind('click').css("cursor","default");
+                var a = json.angle;
+                var g = json.grade;
+                var p = json.prize;
+                $("#startbtn").rotate({
+                    duration:3000,
+                    angle: 0,
+                    animateTo:1800+a,
+                    easing: $.easing.easeOutSine,
+                    callback: function(){
+
+                        layer.alert('恭喜你，中得'+g+'('+p+')',{
+                            closeBtn: 0,
+                            offset: '80px',
+                            area: '650px',
+                            title: ['中奖信息']
+                        },function(){
+                            window.location.reload();
+                        });
+                        // var con = confirm('恭喜你，中得'+g+p+'\n还要再来一次吗？');
+                        // if(con){
+                        //     lottery();
+                        // }else{
+                        //     return false;
+                        // }
+                    }
+                });
+            }
+        });
+
+    }
+    </script>
+</head>
+<body>    
+    <div id="main">
+       <div class="demo">
+            <div id="disk"></div>
+            <div id="start"><img src="__STATIC__/lottery/img/start2.png" id="startbtn"></div>
+       </div>
+    </div>
+</body>
+</html>

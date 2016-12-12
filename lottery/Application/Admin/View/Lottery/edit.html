@@ -1,0 +1,63 @@
+<extend name="Public/base"/>
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>编辑参数</h2>
+	</div>
+	<div>
+	</div>
+	<form action="{:U()}" method="post" class="form-horizontal">
+        <div class="form-item">
+            <label class="item-label">序号<span class="check-tips">（不可修改）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-small" name="prizeId" value="{$data.prizeId}" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">min<span class="check-tips">（不可修改）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="prizeMin" value="{$data.prizeMin}" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">max<span class="check-tips">（不可修改）</span></label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="prizeMax" value="{$data.prizeMax}" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">等级</label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="prizeGrade" value="{$data.prizeGrade}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">礼品名称</label>
+            <div class="controls">
+                <input type="text" class="text input-large" name="prizeName" value="{$data.prizeName}">
+            </div>
+        </div>
+ 		<div class="form-item">
+            <label class="item-label">实际库存数</label>
+            <div class="controls">
+                <input type="text" class="text input-small" name="prizeSku" value="{$data.prizeSku}">
+            </div>
+        </div>
+        <div class="form-item">
+            <label class="item-label">概率</label>
+            <div class="controls">
+                <input type="text" class="text input-small" name="prizePro" value="{$data.prizePro}">
+            </div>
+        </div>
+        <div class="form-item">
+            <input type="hidden" name="id" value="{$data.id}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+
+</block>
