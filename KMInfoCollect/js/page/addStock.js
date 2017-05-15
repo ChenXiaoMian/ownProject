@@ -1,6 +1,7 @@
+// 存量采集逻辑
 $(function(){
     var userName = store.get('userName'),
-        nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+        nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog');
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
@@ -11,34 +12,22 @@ $(function(){
       store.remove('seatempStock');
       store.remove('market');
       store.remove('medicine');
-      initSearch('market','关键字/市场名称');
-      initSearch('medicine','关键字/中药材名称');
+      initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
+      initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
       $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
     }
-    // 初始化搜索关键字
-    function initSearch(key,str){
-        $(".stockText-"+key).text(str).addClass('c-c7c7c7').removeClass('c-3dbaff');
-        $(".stockVal-"+key).val("");
-    };
-    // 改变样式
-    function changeCss(key){
-        if($(".stockVal-"+key).val() && $(".stockVal-"+key).val()!=''){
-            $(".stockVal-"+key).parents(".weui-cell_access").removeClass('weui-cell_warn');
-        }
-    }
+
     // 选择模板后加载对应数据
     function loadTemp(tid){
         var data = {};
         $.each(JSON.parse(store.get('tempStock')).data,function(index,item){
             if(item.tid == tid) data = item;
         });
-        $(".stockText-market").text(data.Market).removeClass('c-c7c7c7').addClass('c-3dbaff');
-        $(".stockVal-market").val(data.Market);
-        $(".stockText-medicine").text(data.Medicine).removeClass('c-c7c7c7').addClass('c-3dbaff');
-        $(".stockVal-medicine").val(data.Medicine);
+        changeSearch('.stockText-market','.stockVal-market',data.Market);
+        changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
         $(".weui-textarea").val(data.Addition);
-        changeCss('market');
-        changeCss('medicine');
+        clearSearch('.stockVal-market');
+        clearSearch('.stockVal-medicine');
     }
     // 验证所需
     var regexp = {
@@ -59,7 +48,7 @@ $(function(){
                 $.each(formData,function(key,value){
                     jsonData[value.name] = value.value;
                 });
-                jsonData.Time = new Date().Format("yyyy-MM-dd");
+                jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                 var loading = weui.loading('上传中...');
                 uploader(jsonData,'/saveInventoryJSONP',function(){
@@ -154,27 +143,26 @@ $(function(){
                 Market: $("input[name='Market']").val(),
                 Medicine: $("input[name='Medicine']").val(),
                 Addition: $.trim($("textarea[name='Addition']").val()),
-                Time: new Date().Format("yyyy-MM-dd"),
+                Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                 tid: new Date().getTime()
             };
             var loading = weui.loading('保存中...');
+            var $temp = store.get('tempStock') ? store.get('tempStock') : '';
             //增加历史记录
-            if(store.get('tempStock')!=''){
-                if(!isEmpty(JSON.parse(store.get('tempStock')).data)){
-                    // 更新
-                    var tempStock = JSON.parse(store.get('tempStock'));
-                    // 若当前设为默认，clear为0
-                    tempStock.data.unshift(jsonData);
-                    store.remove('tempStock');
-                    store.set('tempStock',JSON.stringify(tempStock));
-                }else{
-                    // 新建
-                    var historyData = {
-                        data : []
-                    };
-                    historyData.data.unshift(jsonData);
-                    store.set('tempStock',JSON.stringify(historyData));
-                }
+            if($temp!='' && !isEmpty(JSON.parse($temp).data)){
+                // 更新
+                var temp = JSON.parse($temp);
+                // 若当前设为默认，clear为0
+                temp.data.unshift(jsonData);
+                store.remove('tempStock');
+                store.set('tempStock',JSON.stringify(temp));
+            }else{
+                // 新建
+                var historyData = {
+                    data : []
+                };
+                historyData.data.unshift(jsonData);
+                store.set('tempStock',JSON.stringify(historyData));
             }
             loading.hide();
             weui.toast('模板保存成功', 500);
@@ -204,18 +192,16 @@ $(function(){
             var $market = store.get('market') ? store.get('market') : '';
             if($market!=''){
                 if(!isEmpty(JSON.parse($market))){
-                    $(".stockText-market").text(JSON.parse($market).name).removeClass('c-c7c7c7').addClass('c-3dbaff');
-                    $(".stockVal-market").val(JSON.parse($market).name);
-                    changeCss('market');
+                    changeSearch('.stockText-market','.stockVal-market',JSON.parse($market).name);
+                    clearSearch('.stockVal-market');
                     store.remove('market');
                 }
             }
             var $medicine = store.get('medicine') ? store.get('medicine') : '';
             if($medicine!=''){
                 if(!isEmpty(JSON.parse($medicine))){
-                    $(".stockText-medicine").text(JSON.parse($medicine).name).removeClass('c-c7c7c7').addClass('c-3dbaff');
-                    $(".stockVal-medicine").val(JSON.parse($medicine).name);
-                    changeCss('medicine');
+                    changeSearch('.stockText-medicine','.stockVal-medicine',JSON.parse($medicine).name);
+                    clearSearch('.stockVal-medicine');
                     store.remove('medicine');
                 }
             }

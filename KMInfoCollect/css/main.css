@@ -148,6 +148,7 @@ i.ic_none_reminder{display:block;width:55px;height:55px;background:url(../img/ic
 
 .weui-toast{font-size: 14px;}
 .weui-cells_form input:disabled{background:#efefef;}
+.weui-select{height:20px;line-height: 20px;}
 
 /* 模板管理 */
 .emptyContent{position: absolute;top: 50%;left: 50%;/* transform: translate(-50%, -50%); */width:100%;text-align: center;margin-left:-50%;margin-top:-25%;}

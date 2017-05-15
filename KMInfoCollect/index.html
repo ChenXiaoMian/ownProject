@@ -153,217 +153,8 @@
         </div>
         </form>
     </div>
-    <script type="text/javascript">
-    $(function(){
-        var userName = store.get('userName'),
-            nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
-            $iosDialog = $('.js_dialog');
-        $(".getUserName").text(store.get('userName'));
-        $(".getNow").text(nowTime);
-
-        stockAddInit();
-        // 市场存量初始化
-        function stockAddInit(){
-          store.remove('seatempStock');
-          store.remove('market');
-          store.remove('medicine');
-          initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
-          initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
-          $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
-        }
-
-        // 选择模板后加载对应数据
-        function loadTemp(tid){
-            var data = {};
-            $.each(JSON.parse(store.get('tempStock')).data,function(index,item){
-                if(item.tid == tid) data = item;
-            });
-            changeSearch('.stockText-market','.stockVal-market',data.Market);
-            changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
-            $(".weui-textarea").val(data.Addition);
-            clearSearch('.stockVal-market');
-            clearSearch('.stockVal-medicine');
-        }
-        // 验证所需
-        var regexp = {
-            regexp: {
-                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-                VCODE: /^.{4}$/
-            }
-        };
-        weui.form.checkIfBlur('#form-stock', regexp);
-        // 上传按钮
-        $('#form-stock-submit').on('click',function () {
-            weui.form.validate('#form-stock', function (error) {
-                console.log(error);
-                if (!error) {
-                    // 组织数据
-                    var jsonData = {},formData = $("#form-stock").serializeArray();
-                    jsonData.UserName = store.get('loginName');
-                    $.each(formData,function(key,value){
-                        jsonData[value.name] = value.value;
-                    });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
-
-                    var loading = weui.loading('上传中...');
-                    uploader(jsonData,'/saveInventoryJSONP',function(){
-                        jsonData.hid = new Date().getTime();
-                        jsonData.cUserName = store.get('userName');
-                        //增加历史记录
-                        if(store.get('histStock') && store.get('histStock')!=''){
-                            // 更新
-                            var histStock = JSON.parse(store.get('histStock'));
-                            histStock.data.unshift(jsonData);
-                            store.remove('histStock');
-                            store.set('histStock',JSON.stringify(histStock));
-                        }else{
-                            // 新建
-                            var historyData = {
-                                data : []
-                            };
-                            historyData.data.unshift(jsonData);
-                            store.set('histStock',JSON.stringify(historyData));
-                        }
-                        console.log(jsonData);
-                        stockAddInit();
-                        document.formStock.reset();
-                    });
-                }
-            }, regexp);
-        });
-        function validateTemp(){
-            var args = arguments,
-                cache = [];
-            $.each(args,function(index,item){
-                var dom = $("input[name='"+item+"']");
-                if($.trim(dom.val())==''){
-                    weui.topTips(dom.attr("emptyTips"));
-                    return false;
-                }else{
-                    cache.push(item);
-                }
-            });
-            if(cache.length === args.length){
-                return true;
-            }else{
-                return false;
-            }
-
-        }
-        // 存为模板按钮
-        $('#open-temp-dialog').on('click',function () {
-            // 判断用户是否选择模板
-            var tempId = $(".getChooseTemp").data("tid");
-            if(validateTemp('Market','Medicine')){
-                if(tempId&&tempId!=''){
-                    // 存为模板更新操作
-                    var oldData = {
-                        Market: $("input[name='Market']").val(),
-                        Medicine: $("input[name='Medicine']").val(),
-                        Addition: $.trim($("textarea[name='Addition']").val()),
-                    };
-                    var json = JSON.parse(store.get('tempStock')),
-                        eindex = 0,
-                        jsonData = {};
-                    $.each(json.data,function(index,item){
-                        if(item.tid == tempId){
-                            eindex = index;
-                            jsonData = item;
-                        }
-                    });
-                    $.extend(jsonData, oldData);
-                    json.data.splice(eindex,1,jsonData);
-                    var loading = weui.loading('保存中...');
-                    store.remove('tempStock');
-                    store.set('tempStock',JSON.stringify(json));
-                    loading.hide();
-                    weui.toast('模板保存成功', 500);
-                }else{
-                    $iosDialog.fadeIn(200);
-                }
-            }
-        });
-        // 取消关闭弹出框
-        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
-            $(this).parents('.js_dialog').fadeOut(200);
-        });
-
-        // 存为模板新建操作
-        $("#form-stock").on('click','#save-for-temp',function () {
-            if(validateTemp('tempName')){
-                $(this).parents('.js_dialog').fadeOut(200);
-                var jsonData = {
-                    IsDefault: '0',
-                    tempTitle: $("input[name='tempName']").val(),
-                    Market: $("input[name='Market']").val(),
-                    Medicine: $("input[name='Medicine']").val(),
-                    Addition: $.trim($("textarea[name='Addition']").val()),
-                    Time: new Date().Format("yyyy-MM-dd"),
-                    tid: new Date().getTime()
-                };
-                var loading = weui.loading('保存中...');
-                //增加历史记录
-                if(store.get('tempStock')!=''){
-                    if(!isEmpty(JSON.parse(store.get('tempStock')).data)){
-                        // 更新
-                        var tempStock = JSON.parse(store.get('tempStock'));
-                        // 若当前设为默认，clear为0
-                        tempStock.data.unshift(jsonData);
-                        store.remove('tempStock');
-                        store.set('tempStock',JSON.stringify(tempStock));
-                    }else{
-                        // 新建
-                        var historyData = {
-                            data : []
-                        };
-                        historyData.data.unshift(jsonData);
-                        store.set('tempStock',JSON.stringify(historyData));
-                    }
-                }
-                loading.hide();
-                weui.toast('模板保存成功', 500);
-            }
-
-        });
-
-        // 页面切换数据返回
-        $(window).on('hashchange', function(e){
-            e.preventDefault();
-            var tc = /#tempChoose$/,
-                as = /#addStock$/,
-                is = /#itemSearch$/;
-
-            if(tc.test(e.oldURL)&&as.test(e.newURL)){
-                // 选择模板返回响应
-                var $key = store.get('seatempStock') ? store.get('seatempStock') : '';
-                if($key!=''){
-                    if(!isEmpty(JSON.parse($key))){
-                        $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
-                        loadTemp(JSON.parse($key).id);
-                        store.remove('seatempStock');
-                    }
-                }
-            }else if(is.test(e.oldURL)&&as.test(e.newURL)){
-                // 搜索结果返回响应
-                var $market = store.get('market') ? store.get('market') : '';
-                if($market!=''){
-                    if(!isEmpty(JSON.parse($market))){
-                        changeSearch('.stockText-market','.stockVal-market',JSON.parse($market).name);
-                        clearSearch('.stockVal-market');
-                        store.remove('market');
-                    }
-                }
-                var $medicine = store.get('medicine') ? store.get('medicine') : '';
-                if($medicine!=''){
-                    if(!isEmpty(JSON.parse($medicine))){
-                        changeSearch('.stockText-medicine','.stockVal-medicine',JSON.parse($medicine).name);
-                        clearSearch('.stockVal-medicine');
-                        store.remove('medicine');
-                    }
-                }
-            }
-        });
-    });
+    <script type="text/javascript" id="addStock-js">
+        $("#addStock-js").load('./js/page/addStock.js');
     </script>
     </script>
     <!-- 产地采集 -->
@@ -467,230 +258,8 @@
         </div>
         </form>
     </div>
-    <script type="text/javascript">
-    $(function(){
-        var userName = store.get('userName'),
-            nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
-            $iosDialog = $('.js_dialog');
-        $(".getUserName").text(store.get('userName'));
-        $(".getNow").text(nowTime);
-
-        init();
-        // 初始化
-        function init(){
-          store.remove('seatempOrigin');
-          store.remove('base');
-          store.remove('grower');
-          store.remove('medicine');
-          initSearch('.sText-base','.sVal-base','关键字/产地名称');
-          initSearch('.sText-grower','.sVal-grower','关键字/种植户');
-          initSearch('.sText-medicine','.sVal-medicine','关键字/药材名称');
-          $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
-        }
-
-        // 选择模板后加载对应数据
-        function loadTemp(tid){
-            var data = {};
-            $.each(JSON.parse(store.get('tempOrigin')).data,function(index,item){
-                if(item.tid == tid) data = item;
-            });
-            changeSearch('.sText-base','.sVal-base',data.BaseName);
-            changeSearch('.sText-grower','.sVal-grower',data.GrowerName);
-            changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
-            $(".weui-textarea").val(data.Addition);
-            clearSearch('.sVal-base');
-            clearSearch('.sVal-grower');
-            clearSearch('.sVal-medicine');
-        }
-        // 验证所需
-        var regexp = {
-            regexp: {
-                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-                VCODE: /^.{4}$/
-            }
-        };
-        weui.form.checkIfBlur('#form-origin', regexp);
-        // 上传按钮
-        $('#form-origin-submit').on('click',function () {
-            weui.form.validate('#form-origin', function (error) {
-                console.log(error);
-                if (!error) {
-                    // 组织数据
-                    var jsonData = {},formData = $("#form-origin").serializeArray();
-                    jsonData.UserName = store.get('loginName');
-                    $.each(formData,function(key,value){
-                        jsonData[value.name] = value.value;
-                    });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
-
-                    var loading = weui.loading('上传中...');
-                    uploader(jsonData,'/saveGrowBaseJSONP',function(){
-                        jsonData.hid = new Date().getTime();
-                        jsonData.cUserName = store.get('userName');
-                        //增加历史记录
-                        if(store.get('histOrigin') && store.get('histOrigin')!=''){
-                            // 更新
-                            var history = JSON.parse(store.get('histOrigin'));
-                            history.data.unshift(jsonData);
-                            store.remove('histOrigin');
-                            store.set('histOrigin',JSON.stringify(history));
-                        }else{
-                            // 新建
-                            var historyData = {
-                                data : []
-                            };
-                            historyData.data.unshift(jsonData);
-                            store.set('histOrigin',JSON.stringify(historyData));
-                        }
-                        console.log(jsonData);
-                        init();
-                        document.formOrigin.reset();
-                    });
-                }
-            }, regexp);
-        });
-        function validateTemp(){
-            var args = arguments,
-                cache = [];
-            $.each(args,function(index,item){
-                var dom = $("input[name='"+item+"']");
-                if($.trim(dom.val())==''){
-                    weui.topTips(dom.attr("emptyTips"));
-                    return false;
-                }else{
-                    cache.push(item);
-                }
-            });
-            if(cache.length === args.length){
-                return true;
-            }else{
-                return false;
-            }
-
-        }
-        // 存为模板按钮
-        $('#open-temp-dialog').on('click',function () {
-            // 判断用户是否选择模板
-            var tempId = $(".getChooseTemp").data("tid");
-            if(validateTemp('BaseName','GrowerName','Medicine')){
-                if(tempId&&tempId!=''){
-                    // 存为模板更新操作
-                    var oldData = {
-                        BaseName: $("input[name='BaseName']").val(),
-                        GrowerName: $("input[name='GrowerName']").val(),
-                        Medicine: $("input[name='Medicine']").val(),
-                        Addition: $.trim($("textarea[name='Addition']").val()),
-                    };
-                    var json = JSON.parse(store.get('tempOrigin')),
-                        eindex = 0,
-                        jsonData = {};
-                    $.each(json.data,function(index,item){
-                        if(item.tid == tempId){
-                            eindex = index;
-                            jsonData = item;
-                        }
-                    });
-                    $.extend(jsonData, oldData);
-                    json.data.splice(eindex,1,jsonData);
-                    var loading = weui.loading('保存中...');
-                    store.remove('tempOrigin');
-                    store.set('tempOrigin',JSON.stringify(json));
-                    loading.hide();
-                    weui.toast('模板保存成功', 500);
-                }else{
-                    $iosDialog.fadeIn(200);
-                }
-            }
-        });
-        // 取消关闭弹出框
-        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
-            $(this).parents('.js_dialog').fadeOut(200);
-        });
-
-        // 存为模板新建操作
-        $("#form-origin").on('click','#save-for-temp',function () {
-            if(validateTemp('tempName')){
-                $(this).parents('.js_dialog').fadeOut(200);
-                var jsonData = {
-                    IsDefault: '0',
-                    tempTitle: $("input[name='tempName']").val(),
-                    BaseName: $("input[name='BaseName']").val(),
-                    GrowerName: $("input[name='GrowerName']").val(),
-                    Medicine: $("input[name='Medicine']").val(),
-                    Addition: $.trim($("textarea[name='Addition']").val()),
-                    Time: new Date().Format("yyyy-MM-dd"),
-                    tid: new Date().getTime()
-                };
-                var loading = weui.loading('保存中...');
-                var $temp = store.get('tempOrigin') ? store.get('tempOrigin') : '';
-                //增加历史记录
-                if($temp!='' && !isEmpty(JSON.parse($temp).data)){
-                    // 更新
-                    var temp = JSON.parse($temp);
-                    // 若当前设为默认，clear为0
-                    temp.data.unshift(jsonData);
-                    store.remove('tempOrigin');
-                    store.set('tempOrigin',JSON.stringify(temp));
-                }else{
-                    // 新建
-                    var historyData = {
-                        data : []
-                    };
-                    historyData.data.unshift(jsonData);
-                    store.set('tempOrigin',JSON.stringify(historyData));
-                }
-                loading.hide();
-                weui.toast('模板保存成功', 500);
-            }
-
-        });
-
-        // 页面切换数据返回
-        $(window).on('hashchange', function(e){
-            e.preventDefault();
-            var tc = /#tempChoose$/,
-                ao = /#addOrigin$/,
-                is = /#itemSearch$/;
-
-            if(tc.test(e.oldURL)&&ao.test(e.newURL)){
-                // 选择模板返回响应
-                var $key = store.get('seatempOrigin') ? store.get('seatempOrigin') : '';
-                if($key!=''){
-                    if(!isEmpty(JSON.parse($key))){
-                        $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
-                        loadTemp(JSON.parse($key).id);
-                        store.remove('seatempOrigin');
-                    }
-                }
-            }else if(is.test(e.oldURL)&&ao.test(e.newURL)){
-                // 搜索结果返回响应
-                var $base = store.get('base') ? store.get('base') : '';
-                if($base!=''){
-                    if(!isEmpty(JSON.parse($base))){
-                        changeSearch('.sText-base','.sVal-base',JSON.parse($base).name);
-                        clearSearch('.sVal-base');
-                        store.remove('base');
-                    }
-                }
-                var $grower = store.get('grower') ? store.get('grower') : '';
-                if($grower!=''){
-                    if(!isEmpty(JSON.parse($grower))){
-                        changeSearch('.sText-grower','.sVal-grower',JSON.parse($grower).name);
-                        clearSearch('.sVal-grower');
-                        store.remove('grower');
-                    }
-                }
-                var $medicine = store.get('medicine') ? store.get('medicine') : '';
-                if($medicine!=''){
-                    if(!isEmpty(JSON.parse($medicine))){
-                        changeSearch('.sText-medicine','.sVal-medicine',JSON.parse($medicine).name);
-                        clearSearch('.sVal-medicine');
-                        store.remove('medicine');
-                    }
-                }
-            }
-        });
-    });
+    <script type="text/javascript" id="addOrigin-js">
+        $("#addOrigin-js").load('./js/page/addOrigin.js');
     </script>
     </script>
     <!-- 产出采集 -->
@@ -699,36 +268,27 @@
         <header class="comHead">
             <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">产出信息采集</div>
-            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
         </header>
+        <form id="form-output" name="formOutput">
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose');">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose','tempOutput');">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-3dbaff">默认模板</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 getChooseTemp">默认模板</p></div>
+                <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','grower');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/种植户名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-grower">关键字/种植户</p><input type="hidden" required name="GrowerName" class="sVal-grower" emptyTips="请选择种植户"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择中药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
         </div>
@@ -736,53 +296,75 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" required name="Area" placeholder="" emptyTips="请输入种植面积"//>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" required name="UnitProduction" placeholder="" emptyTips="请输入单位产量"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
-            <a class="weui-cell weui-cell_access actionSheet" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="ProductionRange">
+                        <option value="0">请选择</option>
+                        <option value="1">持平</option>
+                        <option value="2">上升</option>
+                        <option value="3">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled"  placeholder="0" name="ProdcutionTendency"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">采收价格</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" required name="UnitProduction" placeholder="" emptyTips="请输入采收价格"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">价格趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="PriceRange">
+                        <option value="0">请选择</option>
+                        <option value="1">持平</option>
+                        <option value="2">上升</option>
+                        <option value="3">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled"  placeholder="0" name="PriceTendency"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植意愿</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="PriceRange">
+                        <option value="0">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="强烈">强烈</option>
+                        <option value="非常强烈">非常强烈</option>
+                        <option value="消极">消极</option>
+                        <option value="非常消极">非常消极</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" required name="PlanArea" placeholder="" emptyTips="请输入计划面积"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
@@ -791,49 +373,63 @@
             <div class="weui-cell weui-cells_checkbox km-cells-checkbox">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">是否转产</label></div>
                 <label class="weui-cell__hd weui-check__label ml-20" for="s11">
-                    <input type="radio" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                    <input type="radio" class="weui-check" name="ChangeMode" id="s11"/>
                     <i class="weui-icon-checked"></i>是
                 </label>
                 <label class="weui-cell__hd weui-check__label ml-40" for="s12">
-                    <input type="radio" name="checkbox1" class="weui-check" id="s12"/>
+                    <input type="radio" class="weui-check" name="ChangeMode" id="s12" checked="checked"/>
                     <i class="weui-icon-checked"></i>否
                 </label>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">转产药材</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">转产药材</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-cmedicine">关键字/中药材名称</p><input type="hidden" required name="ChangeMedicine" class="sVal-cmedicine" emptyTips="请选择转产药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" required name="ChangeArea" placeholder="" emptyTips="请输入转产面积"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="weui-panel">
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
-                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
                     <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
-                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                    <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
         </div>
         <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showIOSDialog1">存为模板</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="open-temp-dialog">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-output-submit">上传</a>
         </div>
+        <!-- 保存弹出框 -->
+        <div class="js_dialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div>
+                <div class="weui-dialog__bd"><input class="weui-input" name="tempName" type="text" placeholder="填写模板名称" emptyTips="请填写模板名称"/></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="save-for-temp">保存</a>
+                </div>
+            </div>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="addOutput-js">
+        $("#addOutput-js").load('./js/page/addOutput.js');
+    </script>
     </script>
     <!-- 环境采集 -->
     <script type="text/html" id="tpl_addEnvi">
@@ -909,6 +505,9 @@
             <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
         </div>
     </div>
+    <script type="text/javascript" id="addEnvi-js">
+        $("#addEnvi-js").load('./js/page/addEnvi.js');
+    </script>
     </script>
     <!-- 饮片采集 -->
     <script type="text/html" id="tpl_addPieces">
@@ -1265,16 +864,26 @@
             <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">历史记录</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histStock');"><div class="weui-cell__bd">市场存量信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histOrigin');"><div class="weui-cell__bd">产地信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histOutput');"><div class="weui-cell__bd">产出信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histEnvi');"><div class="weui-cell__bd">环境信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histPieces');"><div class="weui-cell__bd">饮片信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histPro');"><div class="weui-cell__bd">产品信息采集</div><div class="weui-cell__ft"></div></a>
-            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histTrading');"><div class="weui-cell__bd">贸易信息采集</div><div class="weui-cell__ft"></div></a>
+        <div class="weui-cells weui-cells_form" id="historyType">
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histStock"><div class="weui-cell__bd">市场存量信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histOrigin"><div class="weui-cell__bd">产地信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histOutput"><div class="weui-cell__bd">产出信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histEnvi"><div class="weui-cell__bd">环境信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:" data-type="histPieces"><div class="weui-cell__bd">饮片信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histPro"><div class="weui-cell__bd">产品信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="histTrading"><div class="weui-cell__bd">贸易信息采集</div><div class="weui-cell__ft"></div></a>
         </div>
     </div>
+    <script type="text/javascript">
+    $(function(){
+        store.remove('chooseHistory');
+        $("#historyType a").on('click',function(){
+            var type = $(this).data("type");
+            store.set('chooseHistory',type);
+            window.pageManager.go('historyList');
+        });
+    });
+    </script>
     </script>
     <!-- 历史记录列表 -->
     <script type="text/html" id="tpl_historyList">
@@ -1286,31 +895,38 @@
         <div class="emptyContent d-n" id="historyListEmpty">
             <p class="emptyTip">没有您的采集记录</p>
         </div>
-        <div id="historyList">
+        <div class="d-n" id="historyList">
 
         </div>
     </div>
     <script type="text/javascript">
     $(function(){
-        // console.log(pageManager.pageOther);
         var $historyList = $("#historyList"),
-            $historyListEmpty = $("#historyListEmpty");
-        //获取历史采集类型
-        $historyKey = pageManager.pageOther ? pageManager.pageOther : '';
-        if(store.get($historyKey) && store.get($historyKey)!=''){
-            loadHistoryStore($historyKey);
-        }else{
-            $historyListEmpty.show();
-            $historyList.hide();
+            $historyListEmpty = $("#historyListEmpty"),
+            $histKey = store.get('chooseHistory') ? store.get('chooseHistory') : '';  //获取类型
+
+        histListInit($histKey);
+
+        // 历史记录列表初始化
+        function histListInit(key){
+            if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
+                loadHistoryStore(key);
+                $historyListEmpty.hide();
+                $historyList.show();
+            }else{
+                $historyListEmpty.show();
+                $historyList.hide();
+            }
         }
 
+        // 历史记录列表加载
         function loadHistoryStore(key){
             var str = '',
                 json = JSON.parse(store.get(key));
             $.each(json.data,function(index,item){
                 switch(key){
                     case 'histStock':
-                        str+='<div class="weui-cells"><div class="weui-cell fz-15"><a href="javascript:window.pageManager.go(\'historyDetail\',\'histStock_'+item.hid+'\');" class="c-222222">'+item.Market+'</a></div><div class="weui-cell c-666666 align-items-left direction-column lh-24"><p>药材市场：'+item.Medicine+'</p><p>商户名称：'+item.MerchantName+'</p><p>商户地址：'+item.MerchantAddress+'</p><p>联 系 人：'+item.ContactPerson+'</p><p>联系方式：'+item.Phone+'</p><p>备　　注：'+item.Addition+'</p><p>采集时间：'+item.Time+'</p></div></div>';
+                        str+='<div class="weui-cells"><div class="weui-cell fz-15"><a href="javascript:window.pageManager.go(\'historyDetail\',\'histStock_'+item.hid+'\');" class="c-222222">交易市场：'+item.Market+'</a></div><div class="weui-cell c-666666 align-items-left direction-column lh-24"><p>药材名称：'+item.Medicine+'</p><p>商户名称：'+item.MerchantName+'</p><p>联 系 人：'+item.ContactPerson+'</p><p>年消耗量：'+item.Consume+'公斤</p><p>库存数量：'+item.Inventory+'公斤</p><p>存量进价：'+item.InventoryCost+'元/公斤</p><p>备　　注：'+item.Addition+'</p><p>采集时间：'+item.Time+'</p></div></div>';
                         break;
                 }
             });
@@ -1333,6 +949,7 @@
         </div>
     </div>
     <script type="text/javascript">
+    
     $(function(){
         var $histColl = $("#histColl"),
             $histCollCon = $("#histCollCon");
@@ -1483,7 +1100,7 @@
     });
     $(window).on('hashchange', function(){
         var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
-        if(store.get('chooseTemp') && store.get('chooseTemp')!=''){
+        if($tempKey && $tempKey!=''){
             tempListInit($tempKey);
         }
     });
@@ -1589,7 +1206,7 @@
     </div>
     <script type="text/javascript">
     $(function(){
-        var nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+        var nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
             $editId = store.get('editTemp') ? store.get('editTemp') : '',
             $addPanel = $(".addPanel"),
             $editPanel = $(".editPanel"),
@@ -1704,7 +1321,7 @@
                     $.each(formData,function(key,value){
                         jsonData[value.name] = value.value;
                     });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                     $.each(json.data,function(index,item){
                         if(jsonData.IsDefault == 1)  item.IsDefault = '0';
@@ -1736,7 +1353,7 @@
                     $.each(formData,function(key,value){
                         jsonData[value.name] = value.value;
                     });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                     jsonData.tid = new Date().getTime();
                     console.log(jsonData);
                     var loading = weui.loading('保存中...');
@@ -1865,7 +1482,7 @@
     </div>
     <script type="text/javascript">
     $(function(){
-        var nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+        var nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
             $editId = store.get('editTemp') ? store.get('editTemp') : '',
             $addPanel = $(".addPanel"),
             $editPanel = $(".editPanel"),
@@ -1991,7 +1608,7 @@
                     $.each(formData,function(key,value){
                         jsonData[value.name] = value.value;
                     });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                     $.each(json.data,function(index,item){
                         if(jsonData.IsDefault == 1)  item.IsDefault = '0';
@@ -2023,7 +1640,7 @@
                     $.each(formData,function(key,value){
                         jsonData[value.name] = value.value;
                     });
-                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                     jsonData.tid = new Date().getTime();
                     console.log(jsonData);
                     var loading = weui.loading('保存中...');
@@ -2626,156 +2243,8 @@
             <p class="emptyTip">对不起，没有与“<span id="keyword"></span>”相关的内容</p>
         </div>
     </div>
-    <script type="text/javascript">
-    $(function(){
-        console.log($(".containerInner").height());
-        $("body").scrollTop(0);
-        var $searchBar = $('#searchBar'),
-            $searchResult = $('#searchResult'),
-            $searchNothing = $('#searchNothing'),
-            $searchInput = $('#searchInput'),
-            $searchClear = $('#searchClear'),
-            $searchCancel = $('#searchCancel'),
-            $searchKey = '';
-        // console.log(pageManager.pageOther);
-        //获取搜索关键字
-        console.log($.type(pageManager));
-        if($.type(pageManager)=='undefined') window.pageManager.go('home');
-
-        $searchKey = pageManager.pageOther ? pageManager.pageOther : '';
-        pageManager.searchAux=null;
-        if($searchKey=='') window.pageManager.go('home');
-        // 根据关键字获取对应链接
-        var getUrl = function(val){
-            var url = '';
-            switch(val){
-                case 'market':
-                    url = '/likeMarket';
-                    break;
-                case 'medicine':
-                    url = '/likeMedicine';
-                    break;
-                case 'base':
-                    url = '/likeBase';
-                    break;
-                case 'grower':
-                    url = '/likeGrower';
-                    break;
-                case 'manufacturer':
-                    url = '/likeManufacturer';
-                    break;
-            }
-            return url;
-        };
-
-        function hideSearchResult(){
-            $searchResult.hide();
-            $searchBar.removeClass('weui-search-bar_focusing');
-            $searchInput.val('');
-            $("#keyword").text("");
-            $searchNothing.hide();
-        }
-        function cancelSearch(){
-            hideSearchResult();
-            $searchBar.removeClass('weui-search-bar_focusing');
-        }
-
-        function searchInterface(url,field,val){
-            var jsonData = {};
-            jsonData.userName = store.get('loginName');
-            jsonData.password = store.get('password');
-            jsonData[field] = val;
-            $.ajax({
-                url: $kmurl+url,
-                type:"GET",
-                contentType: 'application/json;charset=utf-8',
-                dataType:"jsonp",
-                jsonp:"jsoncallback",
-                data:{"parms":JSON.stringify(jsonData)},
-                success:function(response){
-                    if(response.result == 'success' && !isEmpty(JSON.parse(response.message))){
-                        var data = JSON.parse(response.message),
-                            resultStr = '';
-                        $searchResult.html("");
-                        $.each(data,function(index,item){
-                            switch(field){
-                                case 'market':
-                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.market_id+'" data-name="'+item.market_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.market_name+'</p></div><div class="weui-cell__ft"></div></a>';
-                                    break;
-                                case 'medicine':
-                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.medicine_id+'" data-name="'+item.medicine_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.medicine_name+'</p></div><div class="weui-cell__ft"></div></a>';
-                                    break;
-                                case 'base':
-                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.base_id+'" data-name="'+item.base_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.base_name+'</p></div><div class="weui-cell__ft"></div></a>';
-                                    break;
-                                case 'grower':
-                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.grower_id+'" data-name="'+item.grower_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.grower_name+'</p></div><div class="weui-cell__ft"></div></a>';
-                                    break;
-                            }
-                        });
-                        $searchNothing.hide();
-                        $searchResult.html(resultStr).show();
-                    }else{
-                        $("#keyword").text($.trim($searchInput.val()));
-                        $searchNothing.show();
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    console.log("输入参数错误，请核对！");
-                    $("#keyword").text($.trim($searchInput.val()));
-                    $searchNothing.show();
-                }
-            });
-        }
-        // 合并请求提交、代理模式
-        var proxySearchInterface = (function(){
-            var cache = [],
-                timer;
-            return function(val){
-                if(timer) return;
-                timer = setTimeout(function(){
-                    searchInterface(getUrl($searchKey),$searchKey,$.trim($searchInput.val()));
-                    clearTimeout(timer);
-                    timer = null;
-                },1000);
-            }
-        })();
-
-        $searchResult.on('click','.searchbar-item',function(e){
-            stopBubble(e);e.preventDefault();// 阻止冒泡
-            if(window.pageManager){
-                var data = {
-                    id: $(this).data("id"),
-                    name: $(this).data("name"),
-                }
-                store.remove($searchKey);
-                store.set($searchKey,JSON.stringify(data));
-                window.pageManager.back($searchKey);
-            }
-        });
-
-        $searchInput
-            .on('blur', function () {
-                if(!this.value.length) cancelSearch();
-            })
-            .on('input propertychange', function(){
-                if(this.value.length) {
-                    $searchBar.addClass('weui-search-bar_focusing');
-                    proxySearchInterface();
-                }else{
-                    $searchResult.hide();
-                }
-            });
-        ;
-        $searchClear.on('click', function(){
-            hideSearchResult();
-            $searchInput.focus();
-        });
-        $searchCancel.on('click', function(){
-            cancelSearch();
-            $searchInput.blur();
-        });
-    });
+    <script type="text/javascript" id="itemSearch-js">
+        $("#itemSearch-js").load('./js/page/itemSearch.js');
     </script>
     </script>
 </body>
@@ -2792,7 +2261,7 @@ $(function(){
             window.location.href = '/login.html';
         }
     }
-    IsLogin();
+    //IsLogin();
     $("#btnSignOut").on('click',function(){
         store.remove('userName');
         store.remove('loginName');
