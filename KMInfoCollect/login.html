@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>中药材数据采集系统</title>
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<body class="bg-eaeff3">
+    <header class="comHead bg-eaeff3">
+        <div class="headTitle">登录</div>
+    </header>
+    <div class="container">
+        <form id="form-login">
+        <div class="login-panel weui-cells mt-80">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label w30"><i class="iconfont icon-account c-3dbaff"></i></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input c-666666" type="text" required placeholder="账号" id="txtusername" emptyTips="请输入账号"/>
+                </div>
+            </div>
+        </div>
+        <div class="login-panel weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label w30"><i class="iconfont icon-password c-3dbaff"></i></label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input c-666666" type="password" required placeholder="密码" id="txtuserpass" emptyTips="请输入密码"/>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="btnLogin">登录</a>
+        </div>
+        </form>
+    </div>
+</body>
+<script src="./js/zepto.min.js"></script>
+<script src="./js/loading.js"></script>
+<script src="./js/md5.js"></script>
+<script src="./js/json2.js"></script>
+<script src="./js/store.everything.min.js"></script>
+<script src="./js/weui.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var $txtusername = $("#txtusername"),
+        $txtuserpass = $("#txtuserpass"),
+        kmurl = 'http://km126.km1818.com:8181/KMInfoCollect/services';
+
+    function initLogin(){
+        if(store.get("loginName") && store.get("password")){
+            window.location.href = '/index.html';
+        }
+    }
+    initLogin();
+    // 验证所需
+    var regexp = {
+        regexp: {}
+    };
+    weui.form.checkIfBlur('#form-login', regexp);
+    $("#btnLogin").on('click',function(){
+        weui.form.validate('#form-login', function (error) {
+            if(error){
+                error.ele.focus();
+            }else{
+                var jsonData = {};
+                jsonData.userName = $.trim($txtusername.val());
+                jsonData.password = hex_md5($.trim($txtuserpass.val()));
+
+                $.ajax({
+                  url: kmurl+'/loginJSONP',
+                  type: 'GET',
+                  contentType: 'application/json;charset=utf-8',
+                  data: {"parms":JSON.stringify(jsonData)},
+                  dataType: 'jsonp',
+                  timeout: 300,
+                  jsonp: 'jsoncallback',
+                  success: function(data){
+                    if(data.result=='success'){
+                        store.set('userName', JSON.parse(data.message).name);
+                        store.set('loginName', jsonData.userName);
+                        store.set('password', jsonData.password);
+                        weui.toast('登录成功！', 500);
+                        setTimeout(function(){
+                            window.location.href = '/index.html';
+                        },600);    
+                    }else{
+                        weui.topTips('账号或密码错误！');
+                        $txtusername.val("");
+                        $txtuserpass.val("");
+                    }
+                  },
+                  error: function(xhr, type){
+                    alert('Ajax error!');
+                  }
+                });
+            }
+        }, regexp);
+    });
+    $(document).on('ajaxBeforeSend', function(e, xhr, options){
+        $("body").loading({title:'登录中'});
+    });
+
+});
+</script>
+</html>

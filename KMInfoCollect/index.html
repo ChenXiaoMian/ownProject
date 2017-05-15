@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>中药材数据采集系统</title>
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<script src="./js/zepto.min.js"></script>
+<script src="./js/pageManager.js"></script>
+<body>
+    <div class="container" id="container"></div>
+    <!-- 首页 -->
+    <script type="text/html" id="tpl_home">
+    <div class="page">
+        <div class="indexBg posAll">
+            <h1 class="logo"></h1>
+            <div class="navIconPos">
+                <div class="navIcon">
+                    <a href="javascript:;" class="stock js_item" data-id="addStock"><div class="icon"></div><span>存量采集</span></a>
+                    <a href="javascript:;" class="origin js_item" data-id="addOrigin"><div class="icon"></div><span>产地采集</span></a>
+                    <a href="javascript:;" class="output js_item" data-id="addOutput"><div class="icon"></div><span>产出采集</span></a>
+                </div>
+                <div class="navIcon">
+                    <a href="javascript:;" class="envi js_item" data-id="addEnvi"><div class="icon"></div><span>环境采集</span></a>
+                    <a href="javascript:;" class="pieces js_item" data-id="addPieces"><div class="icon"></div><span>饮片采集</span></a>
+                    <a href="javascript:;" class="pro js_item" data-id="addPro"><div class="icon"></div><span>产品采集</span></a>
+                </div>
+                <div class="navIcon">
+                    <a href="javascript:;" class="trading js_item" data-id="addTrading"><div class="icon"></div><span>贸易采集</span></a>
+                    <a href="javascript:;" class="history js_item" data-id="historyData"><div class="icon"></div><span>历史记录</span></a>
+                    <a href="javascript:;" class="temp js_item" data-id="tempData"><div class="icon"></div><span>模板管理</span></a>
+                </div>
+            </div>
+            <div class="km-btn-signout">
+            <a href="/login.html" class="weui-btn weui-btn_default" id="btnSignOut">退出登录</a>
+            </div>
+        </div>
+    </div>
+    </script>
+    <!-- 存量采集 -->
+    <script type="text/html" id="tpl_addStock">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button><div class="headTitle">市场存量信息采集</div>
+        </header>
+        <form id="form-stock" name="formStock">
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose','tempStock');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 getChooseTemp">默认模板</p></div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','market');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易市场</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-market">关键字/市场名称</p><input type="hidden" required name="Market" class="stockVal-market" emptyTips="请选择交易市场"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="stockVal-medicine" emptyTips="请选择药材市场"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="text" name="MerchantName" placeholder="请填写商户名称"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="text" name="MerchantAddress" placeholder="请填写商户地址"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">联 系 人</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="text" name="ContactPerson" placeholder="请填写联系人姓名"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">联系方式</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="text" name="Phone" placeholder="请填写联系人电话"/>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量(总)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="number" name="Consume" placeholder="" emptyTips="请输入年消耗量(总)"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">库存数量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="number" name="Inventory" placeholder="" emptyTips="请输入库存数量"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价 (平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="number" name="InventoryCost" placeholder="" emptyTips="存量进价 (平均)"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">库存地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" required type="text" name="InventoryAddress" placeholder="请填写库存地址"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" name="Addition" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span><b class="getNow"></b></p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="open-temp-dialog">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-stock-submit">上传</a>
+        </div>
+        <!-- 保存弹出框 -->
+        <div class="js_dialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div>
+                <div class="weui-dialog__bd"><input class="weui-input" name="tempName" type="text" placeholder="填写模板名称" emptyTips="请填写模板名称"/></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="save-for-temp">保存</a>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var userName = store.get('userName'),
+            nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+            $iosDialog = $('.js_dialog');
+        $(".getUserName").text(store.get('userName'));
+        $(".getNow").text(nowTime);
+
+        stockAddInit();
+        // 市场存量初始化
+        function stockAddInit(){
+          store.remove('seatempStock');
+          store.remove('market');
+          store.remove('medicine');
+          initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
+          initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
+          $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
+        }
+
+        // 选择模板后加载对应数据
+        function loadTemp(tid){
+            var data = {};
+            $.each(JSON.parse(store.get('tempStock')).data,function(index,item){
+                if(item.tid == tid) data = item;
+            });
+            changeSearch('.stockText-market','.stockVal-market',data.Market);
+            changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
+            $(".weui-textarea").val(data.Addition);
+            clearSearch('.stockVal-market');
+            clearSearch('.stockVal-medicine');
+        }
+        // 验证所需
+        var regexp = {
+            regexp: {
+                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+                VCODE: /^.{4}$/
+            }
+        };
+        weui.form.checkIfBlur('#form-stock', regexp);
+        // 上传按钮
+        $('#form-stock-submit').on('click',function () {
+            weui.form.validate('#form-stock', function (error) {
+                console.log(error);
+                if (!error) {
+                    // 组织数据
+                    var jsonData = {},formData = $("#form-stock").serializeArray();
+                    jsonData.UserName = store.get('loginName');
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+
+                    var loading = weui.loading('上传中...');
+                    uploader(jsonData,'/saveInventoryJSONP',function(){
+                        jsonData.hid = new Date().getTime();
+                        jsonData.cUserName = store.get('userName');
+                        //增加历史记录
+                        if(store.get('histStock') && store.get('histStock')!=''){
+                            // 更新
+                            var histStock = JSON.parse(store.get('histStock'));
+                            histStock.data.unshift(jsonData);
+                            store.remove('histStock');
+                            store.set('histStock',JSON.stringify(histStock));
+                        }else{
+                            // 新建
+                            var historyData = {
+                                data : []
+                            };
+                            historyData.data.unshift(jsonData);
+                            store.set('histStock',JSON.stringify(historyData));
+                        }
+                        console.log(jsonData);
+                        stockAddInit();
+                        document.formStock.reset();
+                    });
+                }
+            }, regexp);
+        });
+        function validateTemp(){
+            var args = arguments,
+                cache = [];
+            $.each(args,function(index,item){
+                var dom = $("input[name='"+item+"']");
+                if($.trim(dom.val())==''){
+                    weui.topTips(dom.attr("emptyTips"));
+                    return false;
+                }else{
+                    cache.push(item);
+                }
+            });
+            if(cache.length === args.length){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+        // 存为模板按钮
+        $('#open-temp-dialog').on('click',function () {
+            // 判断用户是否选择模板
+            var tempId = $(".getChooseTemp").data("tid");
+            if(validateTemp('Market','Medicine')){
+                if(tempId&&tempId!=''){
+                    // 存为模板更新操作
+                    var oldData = {
+                        Market: $("input[name='Market']").val(),
+                        Medicine: $("input[name='Medicine']").val(),
+                        Addition: $.trim($("textarea[name='Addition']").val()),
+                    };
+                    var json = JSON.parse(store.get('tempStock')),
+                        eindex = 0,
+                        jsonData = {};
+                    $.each(json.data,function(index,item){
+                        if(item.tid == tempId){
+                            eindex = index;
+                            jsonData = item;
+                        }
+                    });
+                    $.extend(jsonData, oldData);
+                    json.data.splice(eindex,1,jsonData);
+                    var loading = weui.loading('保存中...');
+                    store.remove('tempStock');
+                    store.set('tempStock',JSON.stringify(json));
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                }else{
+                    $iosDialog.fadeIn(200);
+                }
+            }
+        });
+        // 取消关闭弹出框
+        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
+            $(this).parents('.js_dialog').fadeOut(200);
+        });
+
+        // 存为模板新建操作
+        $("#form-stock").on('click','#save-for-temp',function () {
+            if(validateTemp('tempName')){
+                $(this).parents('.js_dialog').fadeOut(200);
+                var jsonData = {
+                    IsDefault: '0',
+                    tempTitle: $("input[name='tempName']").val(),
+                    Market: $("input[name='Market']").val(),
+                    Medicine: $("input[name='Medicine']").val(),
+                    Addition: $.trim($("textarea[name='Addition']").val()),
+                    Time: new Date().Format("yyyy-MM-dd"),
+                    tid: new Date().getTime()
+                };
+                var loading = weui.loading('保存中...');
+                //增加历史记录
+                if(store.get('tempStock')!=''){
+                    if(!isEmpty(JSON.parse(store.get('tempStock')).data)){
+                        // 更新
+                        var tempStock = JSON.parse(store.get('tempStock'));
+                        // 若当前设为默认，clear为0
+                        tempStock.data.unshift(jsonData);
+                        store.remove('tempStock');
+                        store.set('tempStock',JSON.stringify(tempStock));
+                    }else{
+                        // 新建
+                        var historyData = {
+                            data : []
+                        };
+                        historyData.data.unshift(jsonData);
+                        store.set('tempStock',JSON.stringify(historyData));
+                    }
+                }
+                loading.hide();
+                weui.toast('模板保存成功', 500);
+            }
+
+        });
+
+        // 页面切换数据返回
+        $(window).on('hashchange', function(e){
+            e.preventDefault();
+            var tc = /#tempChoose$/,
+                as = /#addStock$/,
+                is = /#itemSearch$/;
+
+            if(tc.test(e.oldURL)&&as.test(e.newURL)){
+                // 选择模板返回响应
+                var $key = store.get('seatempStock') ? store.get('seatempStock') : '';
+                if($key!=''){
+                    if(!isEmpty(JSON.parse($key))){
+                        $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
+                        loadTemp(JSON.parse($key).id);
+                        store.remove('seatempStock');
+                    }
+                }
+            }else if(is.test(e.oldURL)&&as.test(e.newURL)){
+                // 搜索结果返回响应
+                var $market = store.get('market') ? store.get('market') : '';
+                if($market!=''){
+                    if(!isEmpty(JSON.parse($market))){
+                        changeSearch('.stockText-market','.stockVal-market',JSON.parse($market).name);
+                        clearSearch('.stockVal-market');
+                        store.remove('market');
+                    }
+                }
+                var $medicine = store.get('medicine') ? store.get('medicine') : '';
+                if($medicine!=''){
+                    if(!isEmpty(JSON.parse($medicine))){
+                        changeSearch('.stockText-medicine','.stockVal-medicine',JSON.parse($medicine).name);
+                        clearSearch('.stockVal-medicine');
+                        store.remove('medicine');
+                    }
+                }
+            }
+        });
+    });
+    </script>
+    </script>
+    <!-- 产地采集 -->
+    <script type="text/html" id="tpl_addOrigin">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产地信息采集</div>
+        </header>
+        <form id="form-origin" name="formOrigin">
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose','tempOrigin');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 getChooseTemp">默认模板</p></div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','grower');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-grower">关键字/种植户</p><input type="hidden" required name="GrowerName" class="sVal-grower" emptyTips="请选择种植户"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择药材名称"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" required name="Area" placeholder="" emptyTips="请输入种植面积"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">人工成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" required name="PersonCost" placeholder="" emptyTips="请输入人工成本"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">物料成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" required name="MaterialCost" placeholder="" emptyTips="请输入物料成本"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种子成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" required name="SeedCost" placeholder="" emptyTips="请输入种子成本"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">预估产量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" required name="EstimateProduction" placeholder="" emptyTips="请输入预估产量"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span><b class="getNow"></b></p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="open-temp-dialog">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-origin-submit">上传</a>
+        </div>
+        <!-- 保存弹出框 -->
+        <div class="js_dialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div>
+                <div class="weui-dialog__bd"><input class="weui-input" name="tempName" type="text" placeholder="填写模板名称" emptyTips="请填写模板名称"/></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="save-for-temp">保存</a>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var userName = store.get('userName'),
+            nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+            $iosDialog = $('.js_dialog');
+        $(".getUserName").text(store.get('userName'));
+        $(".getNow").text(nowTime);
+
+        init();
+        // 初始化
+        function init(){
+          store.remove('seatempOrigin');
+          store.remove('base');
+          store.remove('grower');
+          store.remove('medicine');
+          initSearch('.sText-base','.sVal-base','关键字/产地名称');
+          initSearch('.sText-grower','.sVal-grower','关键字/种植户');
+          initSearch('.sText-medicine','.sVal-medicine','关键字/药材名称');
+          $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
+        }
+
+        // 选择模板后加载对应数据
+        function loadTemp(tid){
+            var data = {};
+            $.each(JSON.parse(store.get('tempOrigin')).data,function(index,item){
+                if(item.tid == tid) data = item;
+            });
+            changeSearch('.sText-base','.sVal-base',data.BaseName);
+            changeSearch('.sText-grower','.sVal-grower',data.GrowerName);
+            changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
+            $(".weui-textarea").val(data.Addition);
+            clearSearch('.sVal-base');
+            clearSearch('.sVal-grower');
+            clearSearch('.sVal-medicine');
+        }
+        // 验证所需
+        var regexp = {
+            regexp: {
+                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+                VCODE: /^.{4}$/
+            }
+        };
+        weui.form.checkIfBlur('#form-origin', regexp);
+        // 上传按钮
+        $('#form-origin-submit').on('click',function () {
+            weui.form.validate('#form-origin', function (error) {
+                console.log(error);
+                if (!error) {
+                    // 组织数据
+                    var jsonData = {},formData = $("#form-origin").serializeArray();
+                    jsonData.UserName = store.get('loginName');
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+
+                    var loading = weui.loading('上传中...');
+                    uploader(jsonData,'/saveGrowBaseJSONP',function(){
+                        jsonData.hid = new Date().getTime();
+                        jsonData.cUserName = store.get('userName');
+                        //增加历史记录
+                        if(store.get('histOrigin') && store.get('histOrigin')!=''){
+                            // 更新
+                            var history = JSON.parse(store.get('histOrigin'));
+                            history.data.unshift(jsonData);
+                            store.remove('histOrigin');
+                            store.set('histOrigin',JSON.stringify(history));
+                        }else{
+                            // 新建
+                            var historyData = {
+                                data : []
+                            };
+                            historyData.data.unshift(jsonData);
+                            store.set('histOrigin',JSON.stringify(historyData));
+                        }
+                        console.log(jsonData);
+                        init();
+                        document.formOrigin.reset();
+                    });
+                }
+            }, regexp);
+        });
+        function validateTemp(){
+            var args = arguments,
+                cache = [];
+            $.each(args,function(index,item){
+                var dom = $("input[name='"+item+"']");
+                if($.trim(dom.val())==''){
+                    weui.topTips(dom.attr("emptyTips"));
+                    return false;
+                }else{
+                    cache.push(item);
+                }
+            });
+            if(cache.length === args.length){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+        // 存为模板按钮
+        $('#open-temp-dialog').on('click',function () {
+            // 判断用户是否选择模板
+            var tempId = $(".getChooseTemp").data("tid");
+            if(validateTemp('BaseName','GrowerName','Medicine')){
+                if(tempId&&tempId!=''){
+                    // 存为模板更新操作
+                    var oldData = {
+                        BaseName: $("input[name='BaseName']").val(),
+                        GrowerName: $("input[name='GrowerName']").val(),
+                        Medicine: $("input[name='Medicine']").val(),
+                        Addition: $.trim($("textarea[name='Addition']").val()),
+                    };
+                    var json = JSON.parse(store.get('tempOrigin')),
+                        eindex = 0,
+                        jsonData = {};
+                    $.each(json.data,function(index,item){
+                        if(item.tid == tempId){
+                            eindex = index;
+                            jsonData = item;
+                        }
+                    });
+                    $.extend(jsonData, oldData);
+                    json.data.splice(eindex,1,jsonData);
+                    var loading = weui.loading('保存中...');
+                    store.remove('tempOrigin');
+                    store.set('tempOrigin',JSON.stringify(json));
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                }else{
+                    $iosDialog.fadeIn(200);
+                }
+            }
+        });
+        // 取消关闭弹出框
+        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
+            $(this).parents('.js_dialog').fadeOut(200);
+        });
+
+        // 存为模板新建操作
+        $("#form-origin").on('click','#save-for-temp',function () {
+            if(validateTemp('tempName')){
+                $(this).parents('.js_dialog').fadeOut(200);
+                var jsonData = {
+                    IsDefault: '0',
+                    tempTitle: $("input[name='tempName']").val(),
+                    BaseName: $("input[name='BaseName']").val(),
+                    GrowerName: $("input[name='GrowerName']").val(),
+                    Medicine: $("input[name='Medicine']").val(),
+                    Addition: $.trim($("textarea[name='Addition']").val()),
+                    Time: new Date().Format("yyyy-MM-dd"),
+                    tid: new Date().getTime()
+                };
+                var loading = weui.loading('保存中...');
+                var $temp = store.get('tempOrigin') ? store.get('tempOrigin') : '';
+                //增加历史记录
+                if($temp!='' && !isEmpty(JSON.parse($temp).data)){
+                    // 更新
+                    var temp = JSON.parse($temp);
+                    // 若当前设为默认，clear为0
+                    temp.data.unshift(jsonData);
+                    store.remove('tempOrigin');
+                    store.set('tempOrigin',JSON.stringify(temp));
+                }else{
+                    // 新建
+                    var historyData = {
+                        data : []
+                    };
+                    historyData.data.unshift(jsonData);
+                    store.set('tempOrigin',JSON.stringify(historyData));
+                }
+                loading.hide();
+                weui.toast('模板保存成功', 500);
+            }
+
+        });
+
+        // 页面切换数据返回
+        $(window).on('hashchange', function(e){
+            e.preventDefault();
+            var tc = /#tempChoose$/,
+                ao = /#addOrigin$/,
+                is = /#itemSearch$/;
+
+            if(tc.test(e.oldURL)&&ao.test(e.newURL)){
+                // 选择模板返回响应
+                var $key = store.get('seatempOrigin') ? store.get('seatempOrigin') : '';
+                if($key!=''){
+                    if(!isEmpty(JSON.parse($key))){
+                        $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
+                        loadTemp(JSON.parse($key).id);
+                        store.remove('seatempOrigin');
+                    }
+                }
+            }else if(is.test(e.oldURL)&&ao.test(e.newURL)){
+                // 搜索结果返回响应
+                var $base = store.get('base') ? store.get('base') : '';
+                if($base!=''){
+                    if(!isEmpty(JSON.parse($base))){
+                        changeSearch('.sText-base','.sVal-base',JSON.parse($base).name);
+                        clearSearch('.sVal-base');
+                        store.remove('base');
+                    }
+                }
+                var $grower = store.get('grower') ? store.get('grower') : '';
+                if($grower!=''){
+                    if(!isEmpty(JSON.parse($grower))){
+                        changeSearch('.sText-grower','.sVal-grower',JSON.parse($grower).name);
+                        clearSearch('.sVal-grower');
+                        store.remove('grower');
+                    }
+                }
+                var $medicine = store.get('medicine') ? store.get('medicine') : '';
+                if($medicine!=''){
+                    if(!isEmpty(JSON.parse($medicine))){
+                        changeSearch('.sText-medicine','.sVal-medicine',JSON.parse($medicine).name);
+                        clearSearch('.sVal-medicine');
+                        store.remove('medicine');
+                    }
+                }
+            }
+        });
+    });
+    </script>
+    </script>
+    <!-- 产出采集 -->
+    <script type="text/html" id="tpl_addOutput">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产出信息采集</div>
+            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/种植户名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <a class="weui-cell weui-cell_access actionSheet" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">采收价格</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">价格趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植意愿</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cells_checkbox km-cells-checkbox">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">是否转产</label></div>
+                <label class="weui-cell__hd weui-check__label ml-20" for="s11">
+                    <input type="radio" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                    <i class="weui-icon-checked"></i>是
+                </label>
+                <label class="weui-cell__hd weui-check__label ml-40" for="s12">
+                    <input type="radio" name="checkbox1" class="weui-check" id="s12"/>
+                    <i class="weui-icon-checked"></i>否
+                </label>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产药材</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showIOSDialog1">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    </script>
+    <!-- 环境采集 -->
+    <script type="text/html" id="tpl_addEnvi">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">环境信息采集</div>
+            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">天气状况</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">灾害描述</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写关键词"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    </script>
+    <!-- 饮片采集 -->
+    <script type="text/html" id="tpl_addPieces">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">饮片信息采集</div>
+            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/生产商名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量规模<br />(加工量)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">饮片规格</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">供 应 商<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">市场表现<br />(饮片)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">市场需求<br />(饮片)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写饮片市场需求"/>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    </script>
+    <!-- 产品采集 -->
+    <script type="text/html" id="tpl_addPro">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产品信息采集</div>
+            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产品类型</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产品名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品名称"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产品规格</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品规格"/>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/生产商名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">原 药 材</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">原药比重</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材规格</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">供 应 商<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">质量要求<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年销售额<br />(产品)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">需求趋势<br />(产品)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品需求趋势"/>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    </script>
+    <!-- 贸易采集 -->
+    <script type="text/html" id="tpl_addTrading">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">贸易信息采集</div>
+            <a href="javascript:window.pageManager.go('tempData');" class="tempLink">模板管理</a>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">交易市场</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写商户名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">经营模式</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">交易类型</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格01</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br />(日平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br />(日平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a href="javascript:void(0);" class="weui-cell weui-cell_link text-center">
+                <div class="weui-cell__bd c-3dbaff"><i class="iconfont icon-add"></i> 增加规格</div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    </script>
+    <!-- 历史记录 -->
+    <script type="text/html" id="tpl_historyData">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">历史记录</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histStock');"><div class="weui-cell__bd">市场存量信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histOrigin');"><div class="weui-cell__bd">产地信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histOutput');"><div class="weui-cell__bd">产出信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histEnvi');"><div class="weui-cell__bd">环境信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histPieces');"><div class="weui-cell__bd">饮片信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histPro');"><div class="weui-cell__bd">产品信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('historyList','histTrading');"><div class="weui-cell__bd">贸易信息采集</div><div class="weui-cell__ft"></div></a>
+        </div>
+    </div>
+    </script>
+    <!-- 历史记录列表 -->
+    <script type="text/html" id="tpl_historyList">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">历史记录</div>
+        </header>
+        <div class="emptyContent d-n" id="historyListEmpty">
+            <p class="emptyTip">没有您的采集记录</p>
+        </div>
+        <div id="historyList">
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        // console.log(pageManager.pageOther);
+        var $historyList = $("#historyList"),
+            $historyListEmpty = $("#historyListEmpty");
+        //获取历史采集类型
+        $historyKey = pageManager.pageOther ? pageManager.pageOther : '';
+        if(store.get($historyKey) && store.get($historyKey)!=''){
+            loadHistoryStore($historyKey);
+        }else{
+            $historyListEmpty.show();
+            $historyList.hide();
+        }
+
+        function loadHistoryStore(key){
+            var str = '',
+                json = JSON.parse(store.get(key));
+            $.each(json.data,function(index,item){
+                switch(key){
+                    case 'histStock':
+                        str+='<div class="weui-cells"><div class="weui-cell fz-15"><a href="javascript:window.pageManager.go(\'historyDetail\',\'histStock_'+item.hid+'\');" class="c-222222">'+item.Market+'</a></div><div class="weui-cell c-666666 align-items-left direction-column lh-24"><p>药材市场：'+item.Medicine+'</p><p>商户名称：'+item.MerchantName+'</p><p>商户地址：'+item.MerchantAddress+'</p><p>联 系 人：'+item.ContactPerson+'</p><p>联系方式：'+item.Phone+'</p><p>备　　注：'+item.Addition+'</p><p>采集时间：'+item.Time+'</p></div></div>';
+                        break;
+                }
+            });
+            $historyList.html(str);
+        }
+    });
+    </script>
+    </script>
+    <!-- 历史记录详情 -->
+    <script type="text/html" id="tpl_historyDetail">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">历史记录详情</div>
+        </header>
+        <div class="km-cells__title bg-eaeff3" id="histColl"></div>
+        <div class="weui-cells">
+            <div class="weui-cell fz-15">信息详情</div>
+            <div class="weui-cell c-666666 align-items-left direction-column lh-24" id="histCollCon"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var $histColl = $("#histColl"),
+            $histCollCon = $("#histCollCon");
+        //获取历史采集id及类型
+        var $histDetail = pageManager.pageOther ? pageManager.pageOther : '',
+            $histarr = $histDetail.split('_');
+
+        loadHistDetailStore($histarr[0],$histarr[1]);
+
+        function loadHistDetailStore(type,hid){
+            var str = '',
+                con = '',
+                json = JSON.parse(store.get(type));
+
+            $.each(json.data,function(index,item){
+                if(item.hid == $histarr[1]){
+                    $histColl.html('<div class="weui-flex km-history-info"><p class="weui-flex__item">信息员：'+item.cUserName+'</p><p class="weui-flex__item">采集时间：'+item.Time+'</p></div><p>采集地点：中国广东省深圳市福田区泰科路3号</p>');
+                    switch($histarr[0]){
+                        case 'histStock':
+                            $histCollCon.html('<p>产地名称：'+item.Market+'</p><p>药材名称：'+item.Medicine+'</p><p>商户名称：'+item.MerchantName+'</p><p>商户地址：'+item.MerchantAddress+'</p><p>联系人：'+item.ContactPerson+'</p><p>联系方式：'+item.Phone+'</p><p>年消耗量：'+item.Consume+'公斤</p><p>库存数量：'+item.Inventory+'公斤</p><p>存量进价：'+item.InventoryCost+'元/公斤</p><p>库存地址：'+item.InventoryAddress+'</p><p>备注：'+item.Addition+'</p>');
+                            break;
+                    }
+                }
+            });
+        }
+    });
+    </script>
+    </script>
+    <!-- 选择模板类型 -->
+    <script type="text/html" id="tpl_tempData">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">选择类型</div>
+        </header>
+        <div class="weui-cells weui-cells_form" id="tempType">
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempStock"><div class="weui-cell__bd">市场存量信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempOrigin"><div class="weui-cell__bd">产地信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempOutput"><div class="weui-cell__bd">产出信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempEnvi"><div class="weui-cell__bd">环境信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempPieces"><div class="weui-cell__bd">饮片信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempPro"><div class="weui-cell__bd">产品信息采集</div><div class="weui-cell__ft"></div></a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" data-type="tempTrading"><div class="weui-cell__bd">贸易信息采集</div><div class="weui-cell__ft"></div></a>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        store.remove('chooseTemp');
+        $("#tempType a").on('click',function(){
+            var type = $(this).data("type");
+            store.set('chooseTemp',type);
+            window.pageManager.go('tempList');
+        });
+    });
+    </script>
+    </script>
+    <!-- 模板列表管理 -->
+    <script type="text/html" id="tpl_tempList">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">模板管理</div>
+        </header>
+        <div class="emptyContent d-n" id="templateListEmpty">
+            <p class="emptyTip">您尚未创建模板，请先创建模板</p>
+            <a href="javascript:;" class="btn-link" id="btnNewTemp">新建模板</a>
+        </div>
+        <div class="weui-cells weui-cells_form tempList d-n" id="templateList">
+
+        </div>
+        <div class="km-page-button templist-button d-n" id="btnNewTempWrap">
+            <a href="javascript:;" id="btnNewTemp2" class="weui-btn weui-btn_plain-primary km-btn_primary"><i class="iconfont icon-add1"></i> 新建模板</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+    // 模板列表初始化
+    function tempListInit(key){
+        if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
+            loadTemplateStore(key);
+            $("#templateListEmpty").hide();
+            $("#btnNewTempWrap").show();
+            $("#templateList").show();
+        }else{
+            $("#templateListEmpty").show();
+            $("#btnNewTempWrap").hide();
+            $("#templateList").hide();
+        }
+    }
+
+    // 模板列表加载
+    function loadTemplateStore(key){
+        var str = '',
+            json = JSON.parse(store.get(key));
+        $.each(json.data,function(index,item){
+            if(item.IsDefault == 1){
+                str+='<div class="weui-cell"><div class="weui-cell__bd">'+item.tempTitle+'<span>默认</span></div><div class="weui-cell__opa"><a href="javascript:;" data-id="'+item.tid+'" class="doTempEdit" class="c-999999"><i class="iconfont icon-edit"></i> 编辑</a></div><div class="weui-cell__opa"><a href="javascript:;" class="doTempDel" data-id="'+item.tid+'" class="c-999999"><i class="iconfont icon-delete"></i> 删除</a></div></div>';
+            }else{
+                str+='<div class="weui-cell"><div class="weui-cell__bd">'+item.tempTitle+'</div><div class="weui-cell__opa"><a href="javascript:;" data-id="'+item.tid+'" class="doTempEdit" class="c-999999"><i class="iconfont icon-edit"></i> 编辑</a></div><div class="weui-cell__opa"><a href="javascript:;" class="doTempDel" data-id="'+item.tid+'" class="c-999999"><i class="iconfont icon-delete"></i> 删除</a></div></div>';
+            }
+
+        });
+        $("#templateList").html(str);
+    }
+    $(function(){
+        var $templateList = $("#templateList"),
+            $templateListEmpty = $("#templateListEmpty");
+        //获取模板类型
+        var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
+
+        tempListInit($tempKey);
+
+        // 删除模板
+        function delTemplateStore(key,id){
+            var json = JSON.parse(store.get(key)),
+                tindex = 0;
+            $.each(json.data,function(index,item){
+                if(item.tid == id){
+                    tindex = index;
+                }
+            });
+            json.data.splice(tindex,1);
+            store.remove(key);
+            store.set(key,JSON.stringify(json));
+            return true;
+        }
+        // 设置删除操作
+        $(".tempList").on('click','.doTempDel',function(){
+            var tid = $(this).data("id");
+            weui.confirm('确定删除该模板？', function(){
+                if(delTemplateStore($tempKey,tid)){
+                    tempListInit($tempKey);
+                    weui.toast('删除成功', 500);
+                };
+            });
+        });
+        // 设置编辑操作
+        $(".tempList").on('click','.doTempEdit',function(){
+            var id = $(this).data("id");
+            store.set('editTemp',id);
+            window.pageManager.go($tempKey);
+        });
+
+        // 设置新建操作
+        $("#btnNewTemp,#btnNewTemp2").on('click',function(){
+            store.remove('editTemp');
+            window.pageManager.go($tempKey);
+        });
+    });
+    $(window).on('hashchange', function(){
+        var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
+        if(store.get('chooseTemp') && store.get('chooseTemp')!=''){
+            tempListInit($tempKey);
+        }
+    });
+    </script>
+    </script>
+    <!-- 存量采集模板 -->
+    <script type="text/html" id="tpl_tempStock">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">市场存量信息采集</div>
+        </header>
+        <form id="form-stock-temp" name="formStockTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','market');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易市场</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-market">关键字/市场名称</p><input type="hidden" required name="Market" class="stockVal-market" emptyTips="请选择交易市场"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="stockVal-medicine" emptyTips="请选择药材市场"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" disabled="disabled" />
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" disabled="disabled"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">联 系 人</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" disabled="disabled"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">联系方式</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" disabled="disabled"/>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量(总)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">库存数量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价 (平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">库存地址</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" readonly="readonly" disabled="disabled"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" name="Addition" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
+        </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-stock-temp-edit">保存修改</a>
+        </div>
+
+        </form>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+            $editId = store.get('editTemp') ? store.get('editTemp') : '',
+            $addPanel = $(".addPanel"),
+            $editPanel = $(".editPanel"),
+            $editDom = '<div class="weui-cell tempName"><div class="weui-cell__hd km-line"><label class="weui-label">模板名称</label></div><div class="weui-cell__bd"><input class="weui-input" type="text" required name="tempTitle" placeholder="请输入模板名称" /></div></div>',
+            $addDom = '<div class="js_dialog" style="display: none;"><div class="weui-mask"></div><div class="weui-dialog"><div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div><div class="weui-dialog__bd"><input class="weui-input"required type="text" name="tempTitle" placeholder="填写模板名称"/></div><div class="weui-dialog__ft"><a href="javascript:;"class="weui-dialog__btn weui-dialog__btn_default">取消</a><a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="form-stock-temp-submit">保存</a></div></div></div>';
+
+        //获取模板类型
+        var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
+
+        // 初始化
+        function stockAddInit(){
+          store.remove('market');
+          store.remove('medicine');
+          initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
+          initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
+        }
+
+        templateInit();
+
+        // 初始化模板
+        function templateInit(){
+            stockAddInit();
+            if($editId && $editId!=''){
+                // 编辑模板
+                $addPanel.hide();
+                $editPanel.show();
+                $(".firstTemp").prepend($editDom);
+                getTemplateStore($tempKey,$editId);
+            }else{
+                // 新建模板
+                $editPanel.hide();
+                $addPanel.show();
+                $("#form-stock-temp").append($addDom);
+
+            }
+        }
+
+        // 页面切换数据返回
+        $(window).on('hashchange', function(e){
+            e.preventDefault();
+            var ts = /#tempStock$/,
+                is = /#itemSearch$/;
+
+            if(is.test(e.oldURL)&&ts.test(e.newURL)){
+                // 搜索结果返回响应
+                var $market = store.get('market') ? store.get('market') : '';
+                if($market!=''){
+                    if(!isEmpty(JSON.parse($market))){
+                        changeSearch('.stockText-market','.stockVal-market',JSON.parse($market).name);
+                        clearSearch('.stockVal-market');
+                        store.remove('market');
+                    }
+                }
+                var $medicine = store.get('medicine') ? store.get('medicine') : '';
+                if($medicine!=''){
+                    if(!isEmpty(JSON.parse($medicine))){
+                        changeSearch('.stockText-medicine','.stockVal-medicine',JSON.parse($medicine).name);
+                        clearSearch('.stockVal-medicine');
+                        store.remove('medicine');
+                    }
+                }
+            }
+        });
+
+        // 编辑模板获取数据
+        function getTemplateStore(key,id){
+            var json = JSON.parse(store.get(key)),
+                data = {};
+            $.each(json.data,function(index,item){
+                if(item.tid == id) data = item;
+            });
+            console.log(json.data);
+            changeSearch('.stockText-market','.stockVal-market',data.Market);
+            changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
+            $("#form-stock-temp").find("input[name='tempTitle']").val(data.tempTitle);
+            $("#form-stock-temp").find("textarea[name='Addition']").val(data.Addition);
+            if(data.IsDefault == 1) $("#form-stock-temp").find("input[name='IsDefault']").prop("checked","checked").val('1');
+        }
+
+        var regexp = {
+            regexp: {
+                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+                VCODE: /^.{4}$/
+            }
+        };
+        weui.form.checkIfBlur('#form-stock-temp', regexp);
+
+        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
+            $(this).parents('.js_dialog').fadeOut(200);
+        });
+
+        $(".btnShowDialog").on('click',function(){
+            $(this).parents("form").find(".js_dialog").fadeIn(200);
+        });
+
+        $("input[name='IsDefault']").on('change',function(){
+            var isCheck = $(this).is(':checked') ? 1 : 0;
+            $(this).val(isCheck);
+        });
+
+        // 保存按钮
+        $("#form-stock-temp").on('click','#form-stock-temp-edit',function () {
+            weui.form.validate('#form-stock-temp', function (error){
+                console.log(error);
+                if (!error) {
+                    // 组织数据,$editId
+                    var jsonData = {},
+                        formData = $("#form-stock-temp").serializeArray(),
+                        json = JSON.parse(store.get($tempKey)),
+                        eindex = 0;
+                    jsonData.IsDefault = '0';
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+
+                    $.each(json.data,function(index,item){
+                        if(jsonData.IsDefault == 1)  item.IsDefault = '0';
+                        if(item.tid == $editId)  eindex = index;
+                    });
+                    jsonData.tid = $editId;
+                    json.data.splice(eindex,1,jsonData);
+
+                    var loading = weui.loading('保存中...');
+                    store.remove('tempStock');
+                    store.set('tempStock',JSON.stringify(json));
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                    setTimeout(function(){
+                        window.pageManager.back();
+                    },800);
+
+                }
+            }, regexp);
+        });
+        // 新建按钮
+        $("#form-stock-temp").on('click','#form-stock-temp-submit',function () {
+            weui.form.validate('#form-stock-temp', function (error){
+                console.log(error);
+                if (!error) {
+                    // 组织数据
+                    var jsonData = {},formData = $("#form-stock-temp").serializeArray();
+                    jsonData.IsDefault = '0';
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.tid = new Date().getTime();
+                    console.log(jsonData);
+                    var loading = weui.loading('保存中...');
+                    //增加历史记录
+                    if(store.get('tempStock') && store.get('tempStock')!=''){
+                        // 更新
+                        var tempStock = JSON.parse(store.get('tempStock'));
+                        // 若当前设为默认，clear为0
+                        if(jsonData.IsDefault == 1){
+                            $.each(tempStock.data,function(index,item){
+                                item.IsDefault = '0';
+                            });
+                        }
+                        tempStock.data.unshift(jsonData);
+                        store.remove('tempStock');
+                        store.set('tempStock',JSON.stringify(tempStock));
+                    }else{
+                        // 新建
+                        var historyData = {
+                            data : []
+                        };
+                        historyData.data.unshift(jsonData);
+                        store.set('tempStock',JSON.stringify(historyData));
+                    }
+                    store.remove('market');
+                    store.remove('medicine');
+                    initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
+                    initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
+                    $('.js_dialog').fadeOut(200);
+                    document.formStockTemp.reset();
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                    setTimeout(function(){
+                        window.pageManager.back();
+                    },800);
+                }
+            }, regexp);
+        });
+
+    });
+    </script>
+    </script>
+    <!-- 产地采集模板 -->
+    <script type="text/html" id="tpl_tempOrigin">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产地信息采集</div>
+        </header>
+        <form id="form-origin-temp" name="formOriginTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','grower');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-grower">关键字/种植户</p><input type="hidden" required name="GrowerName" class="sVal-grower" emptyTips="请选择种植户"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择药材名称"/></div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">人工成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">物料成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种子成本</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">预估产量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤/亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
+        </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+            $editId = store.get('editTemp') ? store.get('editTemp') : '',
+            $addPanel = $(".addPanel"),
+            $editPanel = $(".editPanel"),
+            $editDom = '<div class="weui-cell tempName"><div class="weui-cell__hd km-line"><label class="weui-label">模板名称</label></div><div class="weui-cell__bd"><input class="weui-input" type="text" required name="tempTitle" placeholder="请输入模板名称" /></div></div>',
+            $addDom = '<div class="js_dialog" style="display: none;"><div class="weui-mask"></div><div class="weui-dialog"><div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div><div class="weui-dialog__bd"><input class="weui-input"required type="text" name="tempTitle" placeholder="填写模板名称"/></div><div class="weui-dialog__ft"><a href="javascript:;"class="weui-dialog__btn weui-dialog__btn_default">取消</a><a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="form-temp-submit">保存</a></div></div></div>';
+
+        //获取模板类型
+        var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
+
+        // 初始化
+        function init(){
+          store.remove('base');
+          store.remove('grower');
+          store.remove('medicine');
+          initSearch('.sText-base','.sVal-base','关键字/产地名称');
+          initSearch('.sText-grower','.sVal-grower','关键字/种植户');
+          initSearch('.sText-medicine','.sVal-medicine','关键字/药材名称');
+        }
+
+        templateInit();
+
+        // 初始化模板
+        function templateInit(){
+            init();
+            if($editId && $editId!=''){
+                // 编辑模板
+                $addPanel.hide();
+                $editPanel.show();
+                $(".firstTemp").prepend($editDom);
+                getTemplateStore($tempKey,$editId);
+            }else{
+                // 新建模板
+                $editPanel.hide();
+                $addPanel.show();
+                $("#form-origin-temp").append($addDom);
+
+            }
+        }
+
+        // 页面切换数据返回
+        $(window).on('hashchange', function(e){
+            e.preventDefault();
+            var to = /#tempOrigin$/,
+                is = /#itemSearch$/;
+
+            if(is.test(e.oldURL)&&to.test(e.newURL)){
+                // 搜索结果返回响应
+                var $base = store.get('base') ? store.get('base') : '';
+                if($base!=''){
+                    if(!isEmpty(JSON.parse($base))){
+                        changeSearch('.sText-base','.sVal-base',JSON.parse($base).name);
+                        clearSearch('.sVal-base');
+                        store.remove('base');
+                    }
+                }
+                var $grower = store.get('grower') ? store.get('grower') : '';
+                if($grower!=''){
+                    if(!isEmpty(JSON.parse($grower))){
+                        changeSearch('.sText-grower','.sVal-grower',JSON.parse($grower).name);
+                        clearSearch('.sVal-grower');
+                        store.remove('grower');
+                    }
+                }
+                var $medicine = store.get('medicine') ? store.get('medicine') : '';
+                if($medicine!=''){
+                    if(!isEmpty(JSON.parse($medicine))){
+                        changeSearch('.sText-medicine','.sVal-medicine',JSON.parse($medicine).name);
+                        clearSearch('.sVal-medicine');
+                        store.remove('medicine');
+                    }
+                }
+            }
+        });
+
+        // 编辑模板获取数据
+        function getTemplateStore(key,id){
+            var json = JSON.parse(store.get(key)),
+                data = {};
+            $.each(json.data,function(index,item){
+                if(item.tid == id) data = item;
+            });
+            console.log(json.data);
+            changeSearch('.sText-base','.sVal-base',data.BaseName);
+            changeSearch('.sText-grower','.sVal-grower',data.GrowerName);
+            changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
+            $("input[name='tempTitle']").val(data.tempTitle);
+            $("textarea[name='Addition']").val(data.Addition);
+            if(data.IsDefault == 1) $("input[name='IsDefault']").prop("checked","checked").val('1');
+        }
+
+        var regexp = {
+            regexp: {
+                IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+                VCODE: /^.{4}$/
+            }
+        };
+        weui.form.checkIfBlur('#form-origin-temp', regexp);
+
+        $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
+            $(this).parents('.js_dialog').fadeOut(200);
+        });
+
+        $(".btnShowDialog").on('click',function(){
+            $(this).parents("form").find(".js_dialog").fadeIn(200);
+        });
+
+        $("input[name='IsDefault']").on('change',function(){
+            var isCheck = $(this).is(':checked') ? 1 : 0;
+            $(this).val(isCheck);
+        });
+
+        // 保存按钮
+        $("#form-origin-temp").on('click','#form-temp-edit',function () {
+            weui.form.validate('#form-origin-temp', function (error){
+                console.log(error);
+                if (!error) {
+                    // 组织数据,$editId
+                    var jsonData = {},
+                        formData = $("#form-origin-temp").serializeArray(),
+                        json = JSON.parse(store.get($tempKey)),
+                        eindex = 0;
+                    jsonData.IsDefault = '0';
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+
+                    $.each(json.data,function(index,item){
+                        if(jsonData.IsDefault == 1)  item.IsDefault = '0';
+                        if(item.tid == $editId)  eindex = index;
+                    });
+                    jsonData.tid = $editId;
+                    json.data.splice(eindex,1,jsonData);
+
+                    var loading = weui.loading('保存中...');
+                    store.remove('tempOrigin');
+                    store.set('tempOrigin',JSON.stringify(json));
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                    setTimeout(function(){
+                        window.pageManager.back();
+                    },800);
+
+                }
+            }, regexp);
+        });
+        // 新建按钮
+        $("#form-origin-temp").on('click','#form-temp-submit',function () {
+            weui.form.validate('#form-origin-temp', function (error){
+                console.log(error);
+                if (!error) {
+                    // 组织数据
+                    var jsonData = {},formData = $("#form-origin-temp").serializeArray();
+                    jsonData.IsDefault = '0';
+                    $.each(formData,function(key,value){
+                        jsonData[value.name] = value.value;
+                    });
+                    jsonData.Time = new Date().Format("yyyy-MM-dd");
+                    jsonData.tid = new Date().getTime();
+                    console.log(jsonData);
+                    var loading = weui.loading('保存中...');
+                    var $temp = store.get('tempOrigin') ? store.get('tempOrigin') : '';
+                    //增加历史记录
+                    if($temp!='' && !isEmpty(JSON.parse($temp).data)){
+                        // 更新
+                        var temp = JSON.parse($temp);
+                        // 若当前设为默认，clear为0
+                        if(jsonData.IsDefault == 1){
+                            $.each(tempStock.data,function(index,item){
+                                item.IsDefault = '0';
+                            });
+                        }
+                        temp.data.unshift(jsonData);
+                        store.remove('tempOrigin');
+                        store.set('tempOrigin',JSON.stringify(temp));
+                    }else{
+                        // 新建
+                        var historyData = {
+                            data : []
+                        };
+                        historyData.data.unshift(jsonData);
+                        store.set('tempOrigin',JSON.stringify(historyData));
+                    }
+                    init();
+                    $('.js_dialog').fadeOut(200);
+                    document.formOriginTemp.reset();
+                    loading.hide();
+                    weui.toast('模板保存成功', 500);
+                    setTimeout(function(){
+                        window.pageManager.back();
+                    },800);
+                }
+            }, regexp);
+        });
+
+    });
+    </script>
+    </script>
+    <!-- 产出采集模板 -->
+    <script type="text/html" id="tpl_tempOutput">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产出信息采集</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/种植户名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <a class="weui-cell weui-cell_access actionSheet" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">采收价格</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">价格趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植意愿</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cells_checkbox km-cells-checkbox">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">是否转产</label></div>
+                <label class="weui-cell__hd weui-check__label ml-20" for="s11">
+                    <input type="radio" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                    <i class="weui-icon-checked"></i>是
+                </label>
+                <label class="weui-cell__hd weui-check__label ml-40" for="s12">
+                    <input type="radio" name="checkbox1" class="weui-check" id="s12"/>
+                    <i class="weui-icon-checked"></i>否
+                </label>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产药材</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        </div>
+    </div>
+    </script>
+    <!-- 环境采集模板 -->
+    <script type="text/html" id="tpl_tempEnvi">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">环境信息采集</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">天气状况</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">灾害描述</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写关键词"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        </div>
+    </div>
+    </script>
+    <!-- 饮片采集模板 -->
+    <script type="text/html" id="tpl_tempPieces">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">饮片信息采集</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/生产商名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量规模<br />(加工量)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">饮片规格</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">供 应 商<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">市场表现<br />(饮片)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">市场需求<br />(饮片)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写饮片市场需求"/>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        </div>
+    </div>
+    </script>
+    <!-- 产品采集模板 -->
+    <script type="text/html" id="tpl_tempPro">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">产品信息采集</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产品类型</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产品名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品名称"/>
+                </div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产品规格</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品规格"/>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/生产商名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">原 药 材</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">原药比重</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">药材规格</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">供 应 商<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">质量要求<br />(原材料)</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年销售额<br />(产品)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">需求趋势<br />(产品)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写产品需求趋势"/>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        </div>
+    </div>
+    </script>
+    <!-- 贸易采集模板 -->
+    <script type="text/html" id="tpl_tempTrading">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">贸易信息采集</div>
+        </header>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">交易市场</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写商户名称"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">经营模式</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">交易类型</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格01</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">%</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br />(日平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">公斤</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br />(日平均)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a href="javascript:void(0);" class="weui-cell weui-cell_link text-center">
+                <div class="weui-cell__bd c-3dbaff"><i class="iconfont icon-add"></i> 增加规格</div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        </div>
+    </div>
+    </script>
+    <!-- 选择模板 -->
+    <script type="text/html" id="tpl_tempChoose">
+    <div class="page containerInner">
+        <header class="comHead">
+            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <div class="headTitle">选择模板</div>
+        </header>
+        <div class="weui-cells weui-cells_radio d-n" id="tempRadio">
+        </div>
+        <div class="emptyContent d-n" id="tempRadioEmpty">
+            <p class="emptyTip">暂无模板</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        var $tempKey = pageManager.pageOther ? pageManager.pageOther : '',
+            $tempRadio = $("#tempRadio"),
+            $tempRadioEmpty = $("#tempRadioEmpty");
+
+        loadTempInit($tempKey);
+
+        function loadTempInit(key){
+            pageManager.searchAux=null;
+            if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
+                loadTempList(key);
+                $tempRadio.show();
+                $tempRadioEmpty.hide();
+            }else{
+                $tempRadio.hide();
+                $tempRadioEmpty.show();
+            }
+        }
+
+        function loadTempList(key){
+            var str = '',
+                json = JSON.parse(store.get(key));
+            $.each(json.data,function(index,item){
+                if(item.IsDefault==1){
+                str+='<label class="weui-cell weui-check__label cTitem" for="x'+index+'" data-id="'+item.tid+'" data-name="'+item.tempTitle+'"><div class="weui-cell__bd"><p>'+item.tempTitle+'</p></div><div class="weui-cell__ft"><input type="radio" class="weui-check" name="chooseTemp" id="x'+index+'" checked="checked"/><span class="weui-icon-checked c-3dbaff"></span></div></label>';
+                }else{
+                str+='<label class="weui-cell weui-check__label cTitem" for="x'+index+'"data-id="'+item.tid+'" data-name="'+item.tempTitle+'"><div class="weui-cell__bd"><p>'+item.tempTitle+'</p></div><div class="weui-cell__ft"><input type="radio" class="weui-check" name="chooseTemp" id="x'+index+'"/><span class="weui-icon-checked c-3dbaff"></span></div></label>';
+                }
+
+            });
+            $tempRadio.html(str);
+        }
+
+        $tempRadio.on('click','.cTitem',function(e){
+            stopBubble(e);e.preventDefault();// 阻止冒泡
+            var data = {
+                id: $(this).data("id"),
+                name: $(this).data("name"),
+            }
+            store.remove('sea'+$tempKey);
+            store.set('sea'+$tempKey,JSON.stringify(data));
+            setTimeout(function(){
+                window.pageManager.back();
+            },100);
+        });
+    });
+    </script>
+    </script>
+    <!-- 搜索 -->
+    <script type="text/html" id="tpl_itemSearch">
+    <div class="page containerInner">
+        <header class="comHead">
+            <div class="weui-search-bar km-search-bar" id="searchBar">
+            <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button>
+            <form class="weui-search-bar__form">
+                <div class="weui-search-bar__box">
+                    <i class="weui-icon-search"></i>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="输入关键词搜索" required/>
+                    <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                </div>
+            </form>
+            <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+            </div>
+        </header>
+        <div class="weui-cells searchbar-result d-n" id="searchResult">
+            <a class="weui-cell weui-cell_access searchbar-item" href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>实时搜索文本</p></div><div class="weui-cell__ft"></div></a>
+        </div>
+        <!-- 搜索不到内容 -->
+        <div class="emptyContent d-n" id="searchNothing">
+            <i class="ic_none_reminder"></i>
+            <p class="emptyTip">对不起，没有与“<span id="keyword"></span>”相关的内容</p>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        console.log($(".containerInner").height());
+        $("body").scrollTop(0);
+        var $searchBar = $('#searchBar'),
+            $searchResult = $('#searchResult'),
+            $searchNothing = $('#searchNothing'),
+            $searchInput = $('#searchInput'),
+            $searchClear = $('#searchClear'),
+            $searchCancel = $('#searchCancel'),
+            $searchKey = '';
+        // console.log(pageManager.pageOther);
+        //获取搜索关键字
+        console.log($.type(pageManager));
+        if($.type(pageManager)=='undefined') window.pageManager.go('home');
+
+        $searchKey = pageManager.pageOther ? pageManager.pageOther : '';
+        pageManager.searchAux=null;
+        if($searchKey=='') window.pageManager.go('home');
+        // 根据关键字获取对应链接
+        var getUrl = function(val){
+            var url = '';
+            switch(val){
+                case 'market':
+                    url = '/likeMarket';
+                    break;
+                case 'medicine':
+                    url = '/likeMedicine';
+                    break;
+                case 'base':
+                    url = '/likeBase';
+                    break;
+                case 'grower':
+                    url = '/likeGrower';
+                    break;
+                case 'manufacturer':
+                    url = '/likeManufacturer';
+                    break;
+            }
+            return url;
+        };
+
+        function hideSearchResult(){
+            $searchResult.hide();
+            $searchBar.removeClass('weui-search-bar_focusing');
+            $searchInput.val('');
+            $("#keyword").text("");
+            $searchNothing.hide();
+        }
+        function cancelSearch(){
+            hideSearchResult();
+            $searchBar.removeClass('weui-search-bar_focusing');
+        }
+
+        function searchInterface(url,field,val){
+            var jsonData = {};
+            jsonData.userName = store.get('loginName');
+            jsonData.password = store.get('password');
+            jsonData[field] = val;
+            $.ajax({
+                url: $kmurl+url,
+                type:"GET",
+                contentType: 'application/json;charset=utf-8',
+                dataType:"jsonp",
+                jsonp:"jsoncallback",
+                data:{"parms":JSON.stringify(jsonData)},
+                success:function(response){
+                    if(response.result == 'success' && !isEmpty(JSON.parse(response.message))){
+                        var data = JSON.parse(response.message),
+                            resultStr = '';
+                        $searchResult.html("");
+                        $.each(data,function(index,item){
+                            switch(field){
+                                case 'market':
+                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.market_id+'" data-name="'+item.market_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.market_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                    break;
+                                case 'medicine':
+                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.medicine_id+'" data-name="'+item.medicine_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.medicine_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                    break;
+                                case 'base':
+                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.base_id+'" data-name="'+item.base_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.base_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                    break;
+                                case 'grower':
+                                    resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.grower_id+'" data-name="'+item.grower_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.grower_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                    break;
+                            }
+                        });
+                        $searchNothing.hide();
+                        $searchResult.html(resultStr).show();
+                    }else{
+                        $("#keyword").text($.trim($searchInput.val()));
+                        $searchNothing.show();
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log("输入参数错误，请核对！");
+                    $("#keyword").text($.trim($searchInput.val()));
+                    $searchNothing.show();
+                }
+            });
+        }
+        // 合并请求提交、代理模式
+        var proxySearchInterface = (function(){
+            var cache = [],
+                timer;
+            return function(val){
+                if(timer) return;
+                timer = setTimeout(function(){
+                    searchInterface(getUrl($searchKey),$searchKey,$.trim($searchInput.val()));
+                    clearTimeout(timer);
+                    timer = null;
+                },1000);
+            }
+        })();
+
+        $searchResult.on('click','.searchbar-item',function(e){
+            stopBubble(e);e.preventDefault();// 阻止冒泡
+            if(window.pageManager){
+                var data = {
+                    id: $(this).data("id"),
+                    name: $(this).data("name"),
+                }
+                store.remove($searchKey);
+                store.set($searchKey,JSON.stringify(data));
+                window.pageManager.back($searchKey);
+            }
+        });
+
+        $searchInput
+            .on('blur', function () {
+                if(!this.value.length) cancelSearch();
+            })
+            .on('input propertychange', function(){
+                if(this.value.length) {
+                    $searchBar.addClass('weui-search-bar_focusing');
+                    proxySearchInterface();
+                }else{
+                    $searchResult.hide();
+                }
+            });
+        ;
+        $searchClear.on('click', function(){
+            hideSearchResult();
+            $searchInput.focus();
+        });
+        $searchCancel.on('click', function(){
+            cancelSearch();
+            $searchInput.blur();
+        });
+    });
+    </script>
+    </script>
+</body>
+
+<script src="./js/common.js"></script>
+<script src="./js/json2.js"></script>
+<script src="./js/store.everything.min.js"></script>
+<script src="./js/weui.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    // 判断用户是否登录
+    function IsLogin(){
+        if(!store.get("loginName")){
+            window.location.href = '/login.html';
+        }
+    }
+    IsLogin();
+    $("#btnSignOut").on('click',function(){
+        store.remove('userName');
+        store.remove('loginName');
+        store.remove('password');
+        // weui.toast('操作成功', 30000);
+    });
+
+    $('.js_item').on('click', function(){
+        var id = $(this).data('id');
+        window.pageManager.go(id);
+    });
+
+});
+</script>
+</html>

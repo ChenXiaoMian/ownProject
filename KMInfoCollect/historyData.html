@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>历史记录</title>
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<body class="bg-eaeff3 tempList-wrap">
+    <header class="comHead">
+        <button type="button" class="backTo" onclick="window.location.href=document.referrer;">
+            <i class="iconfont icon-back"></i>
+        </button>
+        <div class="headTitle">历史记录</div>
+    </header>
+    <div class="container">
+        <!-- 空模板 -->
+        <div class="emptyContent d-n">
+            <p class="emptyTip">没有您的采集记录</p>
+        </div>
+        <!-- 类型 -->
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=stock">
+                <div class="weui-cell__bd">市场存量信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=origin">
+                <div class="weui-cell__bd">产地信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=output">
+                <div class="weui-cell__bd">产出信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=envi">
+                <div class="weui-cell__bd">环境信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=pieces">
+                <div class="weui-cell__bd">饮片信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=pro">
+                <div class="weui-cell__bd">产品信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="historyList.html?htype=trading">
+                <div class="weui-cell__bd">贸易信息采集</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

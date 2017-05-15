@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>产出信息采集</title>
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<body class="bg-eaeff3">
+    <header class="comHead">
+        <button type="button" class="backTo" onclick="window.location.href=document.referrer;">
+            <i class="iconfont icon-back"></i>
+        </button>
+        <div class="headTitle">产出信息采集</div>
+        <a href="templateData.html" class="tempLink">模板管理</a>
+    </header>
+    <div class="container">
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/种植户名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/亩</div>
+            </div>
+            <a class="weui-cell weui-cell_access actionSheet" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">采收价格</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">价格趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">种植意愿</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell weui-cells_checkbox km-cells-checkbox">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">是否转产</label></div>
+                <label class="weui-cell__hd weui-check__label ml-20" for="s11">
+                    <input type="radio" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                    <i class="weui-icon-checked"></i>是
+                </label>
+                <label class="weui-cell__hd weui-check__label ml-40" for="s12">
+                    <input type="radio" name="checkbox1" class="weui-check" id="s12"/>
+                    <i class="weui-icon-checked"></i>否
+                </label>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产药材</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/药材名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder=""/>
+                </div>
+                <div class="weui-cell__dw c-c7c7c7">亩</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showIOSDialog1">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+    <!-- 弹出选择 -->
+    <div class="km-actionsheet">
+        <div class="weui-mask" id="iosMask" style="display: none"></div>
+        <div class="weui-actionsheet" id="iosActionsheet">
+            <div class="weui-actionsheet__title">
+                <p class="weui-actionsheet__title-text fz-16">产量趋势</p>
+                <a href="javascript:;" class="sheetCancel" id="iosActionsheetCancel"><i class="iconfont icon-close"></i></a>
+            </div>
+            <div class="weui-actionsheet__menu">
+                <div class="weui-actionsheet__cell">上升</div>
+                <div class="weui-actionsheet__cell">下降</div>
+                <div class="weui-actionsheet__cell">持平</div>
+            </div>
+        </div>
+    </div>
+    <!-- 保存弹出框 -->
+    <div class="js_dialog" id="iosDialog1" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div>
+            <div class="weui-dialog__bd"><input class="weui-input" type="text" placeholder="填写模板名称"/></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff">保存</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./js/zepto.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var $iosActionsheet = $('#iosActionsheet');
+        var $iosMask = $('#iosMask');
+        var $iosDialog1 = $('#iosDialog1');
+
+        function hideActionSheet() {
+            $iosActionsheet.removeClass('weui-actionsheet_toggle');
+            $iosMask.fadeOut(200);
+        }
+
+        $iosMask.on('click', hideActionSheet);
+        $('#iosActionsheetCancel').on('click', hideActionSheet);
+        $(".actionSheet").on("click", function(){
+            $iosActionsheet.addClass('weui-actionsheet_toggle');
+            $iosMask.fadeIn(200);
+        });
+
+        $('#showIOSDialog1').on('click', function(){
+            $iosDialog1.fadeIn(200);
+        });
+        $(".weui-mask").on('click',function(){
+            $('.js_dialog').fadeOut(200);
+        });
+    });
+</script>
+</html>

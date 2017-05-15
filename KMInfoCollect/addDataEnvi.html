@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>环境信息采集</title>
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<body class="bg-eaeff3">
+    <header class="comHead">
+        <button type="button" class="backTo" onclick="window.location.href=document.referrer;">
+            <i class="iconfont icon-back"></i>
+        </button>
+        <div class="headTitle">环境信息采集</div>
+        <a href="templateData.html" class="tempLink">模板管理</a>
+    </header>
+    <div class="container">
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-3dbaff">默认模板</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">关键字/市场名称</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">天气状况</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">灾害描述</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="text" placeholder="请填写关键词"/>
+                </div>
+            </div>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
+                <div class="weui-cell__bd">
+                    <p class="c-c7c7c7">请选择</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui-panel">
+            <div class="weui-panel__bd">
+                <div class="weui-media-box weui-media-box_text km-media-box_text">
+                    <p><span class="adLet">信 息 员：</span>吴静涛</p>
+                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集时间：</span>2017-05-03 16:06</p>
+                </div>
+            </div>
+        </div>
+        <div class="km-page-button">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default">存为模板</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary">上传</a>
+        </div>
+    </div>
+</body>
+</html>

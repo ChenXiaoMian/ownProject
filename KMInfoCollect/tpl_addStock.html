@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+<script type="text/html" id="tpl_addStock">
+<div class="page containerInner">
+    <header class="comHead">
+        <button type="button" class="backTo" onclick="pageManager.back();"><i class="iconfont icon-back"></i></button><div class="headTitle">市场存量信息采集</div>
+    </header>
+    <form id="form-stock" name="formStock">
+    <div class="weui-cells weui-cells_form">
+        <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('tempChoose','tempStock');">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">选择模板</label></div>
+            <div class="weui-cell__bd"><p class="c-c7c7c7 getChooseTemp">默认模板</p></div>
+            <div class="weui-cell__ft">
+            </div>
+        </a>
+        <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','market');">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">交易市场</label></div>
+            <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-market">关键字/市场名称</p><input type="hidden" required name="Market" class="stockVal-market" emptyTips="请选择交易市场"/></div>
+            <div class="weui-cell__ft"></div>
+        </a>
+        <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
+            <div class="weui-cell__bd"><p class="c-c7c7c7 stockText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="stockVal-medicine" emptyTips="请选择药材市场"/></div>
+            <div class="weui-cell__ft"></div>
+        </a>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="text" name="MerchantName" placeholder="请填写商户名称"/>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">商户地址</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="text" name="MerchantAddress" placeholder="请填写商户地址"/>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label adLet">联 系 人</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="text" name="ContactPerson" placeholder="请填写联系人姓名"/>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">联系方式</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="text" name="Phone" placeholder="请填写联系人电话"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量(总)</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="number" name="Consume" placeholder="" emptyTips="请输入年消耗量(总)"/>
+            </div>
+            <div class="weui-cell__dw c-c7c7c7">公斤</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">库存数量</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="number" name="Inventory" placeholder="" emptyTips="请输入库存数量"/>
+            </div>
+            <div class="weui-cell__dw c-c7c7c7">公斤</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价 (平均)</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="number" name="InventoryCost" placeholder="" emptyTips="存量进价 (平均)"/>
+            </div>
+            <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line"><label class="weui-label ">库存地址</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" required type="text" name="InventoryAddress" placeholder="请填写库存地址"/>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
+            <div class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请填写备注说明" name="Addition" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="weui-panel">
+        <div class="weui-panel__bd">
+            <div class="weui-media-box weui-media-box_text km-media-box_text">
+                <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
+                <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                <p><span>采集时间：</span><b class="getNow"></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="km-page-button">
+        <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="open-temp-dialog">存为模板</a>
+        <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-stock-submit">上传</a>
+    </div>
+    <!-- 保存弹出框 -->
+    <div class="js_dialog" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd pt-15"><strong class="weui-dialog__title c-000000">提示</strong></div>
+            <div class="weui-dialog__bd"><input class="weui-input" name="tempName" type="text" placeholder="填写模板名称" emptyTips="请填写模板名称"/></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary c-3dbaff" id="save-for-temp">保存</a>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+$(function(){
+    var userName = store.get('userName'),
+        nowTime = new Date().Format("yyyy-MM-dd hh:mm"),
+        $iosDialog = $('.js_dialog');
+    $(".getUserName").text(store.get('userName'));
+    $(".getNow").text(nowTime);
+
+    stockAddInit();
+    // 市场存量初始化
+    function stockAddInit(){
+      store.remove('seatempStock');
+      store.remove('market');
+      store.remove('medicine');
+      initSearch('.stockText-market','.stockVal-market','关键字/市场名称');
+      initSearch('.stockText-medicine','.stockVal-medicine','关键字/中药材名称');
+      $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
+    }
+    
+    // 选择模板后加载对应数据
+    function loadTemp(tid){
+        var data = {};
+        $.each(JSON.parse(store.get('tempStock')).data,function(index,item){
+            if(item.tid == tid) data = item;
+        });
+        changeSearch('.stockText-market','.stockVal-market',data.Market);
+        changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
+        $(".weui-textarea").val(data.Addition);
+        clearSearch('.stockVal-market');
+        clearSearch('.stockVal-medicine');
+    }
+    // 验证所需
+    var regexp = {
+        regexp: {
+            IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+            VCODE: /^.{4}$/
+        }
+    };
+    weui.form.checkIfBlur('#form-stock', regexp);
+    // 上传按钮
+    $('#form-stock-submit').on('click',function () {
+        weui.form.validate('#form-stock', function (error) {
+            console.log(error);
+            if (!error) {
+                // 组织数据
+                var jsonData = {},formData = $("#form-stock").serializeArray();
+                jsonData.UserName = store.get('loginName');
+                $.each(formData,function(key,value){
+                    jsonData[value.name] = value.value;
+                });
+                jsonData.Time = new Date().Format("yyyy-MM-dd");
+
+                var loading = weui.loading('上传中...');
+                uploader(jsonData,'/saveInventoryJSONP',function(){
+                    jsonData.hid = new Date().getTime();
+                    jsonData.cUserName = store.get('userName');
+                    //增加历史记录
+                    if(store.get('histStock') && store.get('histStock')!=''){
+                        // 更新
+                        var histStock = JSON.parse(store.get('histStock'));
+                        histStock.data.unshift(jsonData);
+                        store.remove('histStock');
+                        store.set('histStock',JSON.stringify(histStock));
+                    }else{
+                        // 新建
+                        var historyData = {
+                            data : []
+                        };
+                        historyData.data.unshift(jsonData);
+                        store.set('histStock',JSON.stringify(historyData));
+                    }
+                    console.log(jsonData);
+                    stockAddInit();
+                    document.formStock.reset();
+                });
+            }
+        }, regexp);
+    });
+    function validateTemp(){
+        var args = arguments,
+            cache = [];
+        $.each(args,function(index,item){
+            var dom = $("input[name='"+item+"']");
+            if($.trim(dom.val())==''){
+                weui.topTips(dom.attr("emptyTips"));
+                return false;
+            }else{
+                cache.push(item);
+            }
+        });
+        if(cache.length === args.length){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    // 存为模板按钮
+    $('#open-temp-dialog').on('click',function () {
+        // 判断用户是否选择模板
+        var tempId = $(".getChooseTemp").data("tid");
+        if(validateTemp('Market','Medicine')){
+            if(tempId&&tempId!=''){
+                // 存为模板更新操作
+                var oldData = {
+                    Market: $("input[name='Market']").val(),
+                    Medicine: $("input[name='Medicine']").val(),
+                    Addition: $.trim($("textarea[name='Addition']").val()),
+                };
+                var json = JSON.parse(store.get('tempStock')),
+                    eindex = 0,
+                    jsonData = {};
+                $.each(json.data,function(index,item){
+                    if(item.tid == tempId){
+                        eindex = index;
+                        jsonData = item;
+                    }
+                });
+                $.extend(jsonData, oldData);
+                json.data.splice(eindex,1,jsonData);
+                var loading = weui.loading('保存中...');
+                store.remove('tempStock');
+                store.set('tempStock',JSON.stringify(json));
+                loading.hide();
+                weui.toast('模板保存成功', 500);
+            }else{
+                $iosDialog.fadeIn(200);
+            }
+        }
+    });
+    // 取消关闭弹出框
+    $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){
+        $(this).parents('.js_dialog').fadeOut(200);
+    });
+
+    // 存为模板新建操作
+    $("#form-stock").on('click','#save-for-temp',function () {
+        if(validateTemp('tempName')){
+            $(this).parents('.js_dialog').fadeOut(200);
+            var jsonData = {
+                IsDefault: '0',
+                tempTitle: $("input[name='tempName']").val(),
+                Market: $("input[name='Market']").val(),
+                Medicine: $("input[name='Medicine']").val(),
+                Addition: $.trim($("textarea[name='Addition']").val()),
+                Time: new Date().Format("yyyy-MM-dd"),
+                tid: new Date().getTime()
+            };
+            var loading = weui.loading('保存中...');
+            //增加历史记录
+            if(store.get('tempStock')!=''){
+                if(!isEmpty(JSON.parse(store.get('tempStock')).data)){
+                    // 更新
+                    var tempStock = JSON.parse(store.get('tempStock'));
+                    // 若当前设为默认，clear为0
+                    tempStock.data.unshift(jsonData);
+                    store.remove('tempStock');
+                    store.set('tempStock',JSON.stringify(tempStock));
+                }else{
+                    // 新建
+                    var historyData = {
+                        data : []
+                    };
+                    historyData.data.unshift(jsonData);
+                    store.set('tempStock',JSON.stringify(historyData));
+                }
+            }
+            loading.hide();
+            weui.toast('模板保存成功', 500);
+        }
+
+    });
+
+    // 页面切换数据返回
+    $(window).on('hashchange', function(e){
+        e.preventDefault();
+        var tc = /#tempChoose$/,
+            as = /#addStock$/,
+            is = /#itemSearch$/;
+
+        if(tc.test(e.oldURL)&&as.test(e.newURL)){
+            // 选择模板返回响应
+            var $key = store.get('seatempStock') ? store.get('seatempStock') : '';
+            if($key!=''){
+                if(!isEmpty(JSON.parse($key))){
+                    $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
+                    loadTemp(JSON.parse($key).id);
+                    store.remove('seatempStock');
+                }
+            }
+        }else if(is.test(e.oldURL)&&as.test(e.newURL)){
+            // 搜索结果返回响应
+            var $market = store.get('market') ? store.get('market') : '';
+            if($market!=''){
+                if(!isEmpty(JSON.parse($market))){
+                    changeSearch('.stockText-market','.stockVal-market',JSON.parse($market).name);
+                    clearSearch('.stockVal-market');
+                    store.remove('market');
+                }
+            }
+            var $medicine = store.get('medicine') ? store.get('medicine') : '';
+            if($medicine!=''){
+                if(!isEmpty(JSON.parse($medicine))){
+                    changeSearch('.stockText-medicine','.stockVal-medicine',JSON.parse($medicine).name);
+                    clearSearch('.stockVal-medicine');
+                    store.remove('medicine');
+                }
+            }
+        }
+    });
+});
+</script>
+</script>
+</body>
+</html>
