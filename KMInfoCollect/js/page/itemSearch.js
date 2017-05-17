@@ -1,3 +1,4 @@
+// 搜索项目逻辑
 $(function(){
     // console.log($(".containerInner").height());
     $("body").scrollTop(0);
@@ -24,6 +25,9 @@ $(function(){
                 url = '/likeMarket';
                 break;
             case 'medicine':
+                url = '/likeMedicine';
+                break;
+            case 'cmedicine':
                 url = '/likeMedicine';
                 break;
             case 'base':
@@ -74,6 +78,9 @@ $(function(){
                                 resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.market_id+'" data-name="'+item.market_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.market_name+'</p></div><div class="weui-cell__ft"></div></a>';
                                 break;
                             case 'medicine':
+                                resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.medicine_id+'" data-name="'+item.medicine_name+'" data-standard="'+item.standard+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.medicine_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                break;
+                            case 'cmedicine':
                                 resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.medicine_id+'" data-name="'+item.medicine_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.medicine_name+'</p></div><div class="weui-cell__ft"></div></a>';
                                 break;
                             case 'base':
@@ -81,6 +88,9 @@ $(function(){
                                 break;
                             case 'grower':
                                 resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.grower_id+'" data-name="'+item.grower_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.grower_name+'</p></div><div class="weui-cell__ft"></div></a>';
+                                break;
+                            case 'manufacturer':
+                                resultStr +='<a class="weui-cell weui-cell_access searchbar-item" data-id="'+item.manufacturer_id+'" data-name="'+item.manufacturer_name+'"  href="javascript:;"><div class="weui-cell__bd weui-cell_primary"><p>'+item.manufacturer_name+'</p></div><div class="weui-cell__ft"></div></a>';
                                 break;
                         }
                     });
@@ -105,7 +115,11 @@ $(function(){
         return function(val){
             if(timer) return;
             timer = setTimeout(function(){
-                searchInterface(getUrl($searchKey),$searchKey,$.trim($searchInput.val()));
+                if($searchKey == 'cmedicine'){
+                    searchInterface(getUrl($searchKey),'medicine',$.trim($searchInput.val()));
+                }else{
+                    searchInterface(getUrl($searchKey),$searchKey,$.trim($searchInput.val()));
+                }
                 clearTimeout(timer);
                 timer = null;
             },1000);
@@ -118,7 +132,8 @@ $(function(){
             var data = {
                 id: $(this).data("id"),
                 name: $(this).data("name"),
-            }
+                standard: $(this).data("standard") ? $(this).data("standard") : ''
+            };
             store.remove($searchKey);
             store.set($searchKey,JSON.stringify(data));
             window.pageManager.back($searchKey);

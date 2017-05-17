@@ -81,3 +81,19 @@ function clearSearch(vdom){
       $(vdom).parents(".weui-cell_access").removeClass('weui-cell_warn');
   }
 }
+
+// 输入验证后清除样式
+function clearInput(vdom){
+  if($(vdom).val() && $(vdom).val()!=''){
+      $(vdom).parents(".weui-cell").removeClass('weui-cell_warn');
+  }
+}
+
+// 对象拷贝
+function cloneObj(obj) {
+  var newObj = {};
+  for(var prop in obj) {
+    newObj[prop] = obj[prop];
+  }
+  return newObj;
+}

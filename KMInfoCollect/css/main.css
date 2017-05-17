@@ -29,6 +29,7 @@ h1.logo{width: 56%;height: 45px;background:url(../img/index/text.png) no-repeat 
 
 /* 公共 */
 .bg-eaeff3{background: #eaeff3 !important;}
+.bg-efefef{background: #efefef !important;}
 .c-3dbaff{color:#3dbaff !important;}
 .c-c7c7c7{color:#c7c7c7 !important;}
 .c-666666{color:#666666 !important;}
@@ -96,6 +97,7 @@ body{background: #eaeff3;}
 .comHead .tempLink{font-size: 16px;color: #3dbaff;position: absolute;top:0;right: 10px;line-height: 45px;}
 
 /* weui替换 */
+.flex-20{flex:0 0 20px !important;}
 .weui-cells{font-size: 14px;margin-top: 10px}
 .km-cells-checkbox.weui-cells_checkbox .weui-cell__hd{padding-right: 0}
 .weui-label{width:75px;color: #666;}
@@ -148,7 +150,7 @@ i.ic_none_reminder{display:block;width:55px;height:55px;background:url(../img/ic
 
 .weui-toast{font-size: 14px;}
 .weui-cells_form input:disabled{background:#efefef;}
-.weui-select{height:20px;line-height: 20px;}
+.weui-select{height:20px;line-height: 20px;padding-left:0;}
 
 /* 模板管理 */
 .emptyContent{position: absolute;top: 50%;left: 50%;/* transform: translate(-50%, -50%); */width:100%;text-align: center;margin-left:-50%;margin-top:-25%;}

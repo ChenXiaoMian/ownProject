@@ -13,10 +13,17 @@ $(function(){
       store.remove('base');
       store.remove('grower');
       store.remove('medicine');
+      store.remove('cmedicine');
       initSearch('.sText-base','.sVal-base','关键字/产地名称');
       initSearch('.sText-grower','.sVal-grower','关键字/种植户');
       initSearch('.sText-medicine','.sVal-medicine','关键字/中药材名称');
       initSearch('.sText-cmedicine','.sVal-cmedicine','关键字/中药材名称');
+      $("select[name='ProdcutionTendency'],select[name='PriceTendency']").find('option').removeAttr('selected');
+      $("input[name='ProductionRange']").prop("disabled",true).val("");
+      $("input[name='PriceRange']").prop("disabled",true).val("");
+      $(".sClick-cmedicine").attr("href","javascript:;");
+      $(".sText-cmedicine").addClass('bg-efefef');
+      $("input[name='ChangeArea']").prop("disabled",true).val("");
       $(".getChooseTemp").text('默认模板').removeClass('c-3dbaff').addClass('c-c7c7c7');
     }
 
@@ -29,12 +36,10 @@ $(function(){
         changeSearch('.sText-base','.sVal-base',data.BaseName);
         changeSearch('.sText-grower','.sVal-grower',data.GrowerName);
         changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
-        changeSearch('.sText-cmedicine','.sVal-cmedicine',data.ChangeMedicine);
         $(".weui-textarea").val(data.Addition);
         clearSearch('.sVal-base');
         clearSearch('.sVal-grower');
         clearSearch('.sVal-medicine');
-        clearSearch('.sVal-cmedicine');
     }
     // 验证所需
     var regexp = {
@@ -78,7 +83,7 @@ $(function(){
                     }
                     console.log(jsonData);
                     init();
-                    document.formOrigin.reset();
+                    document.formOutput.reset();
                 });
             }
         }, regexp);
@@ -183,7 +188,7 @@ $(function(){
     $(window).on('hashchange', function(e){
         e.preventDefault();
         var tc = /#tempChoose$/,
-            ao = /#addOrigin$/,
+            ao = /#addOutput$/,
             is = /#itemSearch$/;
 
         if(tc.test(e.oldURL)&&ao.test(e.newURL)){
@@ -230,6 +235,36 @@ $(function(){
                     store.remove('cmedicine');
                 }
             }
+        }
+    });
+
+    $("select[name='ProdcutionTendency']").on('change',function(){
+        var $val = $(this).val();
+        if($val=='' || $val=='持平'){
+            $("input[name='ProductionRange']").prop("disabled",true).val("");
+        }else{
+            $("input[name='ProductionRange']").prop("disabled",false);
+        }
+    });
+    $("select[name='PriceTendency']").on('change',function(){
+        var $val = $(this).val();
+        if($val=='' || $val=='持平'){
+            $("input[name='PriceRange']").prop("disabled",true).val("");
+        }else{
+            $("input[name='PriceRange']").prop("disabled",false);
+        }
+    });
+    $("input[name='ChangeMode']").on('change',function(){
+        var $val = $(this).val();
+        if($val=='1'){
+            $(".sClick-cmedicine").attr("href","javascript:window.pageManager.go('itemSearch','cmedicine');");
+            $(".sText-cmedicine").removeClass('bg-efefef');
+            $("input[name='ChangeArea']").prop("disabled",false);
+        }else{
+            $(".sClick-cmedicine").attr("href","javascript:;");
+            $(".sText-cmedicine").addClass('bg-efefef');
+            initSearch('.sText-cmedicine','.sVal-cmedicine','关键字/中药材名称');
+            $("input[name='ChangeArea']").prop("disabled",true).val("");
         }
     });
 });
