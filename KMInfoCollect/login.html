@@ -42,15 +42,18 @@
 <script src="./js/json2.js"></script>
 <script src="./js/store.everything.min.js"></script>
 <script src="./js/weui.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oN5ln95bD6YRawbMzfavu3GE"></script>
+<script src="./js/common.js"></script>
 <script type="text/javascript">
 $(function(){
+    getPosition();
     var $txtusername = $("#txtusername"),
         $txtuserpass = $("#txtuserpass"),
         kmurl = 'http://km126.km1818.com:8181/KMInfoCollect/services';
 
     function initLogin(){
         if(store.get("loginName") && store.get("password")){
-            window.location.href = '/index.html';
+            window.location.href = 'index.html';
         }
     }
     initLogin();
@@ -59,7 +62,8 @@ $(function(){
         regexp: {}
     };
     weui.form.checkIfBlur('#form-login', regexp);
-    $("#btnLogin").on('click',function(){
+
+    function login(){
         weui.form.validate('#form-login', function (error) {
             if(error){
                 error.ele.focus();
@@ -83,8 +87,8 @@ $(function(){
                         store.set('password', jsonData.password);
                         weui.toast('登录成功！', 500);
                         setTimeout(function(){
-                            window.location.href = '/index.html';
-                        },600);    
+                            window.location.href = 'index.html';
+                        },600);
                     }else{
                         weui.topTips('账号或密码错误！');
                         $txtusername.val("");
@@ -97,11 +101,21 @@ $(function(){
                 });
             }
         }, regexp);
-    });
-    $(document).on('ajaxBeforeSend', function(e, xhr, options){
-        $("body").loading({title:'登录中'});
-    });
+    }
 
+    $("#btnLogin").on('click',function(){
+        login();
+    });
+    $txtusername.on('keydown',function(event) {
+        if(event.keyCode==13){
+            $txtuserpass.focus();
+        }
+    });
+    $txtuserpass.on('keydown',function(event) {
+        if(event.keyCode==13){
+            login();
+        }
+    });
 });
 </script>
 </html>

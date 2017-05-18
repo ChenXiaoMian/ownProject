@@ -29,6 +29,7 @@ function loadTemplateStore(key){
     $("#templateList").html(str);
 }
 $(function(){
+    innerInit();
     var $templateList = $("#templateList"),
         $templateListEmpty = $("#templateListEmpty");
     //获取模板类型

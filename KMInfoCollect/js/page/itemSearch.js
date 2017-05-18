@@ -1,7 +1,14 @@
 // 搜索项目逻辑
 $(function(){
-    // console.log($(".containerInner").height());
-    $("body").scrollTop(0);
+    innerInit();
+
+    $(".itemSearch").on('touchmove',function(event){
+        event.preventDefault();
+    });
+    $('#searchResult').on('touchmove',function(event){
+        event.stopPropagation();
+    });
+
     var $searchBar = $('#searchBar'),
         $searchResult = $('#searchResult'),
         $searchNothing = $('#searchNothing'),
@@ -11,7 +18,7 @@ $(function(){
         $searchKey = '';
     // console.log(pageManager.pageOther);
     //获取搜索关键字
-    console.log($.type(pageManager));
+    // console.log($.type(pageManager));
     if($.type(pageManager)=='undefined') window.pageManager.go('home');
 
     $searchKey = pageManager.pageOther ? pageManager.pageOther : '';
@@ -96,6 +103,7 @@ $(function(){
                     });
                     $searchNothing.hide();
                     $searchResult.html(resultStr).show();
+
                 }else{
                     $("#keyword").text($.trim($searchInput.val()));
                     $searchNothing.show();

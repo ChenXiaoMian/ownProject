@@ -97,3 +97,23 @@ function cloneObj(obj) {
   }
   return newObj;
 }
+
+//内页初始化
+function innerInit(){
+  $("body").scrollTop(0);
+}
+
+// 获取地址
+function getPosition(){
+  var geolocation = new BMap.Geolocation();
+  geolocation.getCurrentPosition(function(r){
+      if(this.getStatus() == BMAP_STATUS_SUCCESS){
+          var url = 'http://api.map.baidu.com/geocoder/v2/?ak=oN5ln95bD6YRawbMzfavu3GE&callback=?&location=' + r.point.lat + ',' + r.point.lng + '&output=json&pois=1';
+          $.getJSON(url, function (res) {
+              store.set('location',res.result.formatted_address);
+          });
+      }else{
+          alert('failed'+this.getStatus());
+      }
+  },{enableHighAccuracy: true});
+}

@@ -168,23 +168,22 @@ p.emptyTip{font-size:14px;color:#98a1a8;}
 .mt-80{margin-top:80px !important;}
 .login-panel{margin:0px 15px 10px;-webkit-border-radius:5px;border-radius:5px;}
 
-.km-btn-signout{width:70%;position:absolute;bottom:30px;left:50%;margin-left:-35%;}
+.km-btn-signout{width:80%;margin:3rem auto 0;}
 .km-btn-signout .weui-btn{font-size:15px;color:#F96450;}
 
 /**
  *  iPhone 5/5s portrait
  */
 @media only screen and (max-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
-.navIconPos{top:100px;}
+.navIconPos{top:11rem;}
 h1.logo{top:53px;}
 .navIcon{margin-bottom: 8px;}
 .navIcon>a .icon{margin:0 auto 10px;}
-.km-btn-signout{bottom:20px;}
 }
 
 /* iPhone 6+ Portrait */
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation : portrait) {
-.navIconPos{top:160px;}
+.navIconPos{top:14rem;}
 .navIcon{margin-bottom: 30px;}
 .km-history-info{flex-direction:row;}
 .km-btn-signout .weui-btn{font-size:16px;}

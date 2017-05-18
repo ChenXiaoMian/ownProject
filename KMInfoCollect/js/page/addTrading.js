@@ -7,6 +7,12 @@ $(function(){
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
 
+    if(store.get('location') && store.get('location')!=''){
+        $(".getLocation").text(store.get('location'));
+    }else{
+        $(".getLocation").text('暂无位置');
+    }
+
     init();
     // 初始化
     function init(){
@@ -36,7 +42,7 @@ $(function(){
         $("select[name='MedicineType']").find('option[value="'+data.MedicineType+'"]').prop('selected',true);
         $("input[name='MerchantName']").val(data.MerchantName);
         // 获取药材规格
-        if(data.StandardStr!=''){
+        if(data.hasOwnProperty('StandardStr')&&data.StandardStr!=''){
             var standard = data.StandardStr,
                 arr = [],
                 strs = '';
@@ -105,6 +111,7 @@ $(function(){
                         }
                         cache.push(values);
                     });
+                    jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
                     jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                     var loading = weui.loading('上传中...');
                     $.each(cache,function(index,item){
@@ -161,6 +168,7 @@ $(function(){
                             $.each(typeData,function(key,value){
                                 jsonData[value.name] = value.value;
                             });
+                            jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
                             jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                             var loading = weui.loading('上传中...');
                             uploader(jsonData,'/saveTradeJSONP',function(){
@@ -268,6 +276,7 @@ $(function(){
                 MedicineType: $("select[name='MedicineType']").val(),
                 StandardStr: store.get('StandardStr'),
                 Addition: $.trim($("textarea[name='Addition']").val()),
+                Address: store.get('location') ? store.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                 tid: new Date().getTime()
             };

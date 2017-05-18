@@ -6,6 +6,12 @@ $(function(){
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
 
+    if(store.get('location') && store.get('location')!=''){
+        $(".getLocation").text(store.get('location'));
+    }else{
+        $(".getLocation").text('暂无位置');
+    }
+
     init();
     // 初始化
     function init(){
@@ -60,6 +66,7 @@ $(function(){
                 $.each(formData,function(key,value){
                     jsonData[value.name] = value.value;
                 });
+                jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                 var loading = weui.loading('上传中...');

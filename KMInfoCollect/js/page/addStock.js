@@ -1,10 +1,17 @@
 // 存量采集逻辑
 $(function(){
+    innerInit();
     var userName = store.get('userName'),
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog');
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
+
+    if(store.get('location') && store.get('location')!=''){
+        $(".getLocation").text(store.get('location'));
+    }else{
+        $(".getLocation").text('暂无位置');
+    }
 
     stockAddInit();
     // 市场存量初始化
@@ -48,6 +55,7 @@ $(function(){
                 $.each(formData,function(key,value){
                     jsonData[value.name] = value.value;
                 });
+                jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                 var loading = weui.loading('上传中...');
@@ -143,6 +151,7 @@ $(function(){
                 Market: $("input[name='Market']").val(),
                 Medicine: $("input[name='Medicine']").val(),
                 Addition: $.trim($("textarea[name='Addition']").val()),
+                Address: store.get('location') ? store.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                 tid: new Date().getTime()
             };

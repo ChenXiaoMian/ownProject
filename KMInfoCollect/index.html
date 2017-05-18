@@ -33,10 +33,11 @@
                     <a href="javascript:;" class="history js_item" data-id="historyData"><div class="icon"></div><span>历史记录</span></a>
                     <a href="javascript:;" class="temp js_item" data-id="tempData"><div class="icon"></div><span>模板管理</span></a>
                 </div>
+                <div class="km-btn-signout">
+                <a href="login.html" class="weui-btn weui-btn_default" id="btnSignOut">退出登录</a>
+                </div>
             </div>
-            <div class="km-btn-signout">
-            <a href="/login.html" class="weui-btn weui-btn_default" id="btnSignOut">退出登录</a>
-            </div>
+
         </div>
     </div>
     </script>
@@ -130,7 +131,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -235,7 +236,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -404,7 +405,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -511,7 +512,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -629,7 +630,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -767,7 +768,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -922,7 +923,7 @@
             <div class="weui-panel__bd">
                 <div class="weui-media-box weui-media-box_text km-media-box_text">
                     <p><span class="adLet">信 息 员：</span><b class="getUserName"></b></p>
-                    <p><span>采集地址：</span>中国广东省深圳市福田区泰科路3号</p>
+                    <p><span>采集地址：</span><b class="getLocation"></b></p>
                     <p><span>采集时间：</span><b class="getNow"></b></p>
                 </div>
             </div>
@@ -1239,29 +1240,24 @@
     <script type="text/html" id="tpl_tempOutput">
     <div class="page containerInner">
         <header class="comHead">
-            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">产出信息采集</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+        <form id="form-output-temp" name="formOutputTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','grower');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">种 植 户</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/种植户名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-grower">关键字/种植户</p><input type="hidden" required name="GrowerName" class="sVal-grower" emptyTips="请选择种植户"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择中药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
         </div>
@@ -1269,53 +1265,75 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="" emptyTips="请输入种植面积"//>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="" emptyTips="请输入单位产量"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
-            <a class="weui-cell weui-cell_access actionSheet" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="持平">持平</option>
+                        <option value="上升">上升</option>
+                        <option value="下降">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="0"/>
+                </div>
+                <div class="weui-cell__dw flex-20 c-c7c7c7">%</div>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">采收价格</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="" emptyTips="请输入采收价格"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">价格趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="持平">持平</option>
+                        <option value="上升">上升</option>
+                        <option value="下降">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="0"/>
+                </div>
+                <div class="weui-cell__dw flex-20 c-c7c7c7">%</div>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植意愿</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="强烈">强烈</option>
+                        <option value="非常强烈">非常强烈</option>
+                        <option value="消极">消极</option>
+                        <option value="非常消极">非常消极</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="" emptyTips="请输入计划面积"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
@@ -1324,226 +1342,294 @@
             <div class="weui-cell weui-cells_checkbox km-cells-checkbox">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">是否转产</label></div>
                 <label class="weui-cell__hd weui-check__label ml-20" for="s11">
-                    <input type="radio" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                    <input type="radio" class="weui-check" disabled="disabled" id="s11" value="1"/>
                     <i class="weui-icon-checked"></i>是
                 </label>
                 <label class="weui-cell__hd weui-check__label ml-40" for="s12">
-                    <input type="radio" name="checkbox1" class="weui-check" id="s12"/>
+                    <input type="radio" class="weui-check" disabled="disabled" id="s12" value="0"/>
                     <i class="weui-icon-checked"></i>否
                 </label>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">转产药材</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+            <a class="weui-cell weui-cell_access sClick-cmedicine" href="javascript:;">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">转产药材</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-cmedicine bg-efefef">关键字/中药材名称</p><input type="hidden" disabled="disabled" class="sVal-cmedicine" emptyTips="请选择转产药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" placeholder="" emptyTips="请输入转产面积" disabled="disabled"/>
                 </div>
-                <div class="weui-cell__dw c-c7c7c7">亩</div>
+                <div class="weui-cell__dw flex-20 c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
                 </div>
             </div>
         </div>
-        <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
         </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="tempOutput-js">
+        $("#tempOutput-js").load('./js/page/tempOutput.js');
+    </script>
     </script>
     <!-- 环境采集模板 -->
     <script type="text/html" id="tpl_tempEnvi">
     <div class="page containerInner">
         <header class="comHead">
-            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">环境信息采集</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+        <form id="form-envi-temp" name="formEnviTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">天气状况</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Weather">
+                        <option value="">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="多雨">多雨</option>
+                        <option value="少雨">少雨</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            </div>
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">灾害描述</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Disaster">
+                        <option value="">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="干旱">干旱</option>
+                        <option value="洪涝">洪涝</option>
+                        <option value="地震">地震</option>
+                        <option value="风沙">风沙</option>
+                        <option value="台风">台风</option>
+                        <option value="病虫">病虫</option>
+                        <option value="污染">污染</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写关键词"/>
+                    <input class="weui-input" type="text" placeholder="请填写关键词" name="Policy"/>
                 </div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产量趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Tendency">
+                        <option value="">请选择</option>
+                        <option value="持平">持平</option>
+                        <option value="上升">上升</option>
+                        <option value="下降">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="0" name="Range"/>
+                </div>
+                <div class="weui-cell__dw flex-20 c-c7c7c7">%</div>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
                 </div>
             </div>
         </div>
-        <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
         </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="tempEnvi-js">
+        $("#tempEnvi-js").load('./js/page/tempEnvi.js');
+    </script>
     </script>
     <!-- 饮片采集模板 -->
     <script type="text/html" id="tpl_tempPieces">
     <div class="page containerInner">
         <header class="comHead">
-            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">饮片信息采集</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+        <form id="form-pieces-temp" name="formPiecesTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','manufacturer');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/生产商名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-manufacturer">关键字/生产商名称</p><input type="hidden" required name="Manufacturer" class="sVal-manufacturer" emptyTips="请选择生产商名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">药材名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择中药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产量规模<br />(加工量)</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Scale">
+                        <option value="">请选择</option>
+                        <option value="持平">持平</option>
+                        <option value="增加">增加</option>
+                        <option value="减少">减少</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            </div>
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">饮片规格</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Standard">
+                        <option value="">请选择</option>
+                        <option value="统货">统货</option>
+                        <option value="一等货">一等货</option>
+                        <option value="二等货">二等货</option>
+                        <option value="特等货">特等货</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">供 应 商<br />(原材料)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称" name="Supplier"/>
                 </div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">市场表现<br />(饮片)</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="活跃">活跃</option>
+                        <option value="不活跃">不活跃</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">市场需求<br />(饮片)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写饮片市场需求"/>
+                    <input class="weui-input" type="text" placeholder="" disabled="disabled"/>
                 </div>
                 <div class="weui-cell__ft"></div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
                 </div>
             </div>
         </div>
-        <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
         </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="tempPieces-js">
+        $("#tempPieces-js").load('./js/page/tempPieces.js');
+    </script>
     </script>
     <!-- 产品采集模板 -->
     <script type="text/html" id="tpl_tempPro">
     <div class="page containerInner">
         <header class="comHead">
-            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">产品信息采集</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+        <form id="form-pro-temp" name="formProTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label">产品类型</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Product">
+                        <option value="">请选择</option>
+                        <option value="成药">成药</option>
+                        <option value="食品">食品</option>
+                        <option value="保健品">保健品</option>
+                    </select>
                 </div>
                 <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产品名称</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写产品名称"/>
+                    <input class="weui-input" type="text" placeholder="请填写产品名称" name="ProductName"/>
                 </div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">产品规格</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写产品规格"/>
+                    <input class="weui-input" type="text" placeholder="请填写产品规格" name="Standard"/>
                 </div>
             </div>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','manufacturer');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">生 产 商</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/生产商名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-manufacturer">关键字/生产商名称</p><input type="hidden" required name="ManufacturerName" class="sVal-manufacturer" emptyTips="请选择生产商名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
                 <div class="weui-cell__hd km-line"><label class="weui-label adLet">原 药 材</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/中药材名称</p><input type="hidden" required name="MedicineName" class="sVal-medicine" emptyTips="请选择中药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
         </div>
@@ -1551,164 +1637,202 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">原药比重</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" placeholder="" name="Ratio"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">%</div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">药材规格</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="MedicineStandard">
+                    </select>
                 </div>
                 <div class="weui-cell__ft"></div>
-            </a>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label adLet">供 应 商<br />(原材料)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">供 应 商<br />(原药材)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写原材料供应商名称"/>
+                    <input class="weui-input" type="text" placeholder="请填写原药材供应商名称" name="Supplier"/>
                 </div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">质量要求<br />(原材料)</label></div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">质量要求<br />(原药材)</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <input class="weui-input" type="text" placeholder="请填写原药材质量要求" name="QualityRequire"/>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">年销售额<br />(产品)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" placeholder="" disabled="disabled"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">需求趋势<br />(产品)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写产品需求趋势"/>
+                    <input class="weui-input" type="text" placeholder="" disabled="disabled"/>
                 </div>
                 <div class="weui-cell__ft"></div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
                 </div>
             </div>
         </div>
-        <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
         </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="tempPro-js">
+        $("#tempPro-js").load('./js/page/tempPro.js');
+    </script>
     </script>
     <!-- 贸易采集模板 -->
     <script type="text/html" id="tpl_tempTrading">
     <div class="page containerInner">
         <header class="comHead">
-            <button type="button" class="backTo" onclick="history.back();"><i class="iconfont icon-back"></i></button>
+            <button type="button" class="backTo" onclick="window.pageManager.back();"><i class="iconfont icon-back"></i></button>
             <div class="headTitle">贸易信息采集</div>
         </header>
-        <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+        <form id="form-trading-temp" name="formTradingTemp">
+        <div class="weui-cells weui-cells_form firstTemp">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','market');">
                 <div class="weui-cell__hd km-line"><label class="weui-label">交易市场</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-market">关键字/市场名称</p><input type="hidden" required name="Market" class="sVal-market" emptyTips="请选择市场名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">商户名称</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder="请填写商户名称"/>
+                    <input class="weui-input" required type="text" placeholder="请填写商户名称" name="MerchantName"/>
                 </div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">经营模式</label></div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">经营规模</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="Scale">
+                        <option value="">请选择</option>
+                        <option value="大户">大户</option>
+                        <option value="散户">散户</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label">药材名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/药材名称</p>
-                </div>
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','medicine');">
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">药材名称</label></div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-medicine">关键字/中药材名称</p><input type="hidden" required name="Medicine" class="sVal-medicine" emptyTips="请选择中药材名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" href="javascript:window.pageManager.go('itemSearch','base');">
                 <div class="weui-cell__hd km-line"><label class="weui-label">产地名称</label></div>
-                <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">关键字/市场名称</p>
-                </div>
+                <div class="weui-cell__bd"><p class="c-c7c7c7 sText-base">关键字/产地名称</p><input type="hidden" required name="BaseName" class="sVal-base" emptyTips="请选择产地名称"/></div>
                 <div class="weui-cell__ft"></div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd km-line"><label class="weui-label">交易类型</label></div>
+            <div class="weui-cell">
+                <div class="weui-cell__hd km-line"><label class="weui-label ">交易类型</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" name="MedicineType">
+                        <option value="">请选择</option>
+                        <option value="原药材">原药材</option>
+                        <option value="饮片">饮片</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格01</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格 1</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <select class="weui-select" disabled="disabled">
+                    </select>
                 </div>
-                <div class="weui-cell__dw c-c7c7c7">%</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br />(日平均)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" placeholder="" disabled="disabled"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br />(日平均)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" placeholder=""/>
+                    <input class="weui-input" type="number" placeholder="" disabled="disabled" emptyTips="请输入交易价格"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
             </div>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="持平">持平</option>
+                        <option value="上升">上升</option>
+                        <option value="下降">下降</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" disabled="disabled" placeholder="0"/>
+                </div>
+                <div class="weui-cell__dw flex-20 c-c7c7c7">%</div>
+            </div>
+            <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div>
                 <div class="weui-cell__bd">
-                    <p class="c-c7c7c7">请选择</p>
+                    <select class="weui-select" disabled="disabled">
+                        <option value="">请选择</option>
+                        <option value="正常">正常</option>
+                        <option value="活跃">活跃</option>
+                        <option value="不活跃">不活跃</option>
+                    </select>
                 </div>
-                <div class="weui-cell__ft"></div>
-            </a>
-            <a href="javascript:void(0);" class="weui-cell weui-cell_link text-center">
-                <div class="weui-cell__bd c-3dbaff"><i class="iconfont icon-add"></i> 增加规格</div>
-            </a>
+            </div>
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line align-start"><label class="weui-label ">备注说明</label></div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" placeholder="请填写备注说明" rows="3"></textarea>
+                    <textarea class="weui-textarea" name="Addition" placeholder="请填写备注说明" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">设为默认</div>
+                <div class="weui-cell__ft">
+                    <input class="weui-switch" type="checkbox" name="IsDefault" value="0"/>
                 </div>
             </div>
         </div>
-        <div class="km-page-button">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default km-btn_default" id="showFailToast">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="showToast">保存为模板</a>
+        <div class="km-page-button addPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary btnShowDialog">保存为模板</a>
         </div>
+        <div class="km-page-button editPanel" style="display:none;">
+            <a href="javascript:window.pageManager.back();" class="weui-btn weui-btn_plain-default km-btn_default">取消修改</a>
+            <a href="javascript:;" class="weui-btn weui-btn_plain-primary km-btn_primary" id="form-temp-edit">保存修改</a>
+        </div>
+        </form>
     </div>
+    <script type="text/javascript" id="tempTrading-js">
+        $("#tempTrading-js").load('./js/page/tempTrading.js');
+    </script>
     </script>
     <!-- 选择模板 -->
     <script type="text/html" id="tpl_tempChoose">
@@ -1736,7 +1860,7 @@
             <form class="weui-search-bar__form">
                 <div class="weui-search-bar__box">
                     <i class="weui-icon-search"></i>
-                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="输入关键词搜索" required/>
+                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="输入关键词搜索" required autocomplete="off" />
                     <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
                 </div>
             </form>
@@ -1762,20 +1886,25 @@
 <script src="./js/json2.js"></script>
 <script src="./js/store.everything.min.js"></script>
 <script src="./js/weui.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oN5ln95bD6YRawbMzfavu3GE"></script>
+
 <script type="text/javascript">
 $(function(){
     // 判断用户是否登录
     function IsLogin(){
         if(!store.get("loginName")){
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         }
     }
-    //IsLogin();
+    IsLogin();
     $("#btnSignOut").on('click',function(){
         store.remove('userName');
         store.remove('loginName');
         store.remove('password');
-        // weui.toast('操作成功', 30000);
+        weui.toast('退出成功', 30000);
+        setTimeout(function(){
+            window.location.href = 'login.html';
+        },1000);
     });
 
     $('.js_item').on('click', function(){
@@ -1783,6 +1912,7 @@ $(function(){
         window.pageManager.go(id);
     });
 
+    getPosition();
 });
 </script>
 </html>
