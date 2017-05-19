@@ -71,7 +71,16 @@ $(function(){
     // 设置新建操作
     $("#btnNewTemp,#btnNewTemp2").on('click',function(){
         store.remove('editTemp');
-        window.pageManager.go($tempKey);
+        if(store.get($tempKey)&&store.get($tempKey)!=''){
+            var len = JSON.parse(store.get($tempKey)).data.length;
+            if(len>=20){
+                weui.alert('创建最多20个模板');
+            }else{
+                window.pageManager.go($tempKey);
+            }
+        }else{
+            window.pageManager.go($tempKey);
+        }
     });
 });
 $(window).on('hashchange', function(){

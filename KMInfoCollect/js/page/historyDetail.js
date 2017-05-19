@@ -5,10 +5,6 @@ $(function(){
     $(".historyDetail").on('touchmove',function(event){
         event.preventDefault();
     });
-    $('#histCollCon').on('touchmove',function(event){
-        event.stopPropagation();
-    });
-
 
     var $histColl = $("#histColl"),
         $histCollCon = $("#histCollCon");

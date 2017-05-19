@@ -2,15 +2,14 @@
 $(function(){
     var userName = store.get('userName'),
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
-        $iosDialog = $('.js_dialog');
+        $iosDialog = $('.js_dialog'),
+        $storeKey = 'tempOutput';
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
 
-    if(store.get('location') && store.get('location')!=''){
-        $(".getLocation").text(store.get('location'));
-    }else{
-        $(".getLocation").text('暂无位置');
-    }
+    //设置地址
+    getPosition();
+    setPosition($(".getLocation"));
 
     init();
     // 初始化
@@ -36,7 +35,7 @@ $(function(){
     // 选择模板后加载对应数据
     function loadTemp(tid){
         var data = {};
-        $.each(JSON.parse(store.get('tempOutput')).data,function(index,item){
+        $.each(JSON.parse(store.get($storeKey)).data,function(index,item){
             if(item.tid == tid) data = item;
         });
         changeSearch('.sText-base','.sVal-base',data.BaseName);
@@ -66,7 +65,7 @@ $(function(){
                 $.each(formData,function(key,value){
                     jsonData[value.name] = value.value;
                 });
-                jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
+                jsonData.Address = Cookies.get('location') ? Cookies.get('location') : '暂无位置';
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
 
                 var loading = weui.loading('上传中...');
@@ -127,7 +126,7 @@ $(function(){
                     Medicine: $("input[name='Medicine']").val(),
                     Addition: $.trim($("textarea[name='Addition']").val()),
                 };
-                var json = JSON.parse(store.get('tempOutput')),
+                var json = JSON.parse(store.get($storeKey)),
                     eindex = 0,
                     jsonData = {};
                 $.each(json.data,function(index,item){
@@ -139,8 +138,8 @@ $(function(){
                 $.extend(jsonData, oldData);
                 json.data.splice(eindex,1,jsonData);
                 var loading = weui.loading('保存中...');
-                store.remove('tempOutput');
-                store.set('tempOutput',JSON.stringify(json));
+                store.remove($storeKey);
+                store.set($storeKey,JSON.stringify(json));
                 loading.hide();
                 weui.toast('模板保存成功', 500);
             }else{
@@ -164,29 +163,37 @@ $(function(){
                 GrowerName: $("input[name='GrowerName']").val(),
                 Medicine: $("input[name='Medicine']").val(),
                 Addition: $.trim($("textarea[name='Addition']").val()),
+                Address: Cookies.get('location') ? Cookies.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                 tid: new Date().getTime()
             };
-            var loading = weui.loading('保存中...');
-            var $temp = store.get('tempOutput') ? store.get('tempOutput') : '';
-            //增加历史记录
-            if($temp!='' && !isEmpty(JSON.parse($temp).data)){
-                // 更新
-                var temp = JSON.parse($temp);
-                // 若当前设为默认，clear为0
-                temp.data.unshift(jsonData);
-                store.remove('tempOutput');
-                store.set('tempOutput',JSON.stringify(temp));
-            }else{
-                // 新建
-                var historyData = {
-                    data : []
-                };
-                historyData.data.unshift(jsonData);
-                store.set('tempOutput',JSON.stringify(historyData));
+
+            var $temp = store.get($storeKey) ? store.get($storeKey) : '';
+            if($temp && $temp!=''){
+                var len = JSON.parse($temp).data.length;
+                if(len>=$tempNum){
+                    weui.alert('创建最多'+$tempNum+'个模板');
+                    return false;
+                }
             }
-            loading.hide();
-            weui.toast('模板保存成功', 500);
+                var loading = weui.loading('保存中...');
+                //增加模板
+                if($temp!='' && !isEmpty(JSON.parse($temp).data)){
+                    // 更新
+                    var temp = JSON.parse($temp);
+                    // 若当前设为默认，clear为0
+                    temp.data.unshift(jsonData);
+                    store.remove($storeKey);
+                    store.set($storeKey,JSON.stringify(temp));
+                }else{
+                    // 新建
+                    var historyData = {data : []};
+                    historyData.data.unshift(jsonData);
+                    store.set($storeKey,JSON.stringify(historyData));
+                }
+                loading.hide();
+                weui.toast('模板保存成功', 500);
+
         }
 
     });

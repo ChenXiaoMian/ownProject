@@ -42,7 +42,7 @@ h1.logo{width: 56%;height: 45px;background:url(../img/index/text.png) no-repeat 
 .lh-24{line-height:24px !important;}
 .adLet{letter-spacing: 1px;}
 .align-start{align-self: flex-start;}
-.align-items-left{align-items:left !important;}
+.align-items-left{align-items:flex-start !important;}
 .direction-column{flex-direction:column !important;}
 .pl-15{padding-left: 15px;}
 .ml-20{margin-left:20px;}
@@ -156,7 +156,7 @@ i.ic_none_reminder{display:block;width:55px;height:55px;background:url(../img/ic
 .emptyContent{position: absolute;top: 50%;left: 50%;/* transform: translate(-50%, -50%); */width:100%;text-align: center;margin-left:-50%;margin-top:-25%;}
 p.emptyTip{font-size:14px;color:#98a1a8;}
 .emptyContent .btn-link{display:inline-block;font-size:14px;color:#fff;padding:12px 16px;background:#3cbaff;margin-top:10px;-webkit-border-radius:30px;border-radius:30px;}
-.weui-cell__opa{-webkit-box-flex:  0 0 50px;-webkit-flex:  0 0 50px;flex: 0 0 50px;margin-left:10px;}
+.weui-cell__opa{-webkit-box-flex:  0 0 60px;-webkit-flex:  0 0 60px;flex: 0 0 60px;margin-left:10px;}
 
 .posContent{position:absolute;width:100%;min-height:100%;top:0;left:0;padding-top:45px;padding-bottom:83px;background-color:#f00;}
 .tempList-wrap{display:flex;flex-flow:column;height:100%;}
@@ -183,7 +183,7 @@ h1.logo{top:53px;}
 
 /* iPhone 6+ Portrait */
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation : portrait) {
-.navIconPos{top:14rem;}
+.navIconPos{top:16rem;}
 .navIcon{margin-bottom: 30px;}
 .km-history-info{flex-direction:row;}
 .km-btn-signout .weui-btn{font-size:16px;}

@@ -3,15 +3,15 @@ $(function(){
     var userName = store.get('userName'),
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog'),
-        $getStandard = '';
+        $getStandard = '',
+        $storeKey = 'tempTrading',  //tempTrading
+        $editId = 0;
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
 
-    if(store.get('location') && store.get('location')!=''){
-        $(".getLocation").text(store.get('location'));
-    }else{
-        $(".getLocation").text('暂无位置');
-    }
+    //设置地址
+    getPosition();
+    setPosition($(".getLocation"));
 
     init();
     // 初始化
@@ -33,7 +33,7 @@ $(function(){
     // 选择模板后加载对应数据
     function loadTemp(tid){
         var data = {};
-        $.each(JSON.parse(store.get('tempTrading')).data,function(index,item){
+        $.each(JSON.parse(store.get($storeKey)).data,function(index,item){
             if(item.tid == tid) data = item;
         });
 
@@ -111,7 +111,7 @@ $(function(){
                         }
                         cache.push(values);
                     });
-                    jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
+                    jsonData.Address = Cookies.get('location') ? Cookies.get('location') : '暂无位置';
                     jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                     var loading = weui.loading('上传中...');
                     $.each(cache,function(index,item){
@@ -168,7 +168,7 @@ $(function(){
                             $.each(typeData,function(key,value){
                                 jsonData[value.name] = value.value;
                             });
-                            jsonData.Address = store.get('location') ? store.get('location') : '暂无位置';
+                            jsonData.Address = Cookies.get('location') ? Cookies.get('location') : '暂无位置';
                             jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                             var loading = weui.loading('上传中...');
                             uploader(jsonData,'/saveTradeJSONP',function(){
@@ -235,7 +235,7 @@ $(function(){
                     StandardStr: store.get('StandardStr'),
                     Addition: $.trim($("textarea[name='Addition']").val()),
                 };
-                var json = JSON.parse(store.get('tempTrading')),
+                var json = JSON.parse(store.get($storeKey)),
                     eindex = 0,
                     jsonData = {};
                 $.each(json.data,function(index,item){
@@ -247,8 +247,8 @@ $(function(){
                 $.extend(jsonData, oldData);
                 json.data.splice(eindex,1,jsonData);
                 var loading = weui.loading('保存中...');
-                store.remove('tempTrading');
-                store.set('tempTrading',JSON.stringify(json));
+                store.remove($storeKey);
+                store.set($storeKey,JSON.stringify(json));
                 loading.hide();
                 weui.toast('模板保存成功', 500);
             }else{
@@ -276,30 +276,37 @@ $(function(){
                 MedicineType: $("select[name='MedicineType']").val(),
                 StandardStr: store.get('StandardStr'),
                 Addition: $.trim($("textarea[name='Addition']").val()),
-                Address: store.get('location') ? store.get('location') : '暂无位置',
+                Address: Cookies.get('location') ? Cookies.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                 tid: new Date().getTime()
             };
-            var loading = weui.loading('保存中...');
-            var $temp = store.get('tempTrading') ? store.get('tempTrading') : '';
-            //增加历史记录
-            if($temp!='' && !isEmpty(JSON.parse($temp).data)){
-                // 更新
-                var temp = JSON.parse($temp);
-                // 若当前设为默认，clear为0
-                temp.data.unshift(jsonData);
-                store.remove('tempTrading');
-                store.set('tempTrading',JSON.stringify(temp));
-            }else{
-                // 新建
-                var historyData = {
-                    data : []
-                };
-                historyData.data.unshift(jsonData);
-                store.set('tempTrading',JSON.stringify(historyData));
+
+            var $temp = store.get($storeKey) ? store.get($storeKey) : '';
+            if($temp && $temp!=''){
+                var len = JSON.parse($temp).data.length;
+                if(len>=$tempNum){
+                    weui.alert('创建最多'+$tempNum+'个模板');
+                    return false;
+                }
             }
-            loading.hide();
-            weui.toast('模板保存成功', 500);
+                var loading = weui.loading('保存中...');
+                //增加模板
+                if($temp!='' && !isEmpty(JSON.parse($temp).data)){
+                    // 更新
+                    var temp = JSON.parse($temp);
+                    // 若当前设为默认，clear为0
+                    temp.data.unshift(jsonData);
+                    store.remove($storeKey);
+                    store.set($storeKey,JSON.stringify(temp));
+                }else{
+                    // 新建
+                    var historyData = {data : []};
+                    historyData.data.unshift(jsonData);
+                    store.set($storeKey,JSON.stringify(historyData));
+                }
+                loading.hide();
+                weui.toast('模板保存成功', 500);
+
         }
 
     });
@@ -318,6 +325,7 @@ $(function(){
                 if(!isEmpty(JSON.parse($key))){
                     $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
                     loadTemp(JSON.parse($key).id);
+                    $editId = JSON.parse($key).id;
                     store.remove('seatempTrading');
                 }
             }
@@ -394,15 +402,33 @@ $(function(){
                 arr = [],
                 strs = '';
                 arr = standard.split(",");
-                if(arr.length>0){
-                    $dom.empty();
-                    $.each(arr,function(index,item){
-                        strs+='<option value="'+item+'">'+item+'</option>';
+                if(store.get('editTemp')&&store.get('editTemp')!=''){
+                    // 有无选择模板
+                    var data = {};
+                    $.each(JSON.parse(store.get($storeKey)).data,function(index,item){
+                        if(item.tid == $editId) data = item;
                     });
-                    $dom.html(strs);
+                    if(data.hasOwnProperty('StandardStr')&&data.StandardStr!=''){
+                        arr = data.StandardStr.split(",");
+                        $.each(arr,function(index,item){
+                            strs+='<option value="'+item+'">'+item+'</option>';
+                        });
+                        $dom.html(strs);
+                    }else{
+                        $dom.empty();
+                    }
                 }else{
-                    $dom.empty();
+                    if(arr.length>0){
+                        $dom.empty();
+                        $.each(arr,function(index,item){
+                            strs+='<option value="'+item+'">'+item+'</option>';
+                        });
+                        $dom.html(strs);
+                    }else{
+                        $dom.empty();
+                    }
                 }
+
         }else{
             weui.alert('最多可添加10个规格');
         }

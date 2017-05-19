@@ -2,6 +2,7 @@
 <html lang="zh-cn">
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>中药材数据采集系统</title>
     <link rel="stylesheet" type="text/css" href="css/weui.min.css" />
@@ -94,7 +95,7 @@
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量(总)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量<br />(总)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" required type="number" name="Consume" placeholder="" emptyTips="请输入年消耗量(总)"/>
                 </div>
@@ -108,7 +109,7 @@
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价 (平均)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价<br />(平均)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" required type="number" name="InventoryCost" placeholder="" emptyTips="存量进价 (平均)"/>
                 </div>
@@ -481,7 +482,7 @@
                 </div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策<br />(关键词)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="text" placeholder="请填写关键词" name="Policy"/>
                 </div>
@@ -1094,7 +1095,7 @@
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量(总)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量<br />(总)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
                 </div>
@@ -1108,7 +1109,7 @@
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价 (平均)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价<br />(平均)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="number" readonly="readonly" disabled="disabled"/>
                 </div>
@@ -1433,7 +1434,7 @@
                 </div>
             </div>
             <div class="weui-cell">
-                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策 (关键词)</label></div>
+                <div class="weui-cell__hd km-line"><label class="weui-label ">当地政策<br />(关键词)</label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" type="text" placeholder="请填写关键词" name="Policy"/>
                 </div>
@@ -1860,7 +1861,7 @@
             <form class="weui-search-bar__form">
                 <div class="weui-search-bar__box">
                     <i class="weui-icon-search"></i>
-                    <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="输入关键词搜索" required autocomplete="off" />
+                    <input type="input" class="weui-search-bar__input" id="searchInput" placeholder="输入关键词搜索" required autocomplete="off" />
                     <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
                 </div>
             </form>
@@ -1881,13 +1882,12 @@
     </script>
     </script>
 </body>
-
+<script src="./js/js.cookie.js"></script>
 <script src="./js/common.js"></script>
 <script src="./js/json2.js"></script>
 <script src="./js/store.everything.min.js"></script>
 <script src="./js/weui.min.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oN5ln95bD6YRawbMzfavu3GE"></script>
-
 <script type="text/javascript">
 $(function(){
     // 判断用户是否登录
@@ -1901,6 +1901,7 @@ $(function(){
         store.remove('userName');
         store.remove('loginName');
         store.remove('password');
+        Cookies.remove('location');
         weui.toast('退出成功', 30000);
         setTimeout(function(){
             window.location.href = 'login.html';

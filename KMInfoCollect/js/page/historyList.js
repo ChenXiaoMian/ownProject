@@ -9,9 +9,7 @@ $(function(){
     // 历史记录列表初始化
     function histListInit(key){
         if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
-            console.log(key);
             loadHistoryStore(key);
-
             $historyListEmpty.hide();
             $historyList.show();
         }else{

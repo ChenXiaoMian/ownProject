@@ -32,6 +32,8 @@ function isEmpty(obj) {
 }
 
 $kmurl = 'http://km126.km1818.com:8181/KMInfoCollect/services';
+$tempNum = 20;
+
 // 上传ajax
 function uploader(jsonData,url,callback){
   var loading = weui.loading('上传中...');
@@ -49,7 +51,7 @@ function uploader(jsonData,url,callback){
     },
     error: function(jqXHR, textStatus, errorThrown){
       loading.hide();
-      weui.toast('上传失败', 2000);
+      weui.alert('上传失败');
     }
   });
 }
@@ -105,15 +107,26 @@ function innerInit(){
 
 // 获取地址
 function getPosition(){
-  var geolocation = new BMap.Geolocation();
-  geolocation.getCurrentPosition(function(r){
-      if(this.getStatus() == BMAP_STATUS_SUCCESS){
-          var url = 'http://api.map.baidu.com/geocoder/v2/?ak=oN5ln95bD6YRawbMzfavu3GE&callback=?&location=' + r.point.lat + ',' + r.point.lng + '&output=json&pois=1';
-          $.getJSON(url, function (res) {
-              store.set('location',res.result.formatted_address);
-          });
-      }else{
-          alert('failed'+this.getStatus());
-      }
-  },{enableHighAccuracy: true});
+  if(Cookies.get('location')=='' || !Cookies.get('location')){
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var url = 'http://api.map.baidu.com/geocoder/v2/?ak=oN5ln95bD6YRawbMzfavu3GE&callback=?&location=' + r.point.lat + ',' + r.point.lng + '&output=json&pois=1';
+            $.getJSON(url, function (res) {
+                Cookies.set('location', res.result.formatted_address, { expires: 1 });
+            });
+        }else{
+            alert('failed'+this.getStatus());
+        }
+    },{enableHighAccuracy: true});
+  }
+}
+
+// 设置地址栏
+function setPosition(dom){
+  if(Cookies.get('location') && Cookies.get('location')!=''){
+      dom.text(Cookies.get('location'));
+  }else{
+      dom.text('暂无位置');
+  }
 }
