@@ -1,13 +1,24 @@
 // 选择模板逻辑
 $(function(){
-    var $tempKey = pageManager.pageOther ? pageManager.pageOther : '',
-        $tempRadio = $("#tempRadio"),
+    var $tempKey = store.get('getTemp') ? store.get('getTemp') : '';
+    var $tempRadio = $("#tempRadio"),
         $tempRadioEmpty = $("#tempRadioEmpty");
 
+    $(".tempChoose").on('touchmove',function(event){
+        event.preventDefault();
+    });
+
     loadTempInit($tempKey);
+    
+    var contHeight = parseInt($(".tempChoose").height()),
+        eleHeight = parseInt($('#tempRadio').height())+45;
+    if(eleHeight>=contHeight){
+        $('#tempRadio').on('touchmove',function(event){
+            event.stopPropagation();
+        });
+    }
 
     function loadTempInit(key){
-        pageManager.searchAux=null;
         if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
             loadTempList(key);
             $tempRadio.show();

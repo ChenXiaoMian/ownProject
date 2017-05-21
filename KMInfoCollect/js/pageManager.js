@@ -44,7 +44,6 @@ $(function () {
 
             var url = location.hash.indexOf('#') === 0 ? location.hash : '#';
             var page = self._find('url', url) || self._defaultPage;
-            console.log(page);
             this._go(page);
             return this;
         },
@@ -60,7 +59,6 @@ $(function () {
             }
             location.hash = config.url;
             if(arguments.length>1){
-                // store.set('pageOther',JSON.stringify(arguments[1]));
                 this.pageOther = arguments[1];
             };
         },
@@ -81,6 +79,7 @@ $(function () {
                 config: config,
                 dom: $html
             });
+            // console.log(this._pageStack);
             if (!config.isBind) {
                 this._bind(config);
             }
@@ -89,11 +88,7 @@ $(function () {
         },
         back: function () {
             history.back();
-            pageManager.searchAux = null;
             this.pageOther = null;
-            if(arguments.length>0){
-                this.searchAux = arguments[0];
-            }
         },
         _back: function (config) {
             this._pageIndex --;

@@ -5,9 +5,6 @@ $(function(){
     $(".itemSearch").on('touchmove',function(event){
         event.preventDefault();
     });
-    $('#searchResult').on('touchmove',function(event){
-        event.stopPropagation();
-    });
 
     var $searchBar = $('#searchBar'),
         $searchResult = $('#searchResult'),
@@ -16,14 +13,10 @@ $(function(){
         $searchClear = $('#searchClear'),
         $searchCancel = $('#searchCancel'),
         $searchKey = '';
-    // console.log(pageManager.pageOther);
-    //获取搜索关键字
-    // console.log($.type(pageManager));
-    if($.type(pageManager)=='undefined') window.pageManager.go('home');
 
-    $searchKey = pageManager.pageOther ? pageManager.pageOther : '';
-    pageManager.searchAux=null;
-    if($searchKey=='') window.pageManager.go('home');
+    //获取搜索关键字
+    $searchKey = store.get('getSearch') ? store.get('getSearch') : '';
+    
     // 根据关键字获取对应链接
     var getUrl = function(val){
         var url = '';
@@ -46,6 +39,8 @@ $(function(){
             case 'manufacturer':
                 url = '/likeManufacturer';
                 break;
+            default:
+                ;
         }
         return url;
     };
@@ -103,7 +98,14 @@ $(function(){
                     });
                     $searchNothing.hide();
                     $searchResult.html(resultStr).show();
-
+                    // 判断搜索结果高度是否大于页面高度
+                    var contHeight = parseInt($(".itemSearch").height()),
+                        eleHeight = parseInt($('#searchResult').height())+45;
+                    if(eleHeight>=contHeight){
+                        $('#searchResult').on('touchmove',function(event){
+                            event.stopPropagation();
+                        });
+                    }
                 }else{
                     $("#keyword").text($.trim($searchInput.val()));
                     $searchNothing.show();

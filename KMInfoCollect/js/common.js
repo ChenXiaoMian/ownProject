@@ -1,3 +1,8 @@
+// 参数设置
+$kmurl = 'http://km126.km1818.com:8181/KMInfoCollect/services';
+$tempNum = 20;  //模板设置最大数
+$historyNum = 20; //历史记录保留数
+
 // 对Date的扩展，将 Date 转化为指定格式的String
 Date.prototype.Format = function (fmt){
   var o = {
@@ -17,7 +22,6 @@ Date.prototype.Format = function (fmt){
 
 // 判断一个对象是否为空
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-
 function isEmpty(obj) {
   // 本身为空直接返回true
   if (obj == null) return true;
@@ -31,8 +35,6 @@ function isEmpty(obj) {
   return true;
 }
 
-$kmurl = 'http://km126.km1818.com:8181/KMInfoCollect/services';
-$tempNum = 20;
 
 // 上传ajax
 function uploader(jsonData,url,callback){
@@ -130,3 +132,57 @@ function setPosition(dom){
       dom.text('暂无位置');
   }
 }
+
+// 自定义验证项
+function validateTemp(){
+  var args = arguments,
+      cache = [];
+  $.each(args,function(index,item){
+      var dom = $("input[name='"+item+"']");
+      if($.trim(dom.val())==''){
+          weui.topTips(dom.attr("emptyTips"));
+          return false;
+      }else{
+          cache.push(item);
+      }
+  });
+  if(cache.length === args.length){
+      return true;
+  }else{
+      return false;
+  }
+}
+
+// 加载药品规格
+function loadMedicineStandard(ele,data){
+    var arr = [],
+        strs = '';
+    arr = data.split(",");
+    if(arr.length>0){
+        ele.empty();
+        $.each(arr,function(index,item){
+            strs+='<option value="'+item+'">'+item+'</option>';
+        });
+        ele.html(strs);
+    }else{
+        ele.empty();
+    }
+}
+
+// 页面通用操作
+$(function(){
+  // 选择模板类型
+  $(".container").on('click','.js-tempChoose',function(){
+      var type = $(this).data("item");
+      store.set('getTemp',type);
+      window.pageManager.go('tempChoose');
+      return false;
+  });
+  // 搜索项目
+  $(".container").on('click','.js-itemSearch',function(){
+      if($(this).hasClass('disabled')) return false;
+      var type = $(this).data("search");
+      store.set('getSearch',type);
+      window.pageManager.go('itemSearch');
+  });
+});

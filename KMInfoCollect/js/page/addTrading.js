@@ -3,20 +3,21 @@ $(function(){
     var userName = store.get('userName'),
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog'),
-        $getStandard = '',
-        $storeKey = 'tempTrading',  //tempTrading
-        $editId = 0;
+        $storeKey = 'tempTrading';  //tempTrading
+
+    // 设置信息员、时间、地址
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
-
-    //设置地址
     getPosition();
     setPosition($(".getLocation"));
 
     init();
     // 初始化
     function init(){
+      store.remove('getTemp');
+      store.remove('getSearch');
       store.remove('seatempTrading');
+      store.remove('StandardStr');
       store.remove('market');
       store.remove('medicine');
       store.remove('base');
@@ -36,28 +37,16 @@ $(function(){
         $.each(JSON.parse(store.get($storeKey)).data,function(index,item){
             if(item.tid == tid) data = item;
         });
-
         $("select[name='Scale'],select[name='MedicineType']").find('option').removeAttr('selected');
         $("select[name='Scale']").find('option[value="'+data.Scale+'"]').prop('selected',true);
         $("select[name='MedicineType']").find('option[value="'+data.MedicineType+'"]').prop('selected',true);
         $("input[name='MerchantName']").val(data.MerchantName);
         // 获取药材规格
         if(data.hasOwnProperty('StandardStr')&&data.StandardStr!=''){
-            var standard = data.StandardStr,
-                arr = [],
-                strs = '';
-            arr = standard.split(",");
-            $.each(arr,function(index,item){
-                strs+='<option value="'+item+'">'+item+'</option>';
-            });
             $(".innerType").find("select[name='Standard']").each(function(){
-                $(this).empty();
-                $(this).html(strs);
+                loadMedicineStandard($(this),data.StandardStr);
             });
-        }else{
-            $(".innerType").find("select[name='Standard']").each(function(){
-                $(this).empty();
-            });
+            store.set('StandardStr',data.StandardStr);
         }
         changeSearch('.sText-market','.sVal-market',data.Market);
         changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
@@ -68,12 +57,7 @@ $(function(){
         clearSearch('.sVal-base');
     }
     // 验证所需
-    var regexp = {
-        regexp: {
-            IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-            VCODE: /^.{4}$/
-        }
-    };
+    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-trading', regexp);
     // 上传按钮
     $('#form-trading-submit').on('click',function () {
@@ -97,9 +81,7 @@ $(function(){
                             if(error) verrArr.push(error);
                         });
                     });
-                    if(verrArr.length>0){
-                        return false;
-                    }
+                    if(verrArr.length>0) return false;
                     // 多种规格
                     var cache = [],
                         errorArr = [];
@@ -153,7 +135,7 @@ $(function(){
                     });
                     if(errorArr.length>0){
                         loading.hide();
-                        weui.toast('上传失败', 2000);
+                        weui.alert('上传失败');
                         console.log(errorArr);
                     }else{
                         loading.hide();
@@ -232,7 +214,7 @@ $(function(){
                     Medicine: $("input[name='Medicine']").val(),
                     BaseName: $("input[name='BaseName']").val(),
                     MedicineType: $("select[name='MedicineType']").val(),
-                    StandardStr: store.get('StandardStr'),
+                    StandardStr: store.get('StandardStr') ? store.get('StandardStr') : '',
                     Addition: $.trim($("textarea[name='Addition']").val()),
                 };
                 var json = JSON.parse(store.get($storeKey)),
@@ -274,7 +256,7 @@ $(function(){
                 Medicine: $("input[name='Medicine']").val(),
                 BaseName: $("input[name='BaseName']").val(),
                 MedicineType: $("select[name='MedicineType']").val(),
-                StandardStr: store.get('StandardStr'),
+                StandardStr: store.get('StandardStr') ? store.get('StandardStr') : '',
                 Addition: $.trim($("textarea[name='Addition']").val()),
                 Address: Cookies.get('location') ? Cookies.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
@@ -325,7 +307,6 @@ $(function(){
                 if(!isEmpty(JSON.parse($key))){
                     $(".getChooseTemp").text(JSON.parse($key).name).data("tid",JSON.parse($key).id).removeClass('c-c7c7c7').addClass('c-3dbaff');
                     loadTemp(JSON.parse($key).id);
-                    $editId = JSON.parse($key).id;
                     store.remove('seatempTrading');
                 }
             }
@@ -352,28 +333,16 @@ $(function(){
             if($medicine!=''){
                 if(!isEmpty(JSON.parse($medicine))){
                     changeSearch('.sText-medicine','.sVal-medicine',JSON.parse($medicine).name);
-                    // 获取药材规格
-                    var standard = JSON.parse($medicine).standard,
-                        arr = [],
-                        strs = '';
-                    arr = standard.split(",");
-                    if(arr.length>0){
-                        $Standard.empty();
-                        $.each(arr,function(index,item){
-                            strs+='<option value="'+item+'">'+item+'</option>';
-                        });
-                        $Standard.html(strs);
-                    }else{
-                        $Standard.empty();
-                    }
-                    store.set('StandardStr',standard);
+                    store.set('StandardStr',JSON.parse($medicine).standard);  //设置药品规格
+                    $(".innerType").find("select[name='Standard']").each(function(){
+                        loadMedicineStandard($(this),JSON.parse($medicine).standard); //加载药品规格
+                    });
                     clearSearch('.sVal-medicine');
                     store.remove('medicine');
                 }
             }
         }
     });
-
 
     $(".innerType").on('change','select[name="PriceTendency"]',function(){
         var $val = $(this).val(),
@@ -396,39 +365,11 @@ $(function(){
         if(len < 11){
             var $str = '<form id="innerType'+len+'" name="innerType'+len+'"><div class="weui-cells weui-cells_form"><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格 '+len+'</label></div><div class="weui-cell__bd"><select class="weui-select"name="Standard"></select></div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="number"placeholder=""name="TradeProduction"/></div><div class="weui-cell__dw c-c7c7c7">公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="number"required placeholder=""name="Price"emptyTips="请输入交易价格"/></div><div class="weui-cell__dw c-c7c7c7">元/公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div><div class="weui-cell__bd"><select class="weui-select"name="PriceTendency"><option value="">请选择</option><option value="持平">持平</option><option value="上升">上升</option><option value="下降">下降</option></select></div><div class="weui-cell__bd"><input class="weui-input"type="number"disabled="disabled"placeholder="0"name="PriceRange"/></div><div class="weui-cell__dw flex-20 c-c7c7c7">%</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div><div class="weui-cell__bd"><select class="weui-select"name="MarketStatus"><option value="">请选择</option><option value="正常">正常</option><option value="活跃">活跃</option><option value="不活跃">不活跃</option></select></div></div></div></form>';
             $contains.append($str);
-            // 判断有无缓存规格
             var $dom = $("#innerType"+len).find("select[name='Standard']"),
-                standard = store.get('StandardStr'),
-                arr = [],
-                strs = '';
-                arr = standard.split(",");
-                if(store.get('editTemp')&&store.get('editTemp')!=''){
-                    // 有无选择模板
-                    var data = {};
-                    $.each(JSON.parse(store.get($storeKey)).data,function(index,item){
-                        if(item.tid == $editId) data = item;
-                    });
-                    if(data.hasOwnProperty('StandardStr')&&data.StandardStr!=''){
-                        arr = data.StandardStr.split(",");
-                        $.each(arr,function(index,item){
-                            strs+='<option value="'+item+'">'+item+'</option>';
-                        });
-                        $dom.html(strs);
-                    }else{
-                        $dom.empty();
-                    }
-                }else{
-                    if(arr.length>0){
-                        $dom.empty();
-                        $.each(arr,function(index,item){
-                            strs+='<option value="'+item+'">'+item+'</option>';
-                        });
-                        $dom.html(strs);
-                    }else{
-                        $dom.empty();
-                    }
-                }
-
+                standard = store.get('StandardStr');
+            if(standard&&standard!=''){
+                loadMedicineStandard($dom,standard);
+            }
         }else{
             weui.alert('最多可添加10个规格');
         }

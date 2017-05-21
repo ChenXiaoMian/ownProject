@@ -4,16 +4,18 @@ $(function(){
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog'),
         $storeKey = 'tempOutput';
+
+    // 设置信息员、时间、地址
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
-
-    //设置地址
     getPosition();
     setPosition($(".getLocation"));
 
     init();
     // 初始化
     function init(){
+      store.remove('getTemp');
+      store.remove('getSearch');
       store.remove('seatempOutput');
       store.remove('base');
       store.remove('grower');
@@ -47,12 +49,7 @@ $(function(){
         clearSearch('.sVal-medicine');
     }
     // 验证所需
-    var regexp = {
-        regexp: {
-            IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-            VCODE: /^.{4}$/
-        }
-    };
+    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-output', regexp);
     // 上传按钮
     $('#form-output-submit').on('click',function () {
@@ -94,25 +91,6 @@ $(function(){
             }
         }, regexp);
     });
-    function validateTemp(){
-        var args = arguments,
-            cache = [];
-        $.each(args,function(index,item){
-            var dom = $("input[name='"+item+"']");
-            if($.trim(dom.val())==''){
-                weui.topTips(dom.attr("emptyTips"));
-                return false;
-            }else{
-                cache.push(item);
-            }
-        });
-        if(cache.length === args.length){
-            return true;
-        }else{
-            return false;
-        }
-
-    }
     // 存为模板按钮
     $('#open-temp-dialog').on('click',function () {
         // 判断用户是否选择模板
@@ -271,11 +249,11 @@ $(function(){
     $("input[name='ChangeMode']").on('change',function(){
         var $val = $(this).val();
         if($val=='1'){
-            $(".sClick-cmedicine").attr("href","javascript:window.pageManager.go('itemSearch','cmedicine');");
+            $("#sClick-cmedicine").removeClass('disabled');
             $(".sText-cmedicine").removeClass('bg-efefef');
             $("input[name='ChangeArea']").prop("disabled",false);
         }else{
-            $(".sClick-cmedicine").attr("href","javascript:;");
+            $("#sClick-cmedicine").addClass("disabled");
             $(".sText-cmedicine").addClass('bg-efefef');
             initSearch('.sText-cmedicine','.sVal-cmedicine','关键字/中药材名称');
             $("input[name='ChangeArea']").prop("disabled",true).val("");

@@ -4,16 +4,19 @@ $(function(){
         nowTime = new Date().Format("yyyy-MM-dd hh:mm:ss"),
         $iosDialog = $('.js_dialog'),
         $storeKey = 'tempStock';
+
+    // 设置信息员、时间、地址
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
-
-    //设置地址
     getPosition();
     setPosition($(".getLocation"));
 
-    stockAddInit();
+    init();
+
     // 市场存量初始化
-    function stockAddInit(){
+    function init(){
+      store.remove('getTemp');
+      store.remove('getSearch');
       store.remove('seatempStock');
       store.remove('market');
       store.remove('medicine');
@@ -35,12 +38,7 @@ $(function(){
         clearSearch('.stockVal-medicine');
     }
     // 验证所需
-    var regexp = {
-        regexp: {
-            IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-            VCODE: /^.{4}$/
-        }
-    };
+    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-stock', regexp);
     // 上传按钮
     $('#form-stock-submit').on('click',function () {
@@ -73,32 +71,13 @@ $(function(){
                         historyData.data.unshift(jsonData);
                         store.set('histStock',JSON.stringify(historyData));
                     }
-                    console.log(jsonData);
-                    stockAddInit();
+                    init();
                     document.formStock.reset();
                 });
             }
         }, regexp);
     });
-    function validateTemp(){
-        var args = arguments,
-            cache = [];
-        $.each(args,function(index,item){
-            var dom = $("input[name='"+item+"']");
-            if($.trim(dom.val())==''){
-                weui.topTips(dom.attr("emptyTips"));
-                return false;
-            }else{
-                cache.push(item);
-            }
-        });
-        if(cache.length === args.length){
-            return true;
-        }else{
-            return false;
-        }
-
-    }
+    
     // 存为模板按钮
     $('#open-temp-dialog').on('click',function () {
         // 判断用户是否选择模板
@@ -217,4 +196,5 @@ $(function(){
             }
         }
     });
+
 });
