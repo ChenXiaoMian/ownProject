@@ -44,8 +44,6 @@ $(function(){
         clearSearch('.sVal-medicine');
         clearSearch('.sVal-base');
     }
-    // 验证所需
-    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-pieces', regexp);
     // 上传按钮
     $('#form-pieces-submit').on('click',function () {

@@ -5,7 +5,7 @@ $(function(){
         $iosDialog = $('.js_dialog'),
         $getStandard = '',
         $storeKey = 'tempPro';  //tempPro
-    
+
     // 设置信息员、时间、地址
     $(".getUserName").text(store.get('userName'));
     $(".getNow").text(nowTime);
@@ -56,8 +56,6 @@ $(function(){
         clearSearch('.sVal-medicine');
         clearSearch('.sVal-base');
     }
-    // 验证所需
-    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-pro', regexp);
     // 定义对应链接
     var getUrl = function(val){

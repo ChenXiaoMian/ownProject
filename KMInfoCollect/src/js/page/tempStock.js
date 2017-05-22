@@ -80,12 +80,6 @@ $(function(){
         if(data.IsDefault == 1) $("#form-stock-temp").find("input[name='IsDefault']").prop("checked","checked").val('1');
     }
 
-    var regexp = {
-        regexp: {
-            IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
-            VCODE: /^.{4}$/
-        }
-    };
     weui.form.checkIfBlur('#form-stock-temp', regexp);
 
     $('.js_dialog').on('click', '.weui-dialog__btn_default', function(){

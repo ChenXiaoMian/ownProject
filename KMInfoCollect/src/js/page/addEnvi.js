@@ -43,8 +43,6 @@ $(function(){
         $(".weui-textarea").val(data.Addition);
         clearSearch('.sVal-base');
     }
-    // 验证所需
-    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-envi', regexp);
     // 上传按钮
     $('#form-envi-submit').on('click',function () {

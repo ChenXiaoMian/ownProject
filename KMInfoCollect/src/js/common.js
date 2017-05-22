@@ -186,3 +186,10 @@ $(function(){
       window.pageManager.go('itemSearch');
   });
 });
+// 验证所需
+var regexp = {
+    regexp: {
+        IDNUM: /(?:^\d{15}$)|(?:^\d{18}$)|^\d{17}[\dXx]$/,
+        NUMBER: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/
+    }
+};

@@ -48,8 +48,6 @@ $(function(){
         clearSearch('.sVal-grower');
         clearSearch('.sVal-medicine');
     }
-    // 验证所需
-    var regexp = {regexp: {}};
     weui.form.checkIfBlur('#form-output', regexp);
     // 上传按钮
     $('#form-output-submit').on('click',function () {

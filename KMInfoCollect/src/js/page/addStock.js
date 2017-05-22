@@ -37,9 +37,9 @@ $(function(){
         clearSearch('.stockVal-market');
         clearSearch('.stockVal-medicine');
     }
-    // 验证所需
-    var regexp = {regexp: {}};
+
     weui.form.checkIfBlur('#form-stock', regexp);
+
     // 上传按钮
     $('#form-stock-submit').on('click',function () {
         weui.form.validate('#form-stock', function (error) {
@@ -77,7 +77,7 @@ $(function(){
             }
         }, regexp);
     });
-    
+
     // 存为模板按钮
     $('#open-temp-dialog').on('click',function () {
         // 判断用户是否选择模板

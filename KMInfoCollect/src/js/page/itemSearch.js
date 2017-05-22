@@ -6,6 +6,34 @@ $(function(){
         event.preventDefault();
     });
 
+    // 根据关键字获取提示
+    var getName = function(val){
+        var str = '';
+        switch(val){
+            case 'market':
+                str = '请输入市场名称搜索';
+                break;
+            case 'medicine':
+                str = '请输入中药材名称搜索';
+                break;
+            case 'cmedicine':
+                str = '请输入转产药材名称搜索';
+                break;
+            case 'base':
+                str = '请输入产地名称搜索';
+                break;
+            case 'grower':
+                str = '请输入种植户搜索';
+                break;
+            case 'manufacturer':
+                str = '请输入生产商名称搜索';
+                break;
+            default:
+                ;
+        }
+        return str;
+    };
+
     var $searchBar = $('#searchBar'),
         $searchResult = $('#searchResult'),
         $searchNothing = $('#searchNothing'),
@@ -16,7 +44,9 @@ $(function(){
 
     //获取搜索关键字
     $searchKey = store.get('getSearch') ? store.get('getSearch') : '';
-    
+
+    $searchInput.attr('placeholder',getName($searchKey));
+
     // 根据关键字获取对应链接
     var getUrl = function(val){
         var url = '';
@@ -44,6 +74,8 @@ $(function(){
         }
         return url;
     };
+
+
 
     function hideSearchResult(){
         $searchResult.hide();
@@ -107,11 +139,13 @@ $(function(){
                         });
                     }
                 }else{
+                    $searchResult.html("").hide();
                     $("#keyword").text($.trim($searchInput.val()));
                     $searchNothing.show();
                 }
             },
             error: function(jqXHR, textStatus, errorThrown){
+                $searchResult.html("").hide();
                 console.log("输入参数错误，请核对！");
                 $("#keyword").text($.trim($searchInput.val()));
                 $searchNothing.show();
