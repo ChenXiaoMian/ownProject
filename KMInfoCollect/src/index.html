@@ -96,21 +96,21 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">年消耗量<br />(总)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" pattern="REG_NUMBER" name="Consume" placeholder="" emptyTips="请输入年消耗量(总)" notmatchtips="请输入正确的数字格式"/>
+                    <input class="weui-input" type="text" pattern="REG_NUMBER" name="Consume" placeholder="" emptyTips="请输入年消耗量(总)" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">库存数量</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" required type="number" name="Inventory" placeholder="" emptyTips="请输入库存数量"/>
+                    <input class="weui-input" required type="text" pattern="REG_NUMBER" name="Inventory" placeholder="" emptyTips="请输入库存数量" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">存量进价<br />(平均)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="InventoryCost" placeholder="" emptyTips="存量进价 (平均)"/>
+                    <input class="weui-input" type="text" name="InventoryCost" placeholder="" emptyTips="存量进价 (平均)" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
             </div>
@@ -193,35 +193,35 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" required name="Area" placeholder="" emptyTips="请输入种植面积"/>
+                    <input class="weui-input" type="text" required name="Area" placeholder="" emptyTips="请输入种植面积" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">人工成本</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="PersonCost" placeholder="" emptyTips="请输入人工成本"/>
+                    <input class="weui-input" type="text" name="PersonCost" placeholder="" emptyTips="请输入人工成本" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">物料成本</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="MaterialCost" placeholder="" emptyTips="请输入物料成本"/>
+                    <input class="weui-input" type="text" name="MaterialCost" placeholder="" emptyTips="请输入物料成本" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种子成本</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="SeedCost" placeholder="" emptyTips="请输入种子成本"/>
+                    <input class="weui-input" type="text" name="SeedCost" placeholder="" emptyTips="请输入种子成本" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">预估产量</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="EstimateProduction" placeholder="" emptyTips="请输入预估产量"/>
+                    <input class="weui-input" type="text" name="EstimateProduction" placeholder="" emptyTips="请输入预估产量" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">公斤/亩</div>
             </div>
@@ -297,14 +297,14 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">种植面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" required name="Area" placeholder="" emptyTips="请输入种植面积"//>
+                    <input class="weui-input" type="text" required name="Area" placeholder="" emptyTips="请输入种植面积" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">单位产量</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" required name="UnitProduction" placeholder="" emptyTips="请输入单位产量"/>
+                    <input class="weui-input" type="text" required name="UnitProduction" placeholder="" emptyTips="请输入单位产量" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/亩</div>
             </div>
@@ -365,7 +365,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">计划面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="PlanArea" placeholder="" emptyTips="请输入计划面积"/>
+                    <input class="weui-input" type="text" name="PlanArea" placeholder="" emptyTips="请输入计划面积" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">亩</div>
             </div>
@@ -390,7 +390,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">转产面积</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" name="ChangeArea" placeholder="" emptyTips="请输入转产面积" disabled="disabled"/>
+                    <input class="weui-input" type="text" name="ChangeArea" placeholder="" emptyTips="请输入转产面积" disabled="disabled" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw flex-20 c-c7c7c7">亩</div>
             </div>
@@ -717,7 +717,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">原药比重</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" placeholder="" name="Ratio"/>
+                    <input class="weui-input" type="text" placeholder="" name="Ratio" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">%</div>
             </div>
@@ -746,7 +746,7 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">年销售额<br />(产品)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" placeholder="" name="Sale"/>
+                    <input class="weui-input" type="text" placeholder="" name="Sale" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元</div>
             </div>
@@ -868,14 +868,14 @@
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br />(日平均)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" placeholder="" name="TradeProduction"/>
+                    <input class="weui-input" type="text" placeholder="" name="TradeProduction" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">公斤</div>
             </div>
             <div class="weui-cell">
                 <div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br />(日平均)</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" required placeholder="" name="Price" emptyTips="请输入交易价格"/>
+                    <input class="weui-input" type="text" required placeholder="" name="Price" emptyTips="请输入交易价格" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/>
                 </div>
                 <div class="weui-cell__dw c-c7c7c7">元/公斤</div>
             </div>
@@ -1885,7 +1885,7 @@
 <script src="./js/common.js"></script>
 <script src="./js/json2.js"></script>
 <script src="./js/store.everything.min.js"></script>
-<script src="./js/weui.min.js"></script>
+<script src="./js/weui.add.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oN5ln95bD6YRawbMzfavu3GE"></script>
 <script type="text/javascript">
 $(function(){
