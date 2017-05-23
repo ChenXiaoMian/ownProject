@@ -43,7 +43,7 @@ $(function(){
     // 上传按钮
     $('#form-stock-submit').on('click',function () {
         weui.form.validate('#form-stock', function (error) {
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据
                 var jsonData = {},formData = $("#form-stock").serializeArray();

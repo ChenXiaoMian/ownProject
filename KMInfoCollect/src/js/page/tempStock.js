@@ -72,7 +72,7 @@ $(function(){
         $.each(json.data,function(index,item){
             if(item.tid == id) data = item;
         });
-        console.log(json.data);
+        //console.log(json.data);
         changeSearch('.stockText-market','.stockVal-market',data.Market);
         changeSearch('.stockText-medicine','.stockVal-medicine',data.Medicine);
         $("#form-stock-temp").find("input[name='tempTitle']").val(data.tempTitle);
@@ -98,7 +98,7 @@ $(function(){
     // 保存按钮
     $("#form-stock-temp").on('click','#form-stock-temp-edit',function () {
         weui.form.validate('#form-stock-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据,$editId
                 var jsonData = {},
@@ -133,7 +133,7 @@ $(function(){
     // 新建按钮
     $("#form-stock-temp").on('click','#form-stock-temp-submit',function () {
         weui.form.validate('#form-stock-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据
                 var jsonData = {},formData = $("#form-stock-temp").serializeArray();
@@ -143,7 +143,7 @@ $(function(){
                 });
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                 jsonData.tid = new Date().getTime();
-                console.log(jsonData);
+                //console.log(jsonData);
                 var loading = weui.loading('保存中...');
                 //增加历史记录
                 if(store.get('tempStock') && store.get('tempStock')!=''){

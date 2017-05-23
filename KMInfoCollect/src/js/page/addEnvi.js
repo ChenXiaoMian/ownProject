@@ -47,7 +47,6 @@ $(function(){
     // 上传按钮
     $('#form-envi-submit').on('click',function () {
         weui.form.validate('#form-envi', function (error) {
-            console.log(error);
             if (!error) {
                 // 组织数据
                 var jsonData = {},formData = $("#form-envi").serializeArray();
@@ -77,7 +76,6 @@ $(function(){
                         historyData.data.unshift(jsonData);
                         store.set('histEnvi',JSON.stringify(historyData));
                     }
-                    console.log(jsonData);
                     init();
                     document.formEnvi.reset();
                 });

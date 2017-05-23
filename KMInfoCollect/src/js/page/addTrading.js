@@ -103,7 +103,7 @@ $(function(){
                         var _jsonData = cloneObj(jsonData);
                         $.extend(_jsonData,item);
                         $.extend(_jsonData,{hid:'',cUserName:''});
-                        // console.log(_jsonData);
+                        // //console.log(_jsonData);
                         $.ajax({
                             url: $kmurl+'/saveTradeJSONP',
                             type:"GET",
@@ -139,7 +139,7 @@ $(function(){
                     if(errorArr.length>0){
                         loading.hide();
                         weui.alert('上传失败');
-                        console.log(errorArr);
+                        //console.log(errorArr);
                     }else{
                         loading.hide();
                         weui.toast('上传成功', 2000);
@@ -172,7 +172,7 @@ $(function(){
                                     historyData.data.unshift(jsonData);
                                     store.set('histTrading',JSON.stringify(historyData));
                                 }
-                                // console.log(jsonData);
+                                // //console.log(jsonData);
                                 init();
                                 document.formTrading.reset();
                                 document.innerType1.reset();

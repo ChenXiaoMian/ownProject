@@ -44,7 +44,7 @@ $(function(){
     function loadHistoryStore(key){
         var str = '',
             json = JSON.parse(store.get(key));
-        // console.log(json);
+        // //console.log(json);
         $.each(json.data,function(index,item){
             switch(key){
                 case 'histStock':

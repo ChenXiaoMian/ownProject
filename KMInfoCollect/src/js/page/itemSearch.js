@@ -146,7 +146,7 @@ $(function(){
             },
             error: function(jqXHR, textStatus, errorThrown){
                 $searchResult.html("").hide();
-                console.log("输入参数错误，请核对！");
+                //console.log("输入参数错误，请核对！");
                 $("#keyword").text($.trim($searchInput.val()));
                 $searchNothing.show();
             }

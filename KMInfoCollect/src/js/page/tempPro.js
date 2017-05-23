@@ -111,7 +111,7 @@ $(function(){
                 }
             },
             error: function(jqXHR, textStatus, errorThrown){
-                console.log("输入参数错误，请核对！");
+                //console.log("输入参数错误，请核对！");
             }
         });
     }
@@ -123,7 +123,7 @@ $(function(){
         $.each(json.data,function(index,item){
             if(item.tid == id) data = item;
         });
-        console.log(json.data);
+        //console.log(json.data);
         getMedicineStandard(data.MedicineName);
         $("select[name='Product'],select[name='MedicineStandard']").find('option').removeAttr('selected');
         $("select[name='Product']").find('option[value="'+data.Product+'"]').prop('selected',true);
@@ -172,7 +172,7 @@ $(function(){
     // 保存按钮
     $("#form-pro-temp").on('click','#form-temp-edit',function () {
         weui.form.validate('#form-pro-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据,$editId
                 var jsonData = {},
@@ -207,7 +207,7 @@ $(function(){
     // 新建按钮
     $("#form-pro-temp").on('click','#form-temp-submit',function () {
         weui.form.validate('#form-pro-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据
                 var jsonData = {},formData = $("#form-pro-temp").serializeArray();
@@ -217,7 +217,7 @@ $(function(){
                 });
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                 jsonData.tid = new Date().getTime();
-                console.log(jsonData);
+                //console.log(jsonData);
                 var loading = weui.loading('保存中...');
                 var $temp = store.get('tempPro') ? store.get('tempPro') : '';
                 //增加历史记录

@@ -82,7 +82,7 @@ $(function(){
         $.each(json.data,function(index,item){
             if(item.tid == id) data = item;
         });
-        console.log(json.data);
+        //console.log(json.data);
         changeSearch('.sText-manufacturer','.sVal-manufacturer',data.Manufacturer);
         changeSearch('.sText-medicine','.sVal-medicine',data.Medicine);
         changeSearch('.sText-base','.sVal-base',data.BaseName);
@@ -112,7 +112,7 @@ $(function(){
     // 保存按钮
     $("#form-pieces-temp").on('click','#form-temp-edit',function () {
         weui.form.validate('#form-pieces-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据,$editId
                 var jsonData = {},
@@ -147,7 +147,7 @@ $(function(){
     // 新建按钮
     $("#form-pieces-temp").on('click','#form-temp-submit',function () {
         weui.form.validate('#form-pieces-temp', function (error){
-            console.log(error);
+            //console.log(error);
             if (!error) {
                 // 组织数据
                 var jsonData = {},formData = $("#form-pieces-temp").serializeArray();
@@ -157,7 +157,7 @@ $(function(){
                 });
                 jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                 jsonData.tid = new Date().getTime();
-                console.log(jsonData);
+                //console.log(jsonData);
                 var loading = weui.loading('保存中...');
                 var $temp = store.get('tempPieces') ? store.get('tempPieces') : '';
                 //增加历史记录
