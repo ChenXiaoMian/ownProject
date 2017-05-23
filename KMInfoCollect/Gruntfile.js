@@ -23,6 +23,7 @@
          dist: {
              files: {
                  'dist/js/tools.min.js': 'src/js/tools.js',
+                 'dist/js/weui.min.js': 'src/js/weui.add.js',
                  'dist/js/pageManager.min.js': 'src/js/pageManager.js',
                  'dist/js/page/addEnvi.min.js': 'src/js/page/addEnvi.js',
                  'dist/js/page/addOrigin.min.js': 'src/js/page/addOrigin.js',

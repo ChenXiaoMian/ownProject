@@ -6,6 +6,10 @@ $(function(){
 
     histListInit($histKey);
 
+    $(".historyList").on('touchmove',function(event){
+        event.preventDefault();
+    });
+
     // 历史记录列表初始化
     function histListInit(key){
         if(store.get(key) && !isEmpty(JSON.parse(store.get(key)).data)){
@@ -13,6 +17,14 @@ $(function(){
             loadHistoryStore(key);
             $historyListEmpty.hide();
             $historyList.show();
+            // 判断高度是否大于页面高度
+            var contHeight = parseInt($(".historyList").height()),
+                eleHeight = parseInt($('#historyList').height())+45;
+            if(eleHeight>=contHeight){
+                $('#historyList').on('touchmove',function(event){
+                    event.stopPropagation();
+                });
+            }
         }else{
             $historyListEmpty.show();
             $historyList.hide();

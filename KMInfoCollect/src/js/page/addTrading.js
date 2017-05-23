@@ -57,6 +57,7 @@ $(function(){
         clearSearch('.sVal-base');
     }
     weui.form.checkIfBlur('#form-trading', regexp);
+    weui.form.checkIfBlur('#innerType1', regexp);
     // 上传按钮
     $('#form-trading-submit').on('click',function () {
         weui.form.validate('#form-trading', function (error){
@@ -77,7 +78,8 @@ $(function(){
                     $form.each(function(index){
                         weui.form.validate($(this), function (error){
                             if(error) verrArr.push(error);
-                        });
+                        },regexp);
+
                     });
                     if(verrArr.length>0) return false;
                     // 多种规格
@@ -91,10 +93,13 @@ $(function(){
                         }
                         cache.push(values);
                     });
+
+                    var uniArr = uniqeByKeys(cache,['Standard']);  //数组去重
+
                     jsonData.Address = Cookies.get('location') ? Cookies.get('location') : '暂无位置';
                     jsonData.Time = new Date().Format("yyyy-MM-dd hh:mm:ss");
                     var loading = weui.loading('上传中...');
-                    $.each(cache,function(index,item){
+                    $.each(uniArr,function(index,item){
                         var _jsonData = cloneObj(jsonData);
                         $.extend(_jsonData,item);
                         $.extend(_jsonData,{hid:'',cUserName:''});
@@ -173,7 +178,7 @@ $(function(){
                                 document.innerType1.reset();
                             });
                         }
-                    });
+                    },regexp);
                 }
 
             }
@@ -361,8 +366,9 @@ $(function(){
         var $contains = $(".innerType"),
             len = $contains.find("form").length + 1;
         if(len < 11){
-            var $str = '<form id="innerType'+len+'" name="innerType'+len+'"><div class="weui-cells weui-cells_form"><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格 '+len+'</label></div><div class="weui-cell__bd"><select class="weui-select"name="Standard"></select></div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="number"placeholder=""name="TradeProduction"/></div><div class="weui-cell__dw c-c7c7c7">公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input" type="number" placeholder=""name="Price"emptyTips="请输入交易价格"/></div><div class="weui-cell__dw c-c7c7c7">元/公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div><div class="weui-cell__bd"><select class="weui-select"name="PriceTendency"><option value="">请选择</option><option value="持平">持平</option><option value="上升">上升</option><option value="下降">下降</option></select></div><div class="weui-cell__bd"><input class="weui-input"type="number"disabled="disabled"placeholder="0"name="PriceRange"/></div><div class="weui-cell__dw flex-20 c-c7c7c7">%</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div><div class="weui-cell__bd"><select class="weui-select"name="MarketStatus"><option value="">请选择</option><option value="正常">正常</option><option value="活跃">活跃</option><option value="不活跃">不活跃</option></select></div></div></div></form>';
+            var $str = '<form id="innerType'+len+'" name="innerType'+len+'"><div class="weui-cells weui-cells_form"><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格 '+len+'</label></div><div class="weui-cell__bd"><select class="weui-select"name="Standard"></select></div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="text"placeholder=""name="TradeProduction" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/></div><div class="weui-cell__dw c-c7c7c7">公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input" type="text" placeholder=""name="Price"emptyTips="请输入交易价格" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/></div><div class="weui-cell__dw c-c7c7c7">元/公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div><div class="weui-cell__bd"><select class="weui-select"name="PriceTendency"><option value="">请选择</option><option value="持平">持平</option><option value="上升">上升</option><option value="下降">下降</option></select></div><div class="weui-cell__bd"><input class="weui-input"type="text"disabled="disabled"placeholder="0"name="PriceRange" pattern="REG_NUMBER" notmatchtips="请输入正确的数字格式"/></div><div class="weui-cell__dw flex-20 c-c7c7c7">%</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div><div class="weui-cell__bd"><select class="weui-select"name="MarketStatus"><option value="">请选择</option><option value="正常">正常</option><option value="活跃">活跃</option><option value="不活跃">不活跃</option></select></div></div></div></form>';
             $contains.append($str);
+            weui.form.checkIfBlur('#innerType'+len, regexp);
             var $dom = $("#innerType"+len).find("select[name='Standard']"),
                 standard = store.get('StandardStr');
             if(standard&&standard!=''){

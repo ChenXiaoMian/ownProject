@@ -7,6 +7,14 @@ function tempListInit(key){
         $("#templateListEmpty").hide();
         $("#btnNewTempWrap").show();
         $("#templateList").show();
+        // 判断高度是否大于页面高度
+        var contHeight = parseInt($(".tempList").height()),
+            eleHeight = parseInt($('#templateList').height())+45;
+        if(eleHeight>=contHeight){
+            $('#templateList').on('touchmove',function(event){
+                event.stopPropagation();
+            });
+        }
     }else{
         $("#templateListEmpty").show();
         $("#btnNewTempWrap").hide();
@@ -36,6 +44,10 @@ $(function(){
     var $tempKey = store.get('chooseTemp') ? store.get('chooseTemp') : '';
 
     tempListInit($tempKey);
+
+    $(".tempList").on('touchmove',function(event){
+        event.preventDefault();
+    });
 
     // 删除模板
     function delTemplateStore(key,id){

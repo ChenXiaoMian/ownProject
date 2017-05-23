@@ -255,6 +255,7 @@ $(function(){
             $(".sText-cmedicine").addClass('bg-efefef');
             initSearch('.sText-cmedicine','.sVal-cmedicine','关键字/中药材名称');
             $("input[name='ChangeArea']").prop("disabled",true).val("");
+            $("input[name='ChangeArea']").parents(".weui-cell").removeClass('weui-cell_warn');
         }
     });
 });
