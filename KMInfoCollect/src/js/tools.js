@@ -1055,8 +1055,9 @@ function getPosition(){
     geolocation.getCurrentPosition(function(r){
         if(this.getStatus() == BMAP_STATUS_SUCCESS){
             var url = 'http://api.map.baidu.com/geocoder/v2/?ak=oN5ln95bD6YRawbMzfavu3GE&callback=?&location=' + r.point.lat + ',' + r.point.lng + '&output=json&pois=1';
+            var inOneHour = 1/24;
             $.getJSON(url, function (res) {
-                Cookies.set('location', res.result.formatted_address, { expires: 1 });
+                Cookies.set('location', res.result.formatted_address, { expires: inOneHour });
             });
         }else{
             alert('failed'+this.getStatus());
