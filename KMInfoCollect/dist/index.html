@@ -1909,7 +1909,28 @@
 <script src="./js/pageManager.min.js"></script>
 <script src="./js/tools.min.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oN5ln95bD6YRawbMzfavu3GE"></script>
+<script src="http://yun.kingdee.com/res/js/qingjs.js"></script>
 <script type="text/javascript">
+//统计接口
+XuntongJSBridge.call('getPersonInfo',{},function(result) {
+	answerPersonId = result.data.eid;
+	answerPerson = result.data.userName;
+	answerPersonName= result.data.name;
+	openId = result.data.openId;
+
+	var appId="11212";
+	var appName ="中药采集";
+
+	var axTjUrl = "http://kqing.kangmei.com.cn/index/doSave.jhtml";
+	$.post(axTjUrl, {
+		appId: appId,
+		appName:appName,
+		eid:answerPersonId,
+		openId:openId,
+		uname:answerPersonName
+	});
+});
+
 $(function(){
     // 判断用户是否登录
     function IsLogin(){
