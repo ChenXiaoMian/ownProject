@@ -33,7 +33,7 @@ $(function(){
                         break;
                     case 'histOutput':
                         item.Price = item.hasOwnProperty('Price') ? item.Price : '0';
-                        $histCollCon.html('<p>产地名称：'+item.BaseName+'</p><p>种植户：'+item.GrowerName+'</p><p>药材名称：'+item.Medicine+'</p><p>种植面积：'+item.Area+'亩</p><p>单位产量：'+item.UnitProduction+'公斤/亩</p><p>产量趋势：'+item.ProdcutionTendency+'，'+item.ProductionRange+'%</p><p>采收价格：'+item.Price+'元/公斤</p><p>价格趋势：'+item.PriceTendency+'，'+item.PriceRange+'%</p><p>种植意愿：'+item.Wish+'</p><p>计划面积：'+item.PlanArea+'亩</p><p>是否转产：'+item.ChangeMode+'</p><p>转产药材：'+item.ChangeMedicine+'</p><p>转产面积：'+item.ChangeArea+'</p><p>备注说明：'+item.Addition+'</p>');
+                        $histCollCon.html('<p>产地名称：'+item.BaseName+'</p><p>种植户：'+item.GrowerName+'</p><p>药材名称：'+item.Medicine+'</p><p>产新面积：'+item.Area+'亩</p><p>单位产量：'+item.UnitProduction+'公斤/亩</p><p>产量趋势：'+item.ProdcutionTendency+'，'+item.ProductionRange+'%</p><p>采收价格：'+item.Price+'元/公斤</p><p>价格趋势：'+item.PriceTendency+'，'+item.PriceRange+'%</p><p>种植意愿：'+item.Wish+'</p><p>计划面积：'+item.PlanArea+'亩</p><p>是否转产：'+item.ChangeMode+'</p><p>转产药材：'+item.ChangeMedicine+'</p><p>转产面积：'+item.ChangeArea+'</p><p>备注说明：'+item.Addition+'</p>');
                         break;
                     case 'histEnvi':
                         $histCollCon.html('<p>产地名称：'+item.BaseName+'</p><p>天气状况：'+item.Weather+'</p><p>灾害描述：'+item.Disaster+'</p><p>当地政策：'+item.Policy+'</p><p>产量趋势：'+item.Tendency+'，'+item.Range+'%</p><p>备注说明：'+item.Addition+'</p>');

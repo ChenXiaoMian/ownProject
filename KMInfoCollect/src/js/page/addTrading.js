@@ -55,6 +55,34 @@ $(function(){
         clearSearch('.sVal-market');
         clearSearch('.sVal-medicine');
         clearSearch('.sVal-base');
+        $(".innerType").empty();
+        // 加载多规格
+        // 加载节点
+        $.each(data.innerType,function(index,item){
+          var $contains = $(".innerType");
+          // if(index>0){
+            var len = index + 1;
+            var $str = '<form id="innerType'+len+'" name="innerType'+len+'" autocomplete="off"><div class="weui-cells weui-cells_form"><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label adLet">规 格 '+len+'</label></div><div class="weui-cell__bd"><select class="weui-select"name="Standard"></select></div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易数量<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="text"pattern="REG_NUMBER"notmatchtips="请输入正确的数字格式"placeholder=""name="TradeProduction"/></div><div class="weui-cell__dw c-c7c7c7">公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label ">交易价格<br/>(日平均)</label></div><div class="weui-cell__bd"><input class="weui-input"type="text"pattern="REG_NUMBER"notmatchtips="请输入正确的数字格式"required placeholder=""name="Price"emptyTips="请输入交易价格"/></div><div class="weui-cell__dw c-c7c7c7">元/公斤</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">价格趋势</label></div><div class="weui-cell__bd"><select class="weui-select"name="PriceTendency"><option value="">请选择</option><option value="持平">持平</option><option value="上升">上升</option><option value="下降">下降</option></select></div><div class="weui-cell__bd"><input class="weui-input"type="text"pattern="REG_NUMBER"notmatchtips="请输入正确的数字格式"disabled="disabled"placeholder="0"name="PriceRange"/></div><div class="weui-cell__dw flex-20 c-c7c7c7">%</div></div><div class="weui-cell"><div class="weui-cell__hd km-line"><label class="weui-label">市场表现</label></div><div class="weui-cell__bd"><select class="weui-select"name="MarketStatus"><option value="">请选择</option><option value="正常">正常</option><option value="活跃">活跃</option><option value="不活跃">不活跃</option></select></div></div></div></form>';
+            $contains.append($str);
+            weui.form.checkIfBlur('#innerType'+len, regexp);
+          // }
+        });
+        // 添加规格
+        $(".innerType").find("select[name='Standard']").each(function(){
+            loadMedicineStandard($(this),data.StandardStr); //加载药品规格
+        });
+        // 设置规格数据
+        $.each(data.innerType,function(index,item){
+          var index = index+1;
+          // $("#innerType"+index).find("input[name='TradeProduction']").val(item.TradeProduction);
+          // $("#innerType"+index).find("input[name='Price']").val(item.Price);
+          // if(item.PriceRange&&item.PriceRange!=''){
+          //     $("#innerType"+index).find("input[name='PriceRange']").prop("disabled",false).val(item.PriceRange);
+          // }
+          $("#innerType"+index).find("select[name='Standard']").children('option[value="'+item.Standard+'"]').prop('selected',true);
+          // $("#innerType"+index).find("select[name='PriceTendency']").children('option[value="'+item.PriceTendency+'"]').prop('selected',true);
+          // $("#innerType"+index).find("select[name='MarketStatus']").children('option[value="'+item.MarketStatus+'"]').prop('selected',true);
+        });
     }
     weui.form.checkIfBlur('#form-trading', regexp);
     weui.form.checkIfBlur('#innerType1', regexp);
@@ -208,18 +236,18 @@ $(function(){
         // 判断用户是否选择模板
         var tempId = $(".getChooseTemp").data("tid");
         if(validateTemp('Market','Medicine','BaseName')){
+            // 验证规格信息
+            var $typeForm = $(".innerType").find("form[name^='innerType']");
+            // var errorMsg = [];
+            // $typeForm.each(function(index){
+            //   var _this = this;
+            //   weui.form.validate(_this, function(error){
+            //     error&&errorMsg.push(error);
+            //   },regexp);
+            // });
+            // if(errorMsg.length>0) return false;
+            // 判断是保存模板还是新建模板
             if(tempId&&tempId!=''){
-                // 存为模板更新操作
-                var oldData = {
-                    Market: $("input[name='Market']").val(),
-                    MerchantName: $("input[name='MerchantName']").val(),
-                    Scale: $("select[name='Scale']").val(),
-                    Medicine: $("input[name='Medicine']").val(),
-                    BaseName: $("input[name='BaseName']").val(),
-                    MedicineType: $("select[name='MedicineType']").val(),
-                    StandardStr: store.get('StandardStr') ? store.get('StandardStr') : '',
-                    Addition: $.trim($("textarea[name='Addition']").val()),
-                };
                 var json = JSON.parse(store.get($storeKey)),
                     eindex = 0,
                     jsonData = {};
@@ -229,6 +257,30 @@ $(function(){
                         jsonData = item;
                     }
                 });
+                var oldData = {
+                    Market: $("input[name='Market']").val(),
+                    MerchantName: $("input[name='MerchantName']").val(),
+                    Scale: $("select[name='Scale']").val(),
+                    Medicine: $("input[name='Medicine']").val(),
+                    BaseName: $("input[name='BaseName']").val(),
+                    MedicineType: $("select[name='MedicineType']").val(),
+                    StandardStr: store.get('StandardStr') ? store.get('StandardStr') : json.data[eindex].StandardStr,
+                    Addition: $.trim($("textarea[name='Addition']").val()),
+                    innerType: []
+                };
+                // 组织多种规格数据
+                var cache = [],uniArr;
+                $typeForm.each(function(index){
+                    var data = $(this).serializeArray(),
+                        values = {};
+                    for (var item in data) {
+                        values[data[item].name] = data[item].value;
+                    }
+                    cache.push(values);
+                });
+                uniArr = uniqeByKeys(cache,['Standard']);  //数组去重
+                oldData.innerType = uniArr;
+
                 $.extend(jsonData, oldData);
                 json.data.splice(eindex,1,jsonData);
                 var loading = weui.loading('保存中...');
@@ -263,8 +315,23 @@ $(function(){
                 Addition: $.trim($("textarea[name='Addition']").val()),
                 Address: Cookies.get('location') ? Cookies.get('location') : '暂无位置',
                 Time: new Date().Format("yyyy-MM-dd hh:mm:ss"),
-                tid: new Date().getTime()
+                tid: new Date().getTime(),
+                innerType : []
             };
+
+            // 组织多种规格数据
+            var $typeForm = $(".innerType").find("form[name^='innerType']");
+            var cache = [],uniArr;
+            $typeForm.each(function(index){
+                var data = $(this).serializeArray(),
+                    values = {};
+                for (var item in data) {
+                    values[data[item].name] = data[item].value;
+                }
+                cache.push(values);
+            });
+            uniArr = uniqeByKeys(cache,['Standard']);  //数组去重
+            jsonData.innerType = uniArr;
 
             var $temp = store.get($storeKey) ? store.get($storeKey) : '';
             if($temp && $temp!=''){
